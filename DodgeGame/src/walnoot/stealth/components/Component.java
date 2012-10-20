@@ -1,0 +1,26 @@
+package walnoot.stealth.components;
+
+import walnoot.dodgegame.Entity;
+import walnoot.dodgegame.Map;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public abstract class Component{
+	protected final Entity owner;
+
+	public Component(Entity owner){
+		this.owner = owner;
+	}
+	
+	public void render(SpriteBatch batch){
+		
+	}
+	
+	public void update(Map map){
+		
+	}
+	
+	public abstract Component getCopy(Entity owner);
+	
+	public abstract ComponentIdentifier getIdentifier();
+}
