@@ -41,18 +41,18 @@ public class DodgeGame implements ApplicationListener{
 		Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 		
 		camera = new OrthographicCamera();
+		INPUT.setCamera(camera);
 		
 		batch = new SpriteBatch();
-		
-		FONT = new BitmapFont(Gdx.files.internal("font/font.fnt"), false);
-		
-		FONT.setUseIntegerPositions(false);
-		FONT.setScale(FONT_SCALE);
-		FONT.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
 		Texture texture = new Texture("images.png");
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TEXTURES = new TextureRegion(texture).split(256, 256);
+		
+		FONT = new BitmapFont(Gdx.files.internal("font.fnt"), new TextureRegion(texture, 0, 512, 256, 512), false);
+		
+		FONT.setUseIntegerPositions(false);
+		FONT.setScale(FONT_SCALE);
 		
 		MUSIC_MANAGER.init();
 		

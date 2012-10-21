@@ -1,33 +1,35 @@
 package walnoot.stealth.states;
 
 import walnoot.dodgegame.DodgeGame;
+import walnoot.dodgegame.TextButton;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameOverState extends State{
-	private static final CharSequence MAIN_TEXT = "Game Over";
 	private final GameState gameState;
-	private TextBounds textBounds;
+	private TextButton button;
 	
 	public GameOverState(GameState gameState){
 		super(gameState.camera);
 		this.gameState = gameState;
 		
-		textBounds = DodgeGame.FONT.getBounds(MAIN_TEXT);
-		
-		System.out.println(textBounds.width + " : " + textBounds.height);
+		button = new TextButton("RETRY?", 0, 0){
+			public void doAction(){
+				DodgeGame.setState(new GameState(camera));
+			};
+		};
 	}
 	
 	public void update(){
 		gameState.update();
+		
+		button.update();
 	}
 	
 	public void render(SpriteBatch batch){
 		gameState.render(batch);
 		
-		DodgeGame.FONT.setColor(0, 0, 0, 1);
-		DodgeGame.FONT.draw(batch, MAIN_TEXT, -(textBounds.width / 2f), 0);
+		button.render(batch);
 	}
 	
 	public void dispose(){

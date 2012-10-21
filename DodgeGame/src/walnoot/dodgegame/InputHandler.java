@@ -4,7 +4,9 @@ import static com.badlogic.gdx.Input.Keys.*;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class InputHandler implements InputProcessor{
 	public Key up = new Key(W, UP);
@@ -16,6 +18,7 @@ public class InputHandler implements InputProcessor{
 	public Key tab = new Key(TAB);
 	
 	private ArrayList<Key> keys;
+	private OrthographicCamera camera;
 	
 	/**
 	 * Make sure to call after game logic update() is called
@@ -24,6 +27,26 @@ public class InputHandler implements InputProcessor{
 		for(int i = 0; i < keys.size(); i++){
 			keys.get(i).update();
 		}
+	}
+	
+	public float getInputX(){
+		float inputX = (Gdx.input.getX() - Gdx.graphics.getWidth() / 2f);
+		inputX /= (Gdx.graphics.getWidth() / 2f);
+		inputX *= (camera.viewportWidth / 2f) * camera.zoom;
+		
+		return inputX;
+	}
+	
+	public float getInputY(){
+		float inputY = -(Gdx.input.getY() - Gdx.graphics.getHeight() / 2f);
+		inputY /= (Gdx.graphics.getHeight() / 2f);
+		inputY *= (camera.viewportHeight / 2f) * camera.zoom;
+		
+		return inputY;
+	}
+	
+	public void setCamera(OrthographicCamera camera){
+		this.camera = camera;
 	}
 	
 	public boolean keyDown(int keyCode){

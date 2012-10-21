@@ -38,7 +38,7 @@ public class MusicManager{
 			currentSong.dispose();
 			
 			songIndex++;
-			if(songIndex > songPaths.length) songIndex = 0;
+			if(songIndex >= songPaths.length) songIndex = 0;
 			
 			currentSong = Gdx.audio.newMusic(songFolder.child(songPaths[songIndex]));
 			currentSong.play();

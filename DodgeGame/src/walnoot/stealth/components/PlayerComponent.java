@@ -8,40 +8,29 @@ import walnoot.stealth.states.GameState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 
 public class PlayerComponent extends Component{
-	public static final float TURN_SPEED = 120f, WALK_SPEED = 6f;
-	private static final float RADIUS_GROW_RATE = 1 / 32f, RADIUS_SHRINK_RATE = 1 / 8f;
-	private static final int NUM_START_LIVES = 3;
+	public static final float WALK_SPEED = 6f;
+	private static final float RADIUS_GROW_RATE = 1 / 32f, RADIUS_SHRINK_RATE = 1 / 4f;
+	private static final float MINIMAL_RADIUS = 0.5f;
+	private static final int NUM_START_LIVES = 1;
 	private static final int INVINCIBILITY_TIME = 240;//ticks
-	private final OrthographicCamera camera;
 	private float radius = 1f;
 	private int lives = NUM_START_LIVES;
 	private int invincibilityTimer = INVINCIBILITY_TIME;
 	private float movementLockTimer = 0f;
 	
-	public PlayerComponent(Entity owner, OrthographicCamera camera){
+	public PlayerComponent(Entity owner){
 		super(owner);
-		this.camera = camera;
 	}
 	
 	public void update(Map map){
 		if(movementLockTimer <= 0){
 			Vector2.tmp.set(0, 0);
 			
-			if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-				float inputX = (Gdx.input.getX() - Gdx.graphics.getWidth() / 2f);
-				inputX /= (Gdx.graphics.getWidth() / 2f);
-				inputX *= (camera.viewportWidth / 2f) * GameState.MAP_SIZE;
-				
-				float inputY = -(Gdx.input.getY() - Gdx.graphics.getHeight() / 2f);
-				inputY /= (Gdx.graphics.getHeight() / 2f);
-				inputY *= (camera.viewportHeight / 2f) * GameState.MAP_SIZE;
-				
-				Vector2.tmp.set(inputX - owner.getxPos(), inputY - owner.getyPos());
-			}
+			if(Gdx.input.isButtonPressed(Buttons.LEFT))
+				Vector2.tmp.set(DodgeGame.INPUT.getInputX() - owner.getxPos(), DodgeGame.INPUT.getInputY() - owner.getyPos());
 			
 			if(DodgeGame.INPUT.up.isPressed()) Vector2.tmp.add(0, 1);
 			if(DodgeGame.INPUT.down.isPressed()) Vector2.tmp.add(0, -1);
@@ -69,7 +58,10 @@ public class PlayerComponent extends Component{
 	}
 	
 	public void shrink(){
-		if(!isInvincible()) radius -= RADIUS_SHRINK_RATE;
+		if(!isInvincible()){
+			radius -= RADIUS_SHRINK_RATE;
+			if(radius < MINIMAL_RADIUS) radius = MINIMAL_RADIUS;
+		}
 	}
 	
 	public void die(){
@@ -106,7 +98,7 @@ public class PlayerComponent extends Component{
 	}
 	
 	public Component getCopy(Entity owner){
-		return new PlayerComponent(owner, camera);
+		return new PlayerComponent(owner);
 	}
 	
 	public ComponentIdentifier getIdentifier(){

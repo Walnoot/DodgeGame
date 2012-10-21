@@ -30,7 +30,7 @@ public class GameState extends State{
 		
 		Entity playerEntity = new Entity(0, 0, 0);
 		playerEntity.addComponent(new SpriteComponent(playerEntity, DodgeGame.TEXTURES[0][0], Color.BLACK));
-		PlayerComponent playerComponent = new PlayerComponent(playerEntity, camera);
+		PlayerComponent playerComponent = new PlayerComponent(playerEntity);
 		playerEntity.addComponent(playerComponent);
 		
 		map = new Map(playerComponent);
