@@ -9,37 +9,42 @@ import walnoot.stealth.states.GameState;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Map{
-	public static final String MAP_FOLDER_NAME = "maps";
-	
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
-	private final PlayerComponent playerComponent;
+	private PlayerComponent playerComponent;
 	
-	public Map(PlayerComponent playerComponent){
-		Entity backgroundEntity = new Entity(0, 0, 0);
+	public Map(){
+		Entity backgroundEntity = new Entity(this, 0, 0, 0);
 		backgroundEntity.addComponent(new SpriteComponent(backgroundEntity, DodgeGame.TEXTURES[0][1], 2f * GameState.MAP_SIZE));
 		
 		addEntity(backgroundEntity);
-		
-		this.playerComponent = playerComponent;
 	}
 	
 	public void update(){
-		ArrayList<Entity> removedEntities = new ArrayList<Entity>();
+		ArrayList<Entity> removedEntities = null;
 		
 		for(int i = 0; i < entities.size(); i++){
 			Entity entity = entities.get(i);
 			
-			if(!entity.isRemoved()) entity.update(this);
-			else removedEntities.add(entity);
+			if(!entity.isRemoved()) entity.update();
+			else{
+				if(removedEntities == null) removedEntities = new ArrayList<Entity>();
+				removedEntities.add(entity);
+				
+				//if(gameState.getUnusedEntities().size() < GameState.MAX_UNUSED_ENTITIES) gameState.getUnusedEntities().add(entity);
+			}
 		}
 		
-		entities.removeAll(removedEntities);
+		if(removedEntities != null) entities.removeAll(removedEntities);
 	}
 	
 	public void render(SpriteBatch batch){
 		for(int i = 0; i < entities.size(); i++){
-			entities.get(i).render(batch);
+			if(!entities.get(i).isRemoved()) entities.get(i).render(batch);
 		}
+	}
+	
+	public void setPlayerComponent(PlayerComponent playerComponent){
+		this.playerComponent = playerComponent;
 	}
 	
 	public ArrayList<Entity> getEntities(){

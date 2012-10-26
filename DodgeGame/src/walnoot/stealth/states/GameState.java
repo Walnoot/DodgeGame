@@ -1,8 +1,12 @@
 package walnoot.stealth.states;
 
+import java.util.ArrayList;
+
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.Map;
+import walnoot.stealth.components.ComponentIdentifier;
+import walnoot.stealth.components.HeartComponent;
 import walnoot.stealth.components.MoveComponent;
 import walnoot.stealth.components.ObjectModifierComponent;
 import walnoot.stealth.components.ObjectModifierComponent.ModifierType;
@@ -15,9 +19,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 public class GameState extends State{
-	public static final int SPAWN_RATE = 20;
+	public static final int SPAWN_RATE = 20;//every 20 ticks a object spawns
 	public static final float MAP_SIZE = 8;
 	public static final int GROW_OBJECT_CHANGE = 40, SHRINK_OBJECT_CHANGE = 40; //out of 100
+	public static final int MAX_UNUSED_ENTITIES = 10;
 	
 	private Map map;
 	private int enemySpawnTimer = SPAWN_RATE; //an enemy spawn when this is zero
@@ -25,16 +30,29 @@ public class GameState extends State{
 	private int gameOverTimer; //delays the switch to game over state
 	private boolean gameOver;
 	
+	private ArrayList<Entity> unusedEntities = new ArrayList<Entity>(MAX_UNUSED_ENTITIES);
+	
 	public GameState(OrthographicCamera camera){
 		super(camera);
 		
-		Entity playerEntity = new Entity(0, 0, 0);
+		map = new Map();
+		
+		Entity playerEntity = new Entity(map, 0, 0, 0);
 		playerEntity.addComponent(new SpriteComponent(playerEntity, DodgeGame.TEXTURES[0][0], Color.BLACK));
 		PlayerComponent playerComponent = new PlayerComponent(playerEntity);
 		playerEntity.addComponent(playerComponent);
 		
-		map = new Map(playerComponent);
 		map.addEntity(playerEntity);
+		map.setPlayerComponent(playerComponent);
+		
+		for(int i = 0; i < PlayerComponent.NUM_START_LIVES; i++){
+			Entity heart = new Entity(map, 0, 0, 0);
+			
+			heart.addComponent(new SpriteComponent(heart, DodgeGame.TEXTURES[1][0], HeartComponent.SCALE));
+			heart.addComponent(new HeartComponent(heart, i));
+			
+			map.addEntity(heart);
+		}
 	}
 	
 	public void update(){
@@ -60,9 +78,10 @@ public class GameState extends State{
 				if(side == 3) rotation = MathUtils.random(135f, 225f);
 			}
 			
-			Entity object = new Entity(x, y, rotation);
-			object.addComponent(new SpriteComponent(object, DodgeGame.TEXTURES[0][0]));
-			object.addComponent(new MoveComponent(object));
+			Entity object = getNewObject();
+			object.setxPos(x);
+			object.setyPos(y);
+			object.setRotation(rotation);
 			
 			ModifierType type;
 			int randomInt = MathUtils.random(0, 99);
@@ -71,7 +90,8 @@ public class GameState extends State{
 			else if(randomInt < GROW_OBJECT_CHANGE + SHRINK_OBJECT_CHANGE) type = ModifierType.SHRINK;
 			else type = ModifierType.DEATH;
 			
-			object.addComponent(new ObjectModifierComponent(object, type));
+			((ObjectModifierComponent) object.getComponent(ComponentIdentifier.OBJECT_MODIFIER_COMPONENT)).init(type);
+			((MoveComponent) object.getComponent(ComponentIdentifier.MOVE_COMPONENT)).init();
 			
 			map.addEntity(object);
 		}
@@ -83,6 +103,38 @@ public class GameState extends State{
 		}
 		
 		map.update();
+		
+		if(DodgeGame.INPUT.pause.isJustPressed()){
+			DodgeGame.setState(new PauseState(camera, this));
+		}
+	}
+	
+	private Entity getNewObject(){
+		if(unusedEntities.isEmpty()){
+			System.out.println("making new entity");
+			
+			Entity e = new Entity(map, 0, 0, 0);
+			
+			//e.addComponent(new SpriteComponent(e, DodgeGame.TEXTURES[0][0]));
+			e.addComponent(new MoveComponent(e));
+			e.addComponent(new ObjectModifierComponent(e, this));
+			
+			return e;
+		}else{
+			Entity e = unusedEntities.get(0);
+			unusedEntities.remove(0);
+			e.setRemoved(false);
+			
+			return e;
+		}
+	}
+	
+	public Map getMap(){
+		return map;
+	}
+	
+	public ArrayList<Entity> getUnusedEntities(){
+		return unusedEntities;
 	}
 
 	public void gameOver(){

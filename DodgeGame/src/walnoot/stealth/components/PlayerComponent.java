@@ -2,8 +2,9 @@ package walnoot.stealth.components;
 
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Entity;
-import walnoot.dodgegame.Map;
+import walnoot.dodgegame.SpriteAccessor;
 import walnoot.stealth.states.GameState;
+import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -11,21 +12,22 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 
 public class PlayerComponent extends Component{
-	public static final float WALK_SPEED = 6f;
+	public static final int NUM_START_LIVES = 3;
+	private static final float WALK_SPEED = 6f;
 	private static final float RADIUS_GROW_RATE = 1 / 32f, RADIUS_SHRINK_RATE = 1 / 4f;
 	private static final float MINIMAL_RADIUS = 0.5f;
-	private static final int NUM_START_LIVES = 1;
 	private static final int INVINCIBILITY_TIME = 240;//ticks
+	
 	private float radius = 1f;
 	private int lives = NUM_START_LIVES;
 	private int invincibilityTimer = INVINCIBILITY_TIME;
-	private float movementLockTimer = 0f;
+	private int movementLockTimer = 0;
 	
 	public PlayerComponent(Entity owner){
 		super(owner);
 	}
 	
-	public void update(Map map){
+	public void update(){
 		if(movementLockTimer <= 0){
 			Vector2.tmp.set(0, 0);
 			
@@ -41,7 +43,7 @@ public class PlayerComponent extends Component{
 			Vector2.tmp.mul(DodgeGame.SECONDS_PER_UPDATE * WALK_SPEED);
 			owner.translate(Vector2.tmp.x, Vector2.tmp.y);
 		}else{
-			movementLockTimer -= DodgeGame.SECONDS_PER_UPDATE;
+			movementLockTimer--;
 		}
 		
 		SpriteComponent spriteComponent = (SpriteComponent) owner.getComponent(ComponentIdentifier.SPRITE_COMPONENT);
@@ -76,13 +78,18 @@ public class PlayerComponent extends Component{
 			owner.remove();
 			
 			((GameState) DodgeGame.state).gameOver();
-			
-			//move the player away so you cant see it for 1 tick after you died
-			owner.setxPos(Float.MIN_VALUE);
-			owner.setyPos(Float.MIN_VALUE);
 		}
 		
-		movementLockTimer = 0.5f; //lock movement for half a second
+		//lock movement for half a second, avoids confusion when respawning, may need to be changed later
+		movementLockTimer = (int) (0.5f * DodgeGame.UPDATES_PER_SECOND);
+		
+		Tween.from(((SpriteComponent) owner.getComponent(ComponentIdentifier.SPRITE_COMPONENT)).getSprite(),
+				SpriteAccessor.TRANSPARANCY, 0.5f)
+				.target(0).start(DodgeGame.TWEEN_MANAGER);
+	}
+	
+	public int getScore(){
+		return (int) (radius * 32f - 32f);
 	}
 	
 	private boolean isInvincible(){
@@ -95,6 +102,10 @@ public class PlayerComponent extends Component{
 	
 	public float getRadius(){
 		return radius;
+	}
+	
+	public int getLives(){
+		return lives;
 	}
 	
 	public Component getCopy(Entity owner){

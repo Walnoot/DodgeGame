@@ -13,9 +13,10 @@ public class InputHandler implements InputProcessor{
 	public Key down = new Key(S, DOWN);
 	public Key left = new Key(A, LEFT);
 	public Key right = new Key(D, RIGHT);
-	public Key toggleSound = new Key(P);
+	public Key toggleSound = new Key(Q);
 	public Key escape = new Key(ESCAPE);
 	public Key tab = new Key(TAB);
+	public Key pause = new Key(P, SPACE);
 	
 	private ArrayList<Key> keys;
 	private OrthographicCamera camera;

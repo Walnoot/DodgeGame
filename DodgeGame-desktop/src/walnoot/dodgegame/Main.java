@@ -10,6 +10,7 @@ public class Main {
 		cfg.useGL20 = false;
 		cfg.width = 480;
 		cfg.height = 320;
+		cfg.vSyncEnabled = false;
 		
 		new LwjglApplication(new DodgeGame(), cfg);
 	}

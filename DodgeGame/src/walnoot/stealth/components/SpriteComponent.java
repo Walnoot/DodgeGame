@@ -10,13 +10,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class SpriteComponent extends Component{
 	private Sprite sprite;
+	private float spinSpeed = 0f;
 	
 	public SpriteComponent(Entity owner, TextureRegion region){
 		super(owner);
 		
-		sprite = new Sprite(region);
-		sprite.setSize(1f, 1f);
-		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		newSprite(region);
 	}
 	
 	public SpriteComponent(Entity owner, Texture texture){
@@ -32,11 +31,24 @@ public class SpriteComponent extends Component{
 		this(owner, region);
 		sprite.setScale(scale);
 	}
-
+	
+	public void update(){
+		sprite.rotate(spinSpeed);
+	}
+	
 	public void render(SpriteBatch batch){
 		sprite.setPosition(owner.getxPos() - sprite.getWidth() / 2, owner.getyPos() - sprite.getHeight() / 2);
-		sprite.setRotation(owner.getRotation());
 		sprite.draw(batch);
+	}
+	
+	public void newSprite(TextureRegion region){
+		sprite = new Sprite(region);
+		sprite.setSize(1f, 1f);
+		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+	}
+	
+	public void setSpinSpeed(float spinSpeed){
+		this.spinSpeed = spinSpeed;
 	}
 	
 	public Sprite getSprite(){

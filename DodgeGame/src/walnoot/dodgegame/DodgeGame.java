@@ -21,6 +21,7 @@ public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 60, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
 	public static final float FONT_SCALE = 1f / 64f;
 	public static BitmapFont FONT;
+	public static Texture TEXTURE;
 	public static TextureRegion[][] TEXTURES;
 	public static Preferences PREFERENCES;
 	public static final MusicManager MUSIC_MANAGER = new MusicManager();
@@ -43,13 +44,13 @@ public class DodgeGame implements ApplicationListener{
 		camera = new OrthographicCamera();
 		INPUT.setCamera(camera);
 		
-		batch = new SpriteBatch();
+		batch = new SpriteBatch(50);
 		
-		Texture texture = new Texture("images.png");
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TEXTURES = new TextureRegion(texture).split(256, 256);
+		TEXTURE = new Texture("images.png");
+		TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		TEXTURES = new TextureRegion(TEXTURE).split(256, 256);
 		
-		FONT = new BitmapFont(Gdx.files.internal("font.fnt"), new TextureRegion(texture, 0, 512, 256, 512), false);
+		FONT = new BitmapFont(Gdx.files.internal("font.fnt"), new TextureRegion(TEXTURE, 0, 512, 256, 512), false);
 		
 		FONT.setUseIntegerPositions(false);
 		FONT.setScale(FONT_SCALE);
@@ -89,7 +90,7 @@ public class DodgeGame implements ApplicationListener{
 		state.render(batch);
 		
 		FONT.setColor(1, 0, 0, 1);
-		FONT.draw(batch, "FPS: " + (int) (1f / Gdx.graphics.getDeltaTime()), -camera.viewportWidth * camera.zoom / 2f, camera.viewportHeight * camera.zoom / 2f);
+		FONT.draw(batch, "FPS: " + (int) Gdx.graphics.getFramesPerSecond(), -camera.viewportWidth * camera.zoom / 2f, camera.viewportHeight * camera.zoom / 2f);
 		
 		batch.end();
 	}

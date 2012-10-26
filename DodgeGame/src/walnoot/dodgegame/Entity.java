@@ -12,8 +12,10 @@ public class Entity{
 	private float xPos, yPos, rotation;
 	private ArrayList<Component> components = new ArrayList<Component>();//fuck yeah entity-component design
 	private boolean removed = false;
+	private Map map;
 	
-	public Entity(float xPos, float yPos, float rotation){
+	public Entity(Map map, float xPos, float yPos, float rotation){
+		this.map = map;
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.rotation = rotation;
@@ -25,9 +27,9 @@ public class Entity{
 		}
 	}
 	
-	public void update(Map map){
+	public void update(){
 		for(int i = 0; i < components.size(); i++){
-			components.get(i).update(map);
+			components.get(i).update();
 		}
 	}
 	
@@ -44,7 +46,7 @@ public class Entity{
 	}
 	
 	public Entity getCopy(){
-		Entity result = new Entity(xPos, yPos, rotation);
+		Entity result = new Entity(map, xPos, yPos, rotation);
 		
 		for(int i = 0; i < components.size(); i++){
 			result.addComponent(components.get(i).getCopy(result));
@@ -68,6 +70,10 @@ public class Entity{
 		
 		if(rotation < MathUtils.PI) rotation += 2 * MathUtils.PI;
 		if(rotation > MathUtils.PI) rotation -= 2 * MathUtils.PI;
+	}
+	
+	public Map getMap(){
+		return map;
 	}
 	
 	public float getxPos(){
@@ -100,7 +106,16 @@ public class Entity{
 		if(rotation < MathUtils.PI) rotation += 2 * MathUtils.PI;
 		if(rotation > MathUtils.PI) rotation -= 2 * MathUtils.PI;
 	}
+	
+	public void setRemoved(boolean removed){
+		this.removed = removed;
+	}
+	
 	public void remove(){
+		for(int i = 0; i < components.size(); i++){
+			components.get(i).onEntityRemove();
+		}
+		
 		removed = true;
 	}
 }
