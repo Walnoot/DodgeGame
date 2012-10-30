@@ -17,6 +17,9 @@ public abstract class State{
 	
 	public abstract void dispose();
 	
+	public void resize(){
+	}
+	
 	public Camera getCamera(){
 		return camera;
 	}

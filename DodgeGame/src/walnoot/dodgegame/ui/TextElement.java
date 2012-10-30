@@ -2,8 +2,8 @@ package walnoot.dodgegame.ui;
 
 import walnoot.dodgegame.DodgeGame;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class TextElement{
@@ -20,5 +20,10 @@ public class TextElement{
 	
 	public void render(SpriteBatch batch){
 		DodgeGame.FONT.draw(batch, text, rectangle.x, rectangle.y + rectangle.height);
+	}
+	
+	public void setPos(float x, float y){
+		rectangle.x = x - rectangle.width / 2;
+		rectangle.y = y - rectangle.height / 2;
 	}
 }

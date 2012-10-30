@@ -17,6 +17,7 @@ public class InputHandler implements InputProcessor{
 	public Key escape = new Key(ESCAPE);
 	public Key tab = new Key(TAB);
 	public Key pause = new Key(P, SPACE);
+	public Key fullscreen = new Key(F12);
 	
 	private ArrayList<Key> keys;
 	private OrthographicCamera camera;

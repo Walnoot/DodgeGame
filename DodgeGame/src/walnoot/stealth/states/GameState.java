@@ -24,13 +24,17 @@ public class GameState extends State{
 	public static final int GROW_OBJECT_CHANGE = 40, SHRINK_OBJECT_CHANGE = 40; //out of 100
 	public static final int MAX_UNUSED_ENTITIES = 10;
 	
+	private ArrayList<Entity> unusedEntities = new ArrayList<Entity>(MAX_UNUSED_ENTITIES);
+	
 	private Map map;
 	private int enemySpawnTimer = SPAWN_RATE; //an enemy spawn when this is zero
 	
 	private int gameOverTimer; //delays the switch to game over state
 	private boolean gameOver;
 	
-	private ArrayList<Entity> unusedEntities = new ArrayList<Entity>(MAX_UNUSED_ENTITIES);
+	private String statusText;
+	private Color statusColor;
+	private int statusTimer;
 	
 	public GameState(OrthographicCamera camera){
 		super(camera);
@@ -39,7 +43,7 @@ public class GameState extends State{
 		
 		Entity playerEntity = new Entity(map, 0, 0, 0);
 		playerEntity.addComponent(new SpriteComponent(playerEntity, DodgeGame.TEXTURES[0][0], Color.BLACK));
-		PlayerComponent playerComponent = new PlayerComponent(playerEntity);
+		PlayerComponent playerComponent = new PlayerComponent(playerEntity, this);
 		playerEntity.addComponent(playerComponent);
 		
 		map.addEntity(playerEntity);
@@ -102,6 +106,10 @@ public class GameState extends State{
 			if(gameOverTimer == (int) DodgeGame.UPDATES_PER_SECOND) DodgeGame.setState(new GameOverState(this));
 		}
 		
+		if(statusTimer != 0){
+			statusTimer--;
+		}
+		
 		map.update();
 		
 		if(DodgeGame.INPUT.pause.isJustPressed()){
@@ -129,6 +137,12 @@ public class GameState extends State{
 		}
 	}
 	
+	public void setStatusText(String status, Color color){
+		statusText = status;
+		statusColor = color;
+		statusTimer = (int) DodgeGame.UPDATES_PER_SECOND;
+	}
+	
 	public Map getMap(){
 		return map;
 	}
@@ -144,6 +158,13 @@ public class GameState extends State{
 	public void render(SpriteBatch batch){
 		camera.zoom = MAP_SIZE;
 		map.render(batch);
+		
+		if(statusTimer != 0){
+			DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE * 2f * (statusTimer / DodgeGame.UPDATES_PER_SECOND));
+			DodgeGame.FONT.setColor(statusColor);
+			DodgeGame.FONT.draw(batch, statusText, 6, 6);
+			DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
+		}
 	}
 	
 	public void dispose(){

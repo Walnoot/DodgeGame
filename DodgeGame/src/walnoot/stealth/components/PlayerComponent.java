@@ -9,6 +9,7 @@ import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class PlayerComponent extends Component{
@@ -18,13 +19,18 @@ public class PlayerComponent extends Component{
 	private static final float MINIMAL_RADIUS = 0.5f;
 	private static final int INVINCIBILITY_TIME = 240;//ticks
 	
+	public static final String[] GROW_STATUS_TEXTS = {"AWESOME", "NOT BAD", "SPLENDID", "GOOD", "COOL"};
+	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD", "AWW", "SHOULD'VE DODGED", "QUITE BAD"};//for both shrink and death types because I'm lazy as fuck
+	
 	private float radius = 1f;
 	private int lives = NUM_START_LIVES;
 	private int invincibilityTimer = INVINCIBILITY_TIME;
 	private int movementLockTimer = 0;
+	private final GameState gameState;
 	
-	public PlayerComponent(Entity owner){
+	public PlayerComponent(Entity owner, GameState gameState){
 		super(owner);
+		this.gameState = gameState;
 	}
 	
 	public void update(){
@@ -57,6 +63,8 @@ public class PlayerComponent extends Component{
 	
 	public void grow(){
 		radius += RADIUS_GROW_RATE;
+		
+		gameState.setStatusText(getRandomText(GROW_STATUS_TEXTS), Color.GREEN);
 	}
 	
 	public void shrink(){
@@ -64,6 +72,8 @@ public class PlayerComponent extends Component{
 			radius -= RADIUS_SHRINK_RATE;
 			if(radius < MINIMAL_RADIUS) radius = MINIMAL_RADIUS;
 		}
+		
+		gameState.setStatusText(getRandomText(BAD_STUFF_STATUS_TEXTS), Color.RED);
 	}
 	
 	public void die(){
@@ -86,6 +96,12 @@ public class PlayerComponent extends Component{
 		Tween.from(((SpriteComponent) owner.getComponent(ComponentIdentifier.SPRITE_COMPONENT)).getSprite(),
 				SpriteAccessor.TRANSPARANCY, 0.5f)
 				.target(0).start(DodgeGame.TWEEN_MANAGER);
+		
+		gameState.setStatusText(getRandomText(BAD_STUFF_STATUS_TEXTS), Color.BLACK);
+	}
+	
+	private String getRandomText(String[] texts){
+		return texts[MathUtils.random(0, texts.length - 1)] + "!";
 	}
 	
 	public int getScore(){
@@ -109,7 +125,7 @@ public class PlayerComponent extends Component{
 	}
 	
 	public Component getCopy(Entity owner){
-		return new PlayerComponent(owner);
+		return new PlayerComponent(owner, gameState);
 	}
 	
 	public ComponentIdentifier getIdentifier(){

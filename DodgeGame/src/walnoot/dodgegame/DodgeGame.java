@@ -97,6 +97,7 @@ public class DodgeGame implements ApplicationListener{
 	
 	public void update(){
 		if(INPUT.escape.isPressed()) Gdx.app.exit();
+		if(INPUT.fullscreen.isJustPressed()) Gdx.graphics.setDisplayMode(1920, 1080, true);//for recording, change later
 		
 		state.update();
 		MUSIC_MANAGER.update();
@@ -116,6 +117,8 @@ public class DodgeGame implements ApplicationListener{
 			camera.viewportWidth = 2f;
 			camera.viewportHeight = 2f * height / width;
 		}
+		
+		state.resize();
 	}
 	
 	public void pause(){
