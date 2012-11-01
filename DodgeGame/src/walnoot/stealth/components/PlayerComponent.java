@@ -20,7 +20,7 @@ public class PlayerComponent extends Component{
 	private static final int INVINCIBILITY_TIME = 240;//ticks
 	
 	public static final String[] GROW_STATUS_TEXTS = {"AWESOME", "NOT BAD", "SPLENDID", "GOOD", "COOL"};
-	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD", "AWW", "SHOULD'VE DODGED", "QUITE BAD"};//for both shrink and death types because I'm lazy as fuck
+	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD", "AWW", "NOT GOOD", "QUITE BAD"};//for both shrink and death types because I'm lazy as fuck
 	
 	private float radius = 1f;
 	private int lives = NUM_START_LIVES;
@@ -35,19 +35,21 @@ public class PlayerComponent extends Component{
 	
 	public void update(){
 		if(movementLockTimer <= 0){
-			Vector2.tmp.set(0, 0);
+			Vector2 translation = Vector2.tmp;
+			translation.set(0, 0);
+			
 			
 			if(Gdx.input.isButtonPressed(Buttons.LEFT))
-				Vector2.tmp.set(DodgeGame.INPUT.getInputX() - owner.getxPos(), DodgeGame.INPUT.getInputY() - owner.getyPos());
+				translation.set(DodgeGame.INPUT.getInputX() - owner.getxPos(), DodgeGame.INPUT.getInputY() - owner.getyPos());
 			
-			if(DodgeGame.INPUT.up.isPressed()) Vector2.tmp.add(0, 1);
-			if(DodgeGame.INPUT.down.isPressed()) Vector2.tmp.add(0, -1);
-			if(DodgeGame.INPUT.left.isPressed()) Vector2.tmp.add(-1, 0);
-			if(DodgeGame.INPUT.right.isPressed()) Vector2.tmp.add(1, 0);
+			if(DodgeGame.INPUT.up.isPressed()) translation.add(0, 1);
+			if(DodgeGame.INPUT.down.isPressed()) translation.add(0, -1);
+			if(DodgeGame.INPUT.left.isPressed()) translation.add(-1, 0);
+			if(DodgeGame.INPUT.right.isPressed()) translation.add(1, 0);
 			
-			Vector2.tmp.nor();
-			Vector2.tmp.mul(DodgeGame.SECONDS_PER_UPDATE * WALK_SPEED);
-			owner.translate(Vector2.tmp.x, Vector2.tmp.y);
+			translation.nor();
+			translation.mul(DodgeGame.SECONDS_PER_UPDATE * WALK_SPEED);
+			owner.translate(translation);
 		}else{
 			movementLockTimer--;
 		}

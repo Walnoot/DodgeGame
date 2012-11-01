@@ -7,6 +7,7 @@ import walnoot.stealth.components.ComponentIdentifier;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 public class Entity{
 	private float xPos, yPos, rotation;
@@ -63,6 +64,10 @@ public class Entity{
 	public void translate(float x, float y){
 		xPos += x;
 		yPos += y;
+	}
+	
+	public void translate(Vector2 translation){
+		translate(translation.x, translation.y);
 	}
 	
 	public void rotate(float rotation){

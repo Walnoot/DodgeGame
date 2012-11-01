@@ -15,7 +15,7 @@ public class ObjectModifierComponent extends Component{
 	private static final float SPIN_SPEED = 6f;
 	
 	private ModifierType type;
-	private boolean consumed;
+	private boolean consumed, hasPlayedSound;
 	private int removeTimer;
 
 	private final GameState gameState;
@@ -64,6 +64,11 @@ public class ObjectModifierComponent extends Component{
 				default:
 					break;
 			}
+			
+			if(!hasPlayedSound){
+				DodgeGame.SOUND_MANAGER.playRandomSound();
+				hasPlayedSound = true;
+			}
 		}
 	}
 	
@@ -88,6 +93,7 @@ public class ObjectModifierComponent extends Component{
 		tween.target(0).start(DodgeGame.TWEEN_MANAGER);
 		
 		consumed = false;
+		hasPlayedSound = false;
 		removeTimer = 0;
 	}
 	

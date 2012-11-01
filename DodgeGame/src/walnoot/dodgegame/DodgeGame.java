@@ -24,7 +24,7 @@ public class DodgeGame implements ApplicationListener{
 	public static Texture TEXTURE;
 	public static TextureRegion[][] TEXTURES;
 	public static Preferences PREFERENCES;
-	public static final MusicManager MUSIC_MANAGER = new MusicManager();
+	public static final SoundManager SOUND_MANAGER = new SoundManager();
 	public static final InputHandler INPUT = new InputHandler();
 	public static TweenManager TWEEN_MANAGER;
 	
@@ -55,19 +55,19 @@ public class DodgeGame implements ApplicationListener{
 		FONT.setUseIntegerPositions(false);
 		FONT.setScale(FONT_SCALE);
 		
-		MUSIC_MANAGER.init();
+		SOUND_MANAGER.init();
 		
 		state = new GameState(camera);
 	}
 	
 	public void dispose(){
-		PREFERENCES.putBoolean(MusicManager.SOUND_PREF_NAME, MUSIC_MANAGER.isPlaying());
+		PREFERENCES.putBoolean(SoundManager.SOUND_PREF_NAME, SOUND_MANAGER.isPlaying());
 		PREFERENCES.flush();
 		
 		batch.dispose();
 		FONT.dispose();
 		TEXTURES[0][0].getTexture().dispose();
-		MUSIC_MANAGER.dispose();
+		SOUND_MANAGER.dispose();
 	}
 	
 	public void render(){
@@ -100,7 +100,7 @@ public class DodgeGame implements ApplicationListener{
 		if(INPUT.fullscreen.isJustPressed()) Gdx.graphics.setDisplayMode(1920, 1080, true);//for recording, change later
 		
 		state.update();
-		MUSIC_MANAGER.update();
+		SOUND_MANAGER.update();
 		INPUT.update();
 		TWEEN_MANAGER.update(SECONDS_PER_UPDATE);
 	}

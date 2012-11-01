@@ -112,7 +112,7 @@ public class GameState extends State{
 		
 		map.update();
 		
-		if(DodgeGame.INPUT.pause.isJustPressed()){
+		if(DodgeGame.INPUT.pause.isJustPressed() && !gameOver){
 			DodgeGame.setState(new PauseState(camera, this));
 		}
 	}
