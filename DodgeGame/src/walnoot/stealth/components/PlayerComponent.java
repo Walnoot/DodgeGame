@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 public class PlayerComponent extends Component{
 	public static final int NUM_START_LIVES = 3;
 	private static final float WALK_SPEED = 6f;
-	private static final float RADIUS_GROW_RATE = 1 / 32f, RADIUS_SHRINK_RATE = 1 / 4f;
+	private static final float RADIUS_GROW_RATE = 1 / 32f, RADIUS_SHRINK_FACTOR = 3f / 4f;
 	private static final float MINIMAL_RADIUS = 0.5f;
 	private static final int INVINCIBILITY_TIME = 240;//ticks
 	
@@ -71,7 +71,7 @@ public class PlayerComponent extends Component{
 	
 	public void shrink(){
 		if(!isInvincible()){
-			radius -= RADIUS_SHRINK_RATE;
+			radius *= RADIUS_SHRINK_FACTOR;
 			if(radius < MINIMAL_RADIUS) radius = MINIMAL_RADIUS;
 		}
 		
