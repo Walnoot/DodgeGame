@@ -5,9 +5,12 @@ import walnoot.dodgegame.DodgeGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class TextButton extends TextElement{
 	private int shortcut = Keys.UNKNOWN;
+	private boolean hovering;
 	
 	/**
 	 * @param text
@@ -16,8 +19,8 @@ public abstract class TextButton extends TextElement{
 	 * @param y
 	 *            - coordinate of middle of button
 	 */
-	public TextButton(String text, float x, float y){
-		super(text, x, y);
+	public TextButton(String text, float x, float y, float scale){
+		super(text, x, y, scale);
 	}
 	
 	/**
@@ -30,22 +33,37 @@ public abstract class TextButton extends TextElement{
 	 *            - keycode for the shortcut key, like Keys.A
 	 */
 	public TextButton(String text, float x, float y, int shortcut){
-		this(text, x, y);
+		this(text, x, y, 1f);
+		this.shortcut = shortcut;
+	}
+	
+	public TextButton(String text, float x, float y, float scale, int shortcut){
+		this(text, x, y, scale);
 		this.shortcut = shortcut;
 	}
 	
 	public void update(){
-		if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-			if(rectangle.contains(DodgeGame.INPUT.getInputX(), DodgeGame.INPUT.getInputY())){
+		if(rectangle.contains(DodgeGame.INPUT.getInputX(), DodgeGame.INPUT.getInputY())){
+			if(Gdx.input.isButtonPressed(Buttons.LEFT)){
 				doAction();
-			}
-		}
+				
+				DodgeGame.SOUND_MANAGER.playClickSound();
+			}else hovering = true;
+		}else hovering = false;
 		
 		if(shortcut != Keys.UNKNOWN){
 			if(Gdx.input.isKeyPressed(shortcut)){
 				doAction();
 			}
 		}
+	}
+	
+	public void render(SpriteBatch batch){
+		Color oldColor = DodgeGame.FONT.getColor();
+		
+		if(hovering) DodgeGame.FONT.setColor(oldColor.r, oldColor.g, oldColor.b, 0.5f);
+		super.render(batch);
+		DodgeGame.FONT.setColor(oldColor);
 	}
 	
 	public abstract void doAction();

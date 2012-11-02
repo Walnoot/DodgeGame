@@ -119,8 +119,6 @@ public class GameState extends State{
 	
 	private Entity getNewObject(){
 		if(unusedEntities.isEmpty()){
-			System.out.println("making new entity");
-			
 			Entity e = new Entity(map, 0, 0, 0);
 			
 			//e.addComponent(new SpriteComponent(e, DodgeGame.TEXTURES[0][0]));
@@ -156,7 +154,6 @@ public class GameState extends State{
 	}
 	
 	public void render(SpriteBatch batch){
-		camera.zoom = MAP_SIZE;
 		map.render(batch);
 		
 		if(statusTimer != 0){

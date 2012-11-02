@@ -21,7 +21,7 @@ public class PauseState extends State{
 		super(camera);
 		this.oldState = oldState;
 		
-		pauseElement = new TextElement("PAUSED", 0, 0f);
+		pauseElement = new TextElement("PAUSED", 0f, 0f, 2f);
 		
 		String continueText;
 		

@@ -1,6 +1,7 @@
 package walnoot.dodgegame;
 
 import walnoot.stealth.states.GameState;
+import walnoot.stealth.states.MainMenuState;
 import walnoot.stealth.states.State;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
@@ -42,6 +43,8 @@ public class DodgeGame implements ApplicationListener{
 		Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 		
 		camera = new OrthographicCamera();
+		camera.zoom = GameState.MAP_SIZE;
+		
 		INPUT.setCamera(camera);
 		
 		batch = new SpriteBatch(50);
@@ -57,7 +60,7 @@ public class DodgeGame implements ApplicationListener{
 		
 		SOUND_MANAGER.init();
 		
-		state = new GameState(camera);
+		state = new MainMenuState(camera);
 	}
 	
 	public void dispose(){

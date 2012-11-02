@@ -4,6 +4,8 @@ import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.ui.TextButton;
 import walnoot.dodgegame.ui.TextElement;
 
+import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,16 +14,22 @@ public class GameOverState extends State{
 	private static final String HIGH_SCORE_KEY = "highScore";
 	
 	private final GameState gameState;
-	private TextButton button;
+	private TextButton retryButton, mainMenuButton;
 	private TextElement scoreElement, highScoreElement;
 	
 	public GameOverState(GameState gameState){
 		super(gameState.camera);
 		this.gameState = gameState;
 		
-		button = new TextButton("RETRY (R)", 0, -1f, Keys.R){
+		retryButton = new TextButton("RETRY" + ((Gdx.app.getType() == ApplicationType.Android) ? "" : " (R)"), 0, -2.5f, 4f, Keys.R){
 			public void doAction(){
 				DodgeGame.setState(new GameState(camera));
+			}
+		};
+		
+		mainMenuButton = new TextButton("MAIN MENU", 0, -5.5f, 4f, Keys.R){
+			public void doAction(){
+				DodgeGame.setState(new MainMenuState(camera));
 			}
 		};
 		
@@ -36,14 +44,15 @@ public class GameOverState extends State{
 			newHighScore = true;
 		}
 		
-		scoreElement = new TextElement("Score: " + score, 0, 2f);
-		highScoreElement = new TextElement("Highscore: " + highscore + (newHighScore ? "!" : ""), 0, 1f);
+		scoreElement = new TextElement("Score: " + score, 0, 4f, 2f);
+		highScoreElement = new TextElement("Highscore: " + highscore + (newHighScore ? "!" : ""), 0, 2f, 2f);
 	}
 	
 	public void update(){
 		gameState.update();
 		
-		button.update();
+		retryButton.update();
+		mainMenuButton.update();
 	}
 	
 	public void render(SpriteBatch batch){
@@ -51,7 +60,8 @@ public class GameOverState extends State{
 		
 		DodgeGame.FONT.setColor(Color.BLACK);
 		
-		button.render(batch);
+		retryButton.render(batch);
+		mainMenuButton.render(batch);
 		scoreElement.render(batch);
 		highScoreElement.render(batch);
 	}

@@ -8,27 +8,16 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class SoundManager{
 	private static final String[] musicPaths = {
-		"Blobby Samba.mp3",
-		"Comparsa.mp3",
-		"CumbiaNoFrillsFaster.mp3",
-		"No Frills Salsa.mp3",
-		"Notanico Merengue.mp3",
-		"Peppy Pepe.mp3"
-	};
-	private static final String[] soundPaths = {
-		"apple.wav",
-		"apple2.wav",
-		"bite.mp3",
-		"bite2.wav",
-		"burp.wav"
-	};
+		"Comparsa.mp3", "CumbiaNoFrillsFaster.mp3", "No Frills Salsa.mp3", "Notanico Merengue.mp3", "Peppy Pepe.mp3"};
+	private static final String[] eatSoundPaths = {"apple.wav", "apple2.wav", "bite.mp3", "bite2.wav", "burp.wav"};
 	public static final String SOUND_PREF_NAME = "SoundOn";
 	
 	private Music currentSong;
 	private int songIndex;
 	private FileHandle musicFolder, soundFolder;
 	private boolean soundOn;
-	private Sound[] sounds = new Sound[soundPaths.length];
+	private Sound[] eatSounds = new Sound[eatSoundPaths.length];
+	private Sound clickSound;
 	
 	public void init(){
 		musicFolder = Gdx.files.internal("music/");
@@ -42,9 +31,11 @@ public class SoundManager{
 			soundOn = true;
 		}
 		
-		for(int i = 0; i < sounds.length; i++){
-			sounds[i] = Gdx.audio.newSound(soundFolder.child(soundPaths[i]));
+		for(int i = 0; i < eatSounds.length; i++){
+			eatSounds[i] = Gdx.audio.newSound(soundFolder.child(eatSoundPaths[i]));
 		}
+		
+		clickSound = Gdx.audio.newSound(soundFolder.child("click.wav"));
 	}
 	
 	public void update(){
@@ -64,8 +55,12 @@ public class SoundManager{
 		}
 	}
 	
-	public void playRandomSound(){
-		if(soundOn) sounds[MathUtils.random(0, sounds.length - 1)].play();
+	public void playRandomEatSound(){
+		if(soundOn) eatSounds[MathUtils.random(0, eatSounds.length - 1)].play();
+	}
+	
+	public void playClickSound(){
+		if(soundOn) clickSound.play();
 	}
 	
 	public void pause(){
