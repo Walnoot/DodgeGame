@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class PlayerComponent extends Component{
-	public static final int NUM_START_LIVES = 1;
+	public static final int NUM_START_LIVES = 3;
 	private static final float WALK_SPEED = 6f;
 	private static final float RADIUS_GROW_RATE = 1 / 32f, RADIUS_SHRINK_FACTOR = 3f / 4f;
 	private static final float MINIMAL_RADIUS = 0.5f;

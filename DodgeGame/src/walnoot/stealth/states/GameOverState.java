@@ -7,7 +7,6 @@ import walnoot.dodgegame.ui.TextElement;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameOverState extends State{
@@ -44,8 +43,8 @@ public class GameOverState extends State{
 			newHighScore = true;
 		}
 		
-		scoreElement = new TextElement("Score: " + score, 0, 4f, 2f);
-		highScoreElement = new TextElement("Highscore: " + highscore + (newHighScore ? "!" : ""), 0, 2f, 2f);
+		scoreElement = new TextElement("SCORE: " + score, 0, 4f, 2f);
+		highScoreElement = new TextElement("HIGHSCORE: " + highscore + (newHighScore ? "!" : ""), 0, 2f, 2f);
 	}
 	
 	public void update(){
@@ -57,8 +56,6 @@ public class GameOverState extends State{
 	
 	public void render(SpriteBatch batch){
 		gameState.render(batch);
-		
-		DodgeGame.FONT.setColor(Color.BLACK);
 		
 		retryButton.render(batch);
 		mainMenuButton.render(batch);

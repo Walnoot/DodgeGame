@@ -5,7 +5,6 @@ import walnoot.dodgegame.DodgeGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class TextButton extends TextElement{
@@ -59,11 +58,9 @@ public abstract class TextButton extends TextElement{
 	}
 	
 	public void render(SpriteBatch batch){
-		Color oldColor = DodgeGame.FONT.getColor();
-		
-		if(hovering) DodgeGame.FONT.setColor(oldColor.r, oldColor.g, oldColor.b, 0.5f);
+		if(hovering) getColor().a = 0.5f;
+		else getColor().a = 1f;
 		super.render(batch);
-		DodgeGame.FONT.setColor(oldColor);
 	}
 	
 	public abstract void doAction();

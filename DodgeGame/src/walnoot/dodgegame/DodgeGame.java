@@ -53,7 +53,7 @@ public class DodgeGame implements ApplicationListener{
 		TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TEXTURES = new TextureRegion(TEXTURE).split(256, 256);
 		
-		FONT = new BitmapFont(Gdx.files.internal("font.fnt"), new TextureRegion(TEXTURE, 0, 512, 256, 512), false);
+		FONT = new BitmapFont(Gdx.files.internal("komika_axis.fnt"), new TextureRegion(TEXTURE, 256, 256, 256, 256), false);
 		
 		FONT.setUseIntegerPositions(false);
 		FONT.setScale(FONT_SCALE);

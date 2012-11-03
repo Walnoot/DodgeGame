@@ -18,9 +18,11 @@ public class InputHandler implements InputProcessor{
 	public Key tab = new Key(TAB);
 	public Key pause = new Key(P, SPACE);
 	public Key fullscreen = new Key(F12);
+	public Key back = new Key(BACKSPACE, SPACE);
 	
 	private ArrayList<Key> keys;
 	private OrthographicCamera camera;
+	private boolean keyDown;
 	
 	/**
 	 * Make sure to call after game logic update() is called
@@ -29,6 +31,8 @@ public class InputHandler implements InputProcessor{
 		for(int i = 0; i < keys.size(); i++){
 			keys.get(i).update();
 		}
+		
+		keyDown = false;
 	}
 	
 	public float getInputX(){
@@ -47,6 +51,10 @@ public class InputHandler implements InputProcessor{
 		return inputY;
 	}
 	
+	public boolean isAnyKeyDown(){
+		return keyDown;
+	}
+	
 	public void setCamera(OrthographicCamera camera){
 		this.camera = camera;
 	}
@@ -55,6 +63,8 @@ public class InputHandler implements InputProcessor{
 		for(int i = 0; i < keys.size(); i++){
 			if(keys.get(i).has(keyCode)) keys.get(i).press();
 		}
+		
+		keyDown = true;
 		
 		return true;
 	}
