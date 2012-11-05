@@ -14,7 +14,7 @@ public class Map{
 	
 	public Map(){
 		Entity backgroundEntity = new Entity(this, 0, 0, 0);
-		backgroundEntity.addComponent(new SpriteComponent(backgroundEntity, DodgeGame.TEXTURES[0][1], 2f * GameState.MAP_SIZE));
+		backgroundEntity.addComponent(new SpriteComponent(backgroundEntity, Util.FIELD, 2f * GameState.MAP_SIZE));
 		
 		addEntity(backgroundEntity);
 	}

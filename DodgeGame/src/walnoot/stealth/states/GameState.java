@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.Map;
+import walnoot.dodgegame.Util;
 import walnoot.stealth.components.ComponentIdentifier;
 import walnoot.stealth.components.HeartComponent;
 import walnoot.stealth.components.MoveComponent;
@@ -42,7 +43,7 @@ public class GameState extends State{
 		map = new Map();
 		
 		Entity playerEntity = new Entity(map, 0, 0, 0);
-		playerEntity.addComponent(new SpriteComponent(playerEntity, DodgeGame.TEXTURES[0][0], Color.BLACK));
+		playerEntity.addComponent(new SpriteComponent(playerEntity, Util.DOT, Color.BLACK));
 		PlayerComponent playerComponent = new PlayerComponent(playerEntity, this);
 		playerEntity.addComponent(playerComponent);
 		
@@ -52,7 +53,7 @@ public class GameState extends State{
 		for(int i = 0; i < PlayerComponent.NUM_START_LIVES; i++){
 			Entity heart = new Entity(map, 0, 0, 0);
 			
-			heart.addComponent(new SpriteComponent(heart, DodgeGame.TEXTURES[1][0], HeartComponent.SCALE));
+			heart.addComponent(new SpriteComponent(heart, Util.HEART, HeartComponent.SCALE));
 			heart.addComponent(new HeartComponent(heart, i));
 			
 			map.addEntity(heart);
@@ -121,7 +122,6 @@ public class GameState extends State{
 		if(unusedEntities.isEmpty()){
 			Entity e = new Entity(map, 0, 0, 0);
 			
-			//e.addComponent(new SpriteComponent(e, DodgeGame.TEXTURES[0][0]));
 			e.addComponent(new MoveComponent(e));
 			e.addComponent(new ObjectModifierComponent(e, this));
 			
@@ -132,6 +132,17 @@ public class GameState extends State{
 			e.setRemoved(false);
 			
 			return e;
+		}
+	}
+	
+	public void render(SpriteBatch batch){
+		map.render(batch);
+		
+		if(statusTimer != 0){
+			DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE * 2f * (statusTimer / DodgeGame.UPDATES_PER_SECOND));
+			DodgeGame.FONT.setColor(statusColor);
+			DodgeGame.FONT.draw(batch, statusText, 0, 6f);
+			DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
 		}
 	}
 	
@@ -151,17 +162,6 @@ public class GameState extends State{
 
 	public void gameOver(){
 		gameOver = true;
-	}
-	
-	public void render(SpriteBatch batch){
-		map.render(batch);
-		
-		if(statusTimer != 0){
-			DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE * 2f * (statusTimer / DodgeGame.UPDATES_PER_SECOND));
-			DodgeGame.FONT.setColor(statusColor);
-			DodgeGame.FONT.draw(batch, statusText, 6, 6);
-			DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
-		}
 	}
 	
 	public void dispose(){

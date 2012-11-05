@@ -36,13 +36,19 @@ public class MainMenuState extends State{
 			}
 		};
 		
-		TextButton quitGameButton = new TextButton("QUIT GAME", 0, -2f, 2f){
+		TextButton optionsButton = new TextButton("OPTIONS", 0, -2f, 2f){
+			public void doAction(){
+				DodgeGame.setState(new OptionsState(camera));
+			}
+		};
+		
+		TextButton quitGameButton = new TextButton("QUIT GAME", 0, -4f, 2f){
 			public void doAction(){
 				Gdx.app.exit();
 			}
 		};
 		
-		textElements = new TextElement[] {titleElement, newGameButton, creditsButton, quitGameButton};
+		textElements = new TextElement[] {titleElement, newGameButton, creditsButton, optionsButton, quitGameButton};
 	}
 	
 	public void update(){

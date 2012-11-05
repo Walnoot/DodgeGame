@@ -1,6 +1,7 @@
 package walnoot.stealth.states;
 
 import walnoot.dodgegame.DodgeGame;
+import walnoot.dodgegame.ui.ReturnButton;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -18,15 +19,18 @@ public class CreditsState extends State{
 	private float yPos;
 	
 	private float maxY = 0f;
+	private ReturnButton button;
 	
 	public CreditsState(OrthographicCamera camera){
 		super(camera);
 		
 		text = Gdx.files.internal("credits.txt").readString();
+		
+		button = new ReturnButton(camera, new MainMenuState(camera));
 	}
 	
 	public void update(){
-		if(DodgeGame.INPUT.back.isPressed()) DodgeGame.setState(new MainMenuState(camera));
+		button.update();
 		
 		if(DodgeGame.INPUT.down.isPressed())
 			yPos += KEYS_SCROLL_SPEED;
@@ -47,6 +51,8 @@ public class CreditsState extends State{
 		
 		TextBounds bounds = DodgeGame.FONT.drawWrapped(batch, text, textX, textY, camera.viewportWidth * camera.zoom - 2f);
 		maxY = bounds.height;
+		
+		button.render(batch);
 	}
 	
 	public void dispose(){

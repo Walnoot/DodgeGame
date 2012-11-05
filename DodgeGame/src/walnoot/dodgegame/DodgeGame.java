@@ -16,14 +16,12 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 60, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
 	public static final float FONT_SCALE = 1f / 64f;
 	public static BitmapFont FONT;
 	public static Texture TEXTURE;
-	public static TextureRegion[][] TEXTURES;
 	public static Preferences PREFERENCES;
 	public static final SoundManager SOUND_MANAGER = new SoundManager();
 	public static final InputHandler INPUT = new InputHandler();
@@ -34,6 +32,7 @@ public class DodgeGame implements ApplicationListener{
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private float updateTimer;
+	private Sprite backgroundSprite;
 	
 	public void create(){
 		Gdx.input.setInputProcessor(INPUT);
@@ -51,14 +50,17 @@ public class DodgeGame implements ApplicationListener{
 		
 		TEXTURE = new Texture("images.png");
 		TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TEXTURES = new TextureRegion(TEXTURE).split(256, 256);
 		
-		FONT = new BitmapFont(Gdx.files.internal("komika_axis.fnt"), new TextureRegion(TEXTURE, 256, 256, 256, 256), false);
+		FONT = new BitmapFont(Gdx.files.internal("komika_axis.fnt"), Util.FONT, false);
 		
 		FONT.setUseIntegerPositions(false);
 		FONT.setScale(FONT_SCALE);
 		
 		SOUND_MANAGER.init();
+		
+		backgroundSprite = new Sprite(Util.BACKGROUND);
+		//backgroundSprite.setColor(40f / 256f, 255f / 256f, 69f / 256f, 0.65f);
+		backgroundSprite.setColor(0.9f, 0.9f, 1f, 0.65f);
 		
 		state = new MainMenuState(camera);
 	}
@@ -69,7 +71,7 @@ public class DodgeGame implements ApplicationListener{
 		
 		batch.dispose();
 		FONT.dispose();
-		TEXTURES[0][0].getTexture().dispose();
+		TEXTURE.dispose();
 		SOUND_MANAGER.dispose();
 	}
 	
@@ -89,6 +91,8 @@ public class DodgeGame implements ApplicationListener{
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		
+		backgroundSprite.draw(batch);
 		
 		state.render(batch);
 		
@@ -121,6 +125,10 @@ public class DodgeGame implements ApplicationListener{
 			camera.viewportHeight = 2f * height / width;
 		}
 		
+		backgroundSprite.setPosition(-camera.viewportWidth * camera.zoom * 0.5f,
+				-camera.viewportHeight * camera.zoom * 0.5f);
+		backgroundSprite.setSize(camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
+
 		state.resize();
 	}
 	

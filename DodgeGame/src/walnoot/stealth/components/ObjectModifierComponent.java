@@ -3,6 +3,7 @@ package walnoot.stealth.components;
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.SpriteAccessor;
+import walnoot.dodgegame.Util;
 import walnoot.stealth.states.GameState;
 import aurelienribon.tweenengine.Tween;
 
@@ -110,8 +111,7 @@ public class ObjectModifierComponent extends Component{
 	}
 	
 	public enum ModifierType{
-		GROW(new TextureRegion(DodgeGame.TEXTURE, 512, 0, 128, 128)), SHRINK(new TextureRegion(DodgeGame.TEXTURE, 0, 0,
-				256, 256)), DEATH(new TextureRegion(DodgeGame.TEXTURE, 0, 0, 256, 256));
+		GROW(Util.FOOD_ONE), SHRINK(Util.DOT), DEATH(Util.DOT);
 		
 		private final TextureRegion[] regions;
 		
