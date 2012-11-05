@@ -39,8 +39,12 @@ public class PlayerComponent extends Component{
 			translation.set(0, 0);
 			
 			
-			if(Gdx.input.isButtonPressed(Buttons.LEFT))
-				translation.set(DodgeGame.INPUT.getInputX() - owner.getxPos(), DodgeGame.INPUT.getInputY() - owner.getyPos());
+			if(Gdx.input.isButtonPressed(Buttons.LEFT)){
+				float dx = DodgeGame.INPUT.getInputX() - owner.getxPos();
+				float dy = DodgeGame.INPUT.getInputY() - owner.getyPos();
+				
+				if(Math.abs(dx) > 0.1f || Math.abs(dy) > 0.1f) translation.set(dx, dy);
+			}
 			
 			if(DodgeGame.INPUT.up.isPressed()) translation.add(0, 1);
 			if(DodgeGame.INPUT.down.isPressed()) translation.add(0, -1);
