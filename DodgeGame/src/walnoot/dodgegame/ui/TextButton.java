@@ -42,7 +42,13 @@ public abstract class TextButton extends TextElement{
 	}
 	
 	public void update(){
-		if(rectangle.contains(DodgeGame.INPUT.getInputX(), DodgeGame.INPUT.getInputY())){
+		float x = DodgeGame.INPUT.getInputX();
+		float y = DodgeGame.INPUT.getInputY();
+		
+		float halfWidth = getWidth() * 0.5f;
+		float halfHeight = getHeight() * 0.5f;
+		
+		if(x >= getxPos() - halfWidth && y >= getyPos() - halfHeight && x <= getxPos() + halfWidth && y <= getyPos() + halfHeight){
 			if(Gdx.input.isButtonPressed(Buttons.LEFT)){
 				doAction();
 				

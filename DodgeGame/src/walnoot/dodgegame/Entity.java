@@ -2,8 +2,8 @@ package walnoot.dodgegame;
 
 import java.util.ArrayList;
 
-import walnoot.stealth.components.Component;
-import walnoot.stealth.components.ComponentIdentifier;
+import walnoot.dodgegame.components.Component;
+import walnoot.dodgegame.components.ComponentIdentifier;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;

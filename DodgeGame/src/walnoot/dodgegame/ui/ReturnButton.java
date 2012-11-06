@@ -1,7 +1,7 @@
 package walnoot.dodgegame.ui;
 
 import walnoot.dodgegame.DodgeGame;
-import walnoot.stealth.states.State;
+import walnoot.dodgegame.states.State;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
