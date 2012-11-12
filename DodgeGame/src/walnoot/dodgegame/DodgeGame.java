@@ -66,7 +66,7 @@ public class DodgeGame implements ApplicationListener{
 	}
 	
 	public void dispose(){
-		PREFERENCES.putBoolean(SoundManager.SOUND_PREF_NAME, SOUND_MANAGER.isPlaying());
+		PREFERENCES.putBoolean(SoundManager.PREF_SOUND_KEY, SOUND_MANAGER.isPlaying());
 		PREFERENCES.flush();
 		
 		batch.dispose();

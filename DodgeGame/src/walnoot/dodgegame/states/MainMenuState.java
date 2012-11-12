@@ -31,7 +31,10 @@ public class MainMenuState extends State{
 		
 		TextButton newGameButton = new TextButton("NEW GAME", 0, 2f, 2f){
 			public void doAction(){
-				DodgeGame.setState(new GameState(camera));
+				if(DodgeGame.PREFERENCES.getBoolean(TutorialState.PREF_TUTORIAL_KEY, true))
+					DodgeGame.setState(new TutorialState(camera));
+				else
+					DodgeGame.setState(new GameState(camera));
 			}
 		};
 		

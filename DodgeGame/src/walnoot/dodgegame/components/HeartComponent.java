@@ -25,12 +25,4 @@ public class HeartComponent extends Component{
 		
 		owner.translate((targetX - owner.getxPos()) * 0.1f, 0);
 	}
-	
-	public Component getCopy(Entity owner){
-		return null;
-	}
-
-	public ComponentIdentifier getIdentifier(){
-		return ComponentIdentifier.HEART_COMPONENT;
-	}
 }

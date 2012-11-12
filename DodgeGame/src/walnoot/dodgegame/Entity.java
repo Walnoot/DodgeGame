@@ -3,7 +3,6 @@ package walnoot.dodgegame;
 import java.util.ArrayList;
 
 import walnoot.dodgegame.components.Component;
-import walnoot.dodgegame.components.ComponentIdentifier;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -38,22 +37,16 @@ public class Entity{
 		components.add(component);
 	}
 	
-	public Component getComponent(ComponentIdentifier identifier){
+	
+	@SuppressWarnings("unchecked")
+	public <T extends Component> T getComponent(Class<T> componentClass){
 		for(int i = 0; i < components.size(); i++){
-			if(components.get(i).getIdentifier() == identifier) return components.get(i);
+			Component component = components.get(i);
+			
+			if(component.getClass() == componentClass) return (T) component;
 		}
 		
 		return null;
-	}
-	
-	public Entity getCopy(){
-		Entity result = new Entity(map, xPos, yPos, rotation);
-		
-		for(int i = 0; i < components.size(); i++){
-			result.addComponent(components.get(i).getCopy(result));
-		}
-		
-		return result;
 	}
 	
 	public void moveForward(float amount){

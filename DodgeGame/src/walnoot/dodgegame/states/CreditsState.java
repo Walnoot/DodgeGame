@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class CreditsState extends State{
 	private static final float KEYS_SCROLL_SPEED = 0.08f;
 	private static final float MOUSE_SCROLL_SPEED = 0.03f;
+	private static final float WHEEL_SCROLL_SPEED = 0.5f;
 	
 	private String text;
 	private float yPos;
@@ -36,6 +37,8 @@ public class CreditsState extends State{
 			yPos += KEYS_SCROLL_SPEED;
 		else if(DodgeGame.INPUT.up.isPressed())
 			yPos -= KEYS_SCROLL_SPEED;
+		
+		yPos += DodgeGame.INPUT.getScrollAmount() * WHEEL_SCROLL_SPEED;
 		
 		if(Gdx.input.isButtonPressed(Buttons.LEFT))
 			yPos -= DodgeGame.INPUT.getInputY() * MOUSE_SCROLL_SPEED;

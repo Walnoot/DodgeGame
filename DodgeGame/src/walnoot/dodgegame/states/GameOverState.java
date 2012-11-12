@@ -10,7 +10,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameOverState extends State{
-	private static final String HIGH_SCORE_KEY = "highScore";
+	public static final String HIGH_SCORE_KEY = "highScore";
 	
 	private final GameState gameState;
 	private TextButton retryButton, mainMenuButton;

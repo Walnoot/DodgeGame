@@ -26,8 +26,4 @@ public abstract class Component{
 	public void onEntityRemove(){
 		
 	}
-	
-	public abstract Component getCopy(Entity owner);
-	
-	public abstract ComponentIdentifier getIdentifier();
 }

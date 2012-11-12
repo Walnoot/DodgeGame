@@ -6,13 +6,12 @@ import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.Map;
 import walnoot.dodgegame.Util;
-import walnoot.dodgegame.components.ComponentIdentifier;
 import walnoot.dodgegame.components.HeartComponent;
 import walnoot.dodgegame.components.MoveComponent;
 import walnoot.dodgegame.components.ObjectModifierComponent;
+import walnoot.dodgegame.components.ObjectModifierComponent.ModifierType;
 import walnoot.dodgegame.components.PlayerComponent;
 import walnoot.dodgegame.components.SpriteComponent;
-import walnoot.dodgegame.components.ObjectModifierComponent.ModifierType;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,13 +23,14 @@ public class GameState extends State{
 	public static final float MAP_SIZE = 8;
 	public static final int MAX_UNUSED_ENTITIES = 10;
 	private static final int GROW_OBJECT_CHANGE = 40, SHRINK_OBJECT_CHANGE = 40; //out of 100
-	private static final int SPAWN_RATE = 20;//every 20 ticks a object spawns
+	private static final int INITIAL_SPAWN_RATE = 40;
+	private static final int SPAWN_RATE_SCALE = 10;
 	private static final float STATUS_TEXT_SCALE = 2f;//scale of the status text at the beginning
 	
 	private ArrayList<Entity> unusedEntities = new ArrayList<Entity>(MAX_UNUSED_ENTITIES);
 	
 	private Map map;
-	private int enemySpawnTimer = SPAWN_RATE; //an enemy spawn when this is zero
+	private int enemySpawnTimer = SPAWN_RATE_SCALE; //an enemy spawn when this is zero
 	
 	private int gameOverTimer; //delays the switch to game over state
 	private boolean gameOver;
@@ -66,7 +66,7 @@ public class GameState extends State{
 	public void update(){
 		enemySpawnTimer--;
 		if(enemySpawnTimer == 0){
-			enemySpawnTimer = SPAWN_RATE;
+			enemySpawnTimer = (int) (INITIAL_SPAWN_RATE - SPAWN_RATE_SCALE * (map.getPlayerComponent().getRadius() - 1f));
 			
 			float x, y, rotation = 0;
 			
@@ -98,8 +98,8 @@ public class GameState extends State{
 			else if(randomInt < GROW_OBJECT_CHANGE + SHRINK_OBJECT_CHANGE) type = ModifierType.SHRINK;
 			else type = ModifierType.DEATH;
 			
-			((ObjectModifierComponent) object.getComponent(ComponentIdentifier.OBJECT_MODIFIER_COMPONENT)).init(type);
-			((MoveComponent) object.getComponent(ComponentIdentifier.MOVE_COMPONENT)).init();
+			object.getComponent(ObjectModifierComponent.class).init(type);
+			object.getComponent(MoveComponent.class).init();
 			
 			map.addEntity(object);
 		}

@@ -19,6 +19,7 @@ public class TextElement{
 		yPos = y;
 		this.scale = scale;
 		
+		DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
 		bounds = new TextBounds(DodgeGame.FONT.getBounds(text));
 	}
 	
@@ -47,6 +48,10 @@ public class TextElement{
 	
 	public float getyPos(){
 		return yPos;
+	}
+	
+	public float getScale(){
+		return scale;
 	}
 	
 	public void setColor(Color color){

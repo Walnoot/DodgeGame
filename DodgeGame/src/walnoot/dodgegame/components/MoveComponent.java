@@ -33,19 +33,12 @@ public class MoveComponent extends Component{
 		if(absY < 0) absY = -absY;
 		
 		if(absX > GameState.MAP_SIZE || absY > GameState.MAP_SIZE){
-			if(fadeTimer == 0) Tween.to(((SpriteComponent) owner.getComponent(ComponentIdentifier.SPRITE_COMPONENT)).getSprite(), SpriteAccessor.TRANSPARANCY, 1f).target(0f).start(DodgeGame.TWEEN_MANAGER);
-			
+			if(fadeTimer == 0) Tween.to(owner.getComponent(SpriteComponent.class).getSprite(),
+					SpriteAccessor.TRANSPARANCY, 1f).target(0f).start(DodgeGame.TWEEN_MANAGER);
+
 			fadeTimer++;
 			
 			if(fadeTimer > DodgeGame.UPDATES_PER_SECOND) owner.remove();
 		}
-	}
-	
-	public Component getCopy(Entity owner){
-		return new MoveComponent(owner);
-	}
-	
-	public ComponentIdentifier getIdentifier(){
-		return ComponentIdentifier.MOVE_COMPONENT;
 	}
 }

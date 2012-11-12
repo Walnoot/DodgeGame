@@ -15,13 +15,17 @@ public class ReturnButton extends TextButton{
 	private final OrthographicCamera camera;
 	private final State previousState;
 	
-	public ReturnButton(OrthographicCamera camera, State previousScreen){
-		super(TEXT, 0, 0, SCALE, Keys.BACK);
+	public ReturnButton(OrthographicCamera camera, State previousState, String text){
+		super(text, 0, 0, SCALE, Keys.BACKSPACE);
 		this.camera = camera;
-		this.previousState = previousScreen;
+		this.previousState = previousState;
 		
 		DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE * SCALE);
-		bounds = new TextBounds(DodgeGame.FONT.getBounds(TEXT));
+		bounds = new TextBounds(DodgeGame.FONT.getBounds(text));
+	}
+	
+	public ReturnButton(OrthographicCamera camera, State previousState){
+		this(camera, previousState, TEXT);
 	}
 	
 	public void update(){

@@ -23,6 +23,7 @@ public class InputHandler implements InputProcessor{
 	private ArrayList<Key> keys;
 	private OrthographicCamera camera;
 	private boolean keyDown;
+	private int scrollAmount;
 	
 	/**
 	 * Make sure to call after game logic update() is called
@@ -33,6 +34,7 @@ public class InputHandler implements InputProcessor{
 		}
 		
 		keyDown = false;
+		scrollAmount = 0;
 	}
 	
 	public float getInputX(){
@@ -53,6 +55,10 @@ public class InputHandler implements InputProcessor{
 	
 	public boolean isAnyKeyDown(){
 		return keyDown;
+	}
+	
+	public int getScrollAmount(){
+		return scrollAmount;
 	}
 	
 	public void setCamera(OrthographicCamera camera){
@@ -98,6 +104,8 @@ public class InputHandler implements InputProcessor{
 	}
 	
 	public boolean scrolled(int amount){
+		scrollAmount += amount;
+		
 		return true;
 	}
 	

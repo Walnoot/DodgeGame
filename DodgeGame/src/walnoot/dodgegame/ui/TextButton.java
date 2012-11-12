@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class TextButton extends TextElement{
 	private int shortcut = Keys.UNKNOWN;
 	private boolean hovering;
+	private boolean hasPressed;
 	
 	/**
 	 * @param text
@@ -50,11 +51,19 @@ public abstract class TextButton extends TextElement{
 		
 		if(x >= getxPos() - halfWidth && y >= getyPos() - halfHeight && x <= getxPos() + halfWidth && y <= getyPos() + halfHeight){
 			if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-				doAction();
-				
-				DodgeGame.SOUND_MANAGER.playClickSound();
-			}else hovering = true;
-		}else hovering = false;
+				if(!hasPressed){
+					doAction();
+					DodgeGame.SOUND_MANAGER.playClickSound();
+				}
+				hasPressed = true;
+			}else{
+				hovering = true;
+			}
+		}else{
+			hovering = false;
+		}
+		
+		if(!Gdx.input.isButtonPressed(Buttons.LEFT)) hasPressed = false;
 		
 		if(shortcut != Keys.UNKNOWN){
 			if(Gdx.input.isKeyPressed(shortcut)){

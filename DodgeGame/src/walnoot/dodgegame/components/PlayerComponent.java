@@ -3,6 +3,7 @@ package walnoot.dodgegame.components;
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.SpriteAccessor;
+import walnoot.dodgegame.states.GameOverState;
 import walnoot.dodgegame.states.GameState;
 import aurelienribon.tweenengine.Tween;
 
@@ -14,7 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class PlayerComponent extends Component{
 	public static final int NUM_START_LIVES = 3;
-	private static final float WALK_SPEED = 6f;
+	private static final float WALK_SPEED = 6f;//per second
 	private static final float RADIUS_GROW_RATE = 1 / 32f, RADIUS_SHRINK_FACTOR = 3f / 4f;
 	private static final float MINIMAL_RADIUS = 0.5f;
 	private static final int INVINCIBILITY_TIME = 240;//ticks
@@ -26,11 +27,15 @@ public class PlayerComponent extends Component{
 	private int lives = NUM_START_LIVES;
 	private int invincibilityTimer = INVINCIBILITY_TIME;
 	private int movementLockTimer = 0;
+	private final int highscore;
 	private final GameState gameState;
+	private boolean newHighscore;
 	
 	public PlayerComponent(Entity owner, GameState gameState){
 		super(owner);
 		this.gameState = gameState;
+		
+		highscore = DodgeGame.PREFERENCES.getInteger(GameOverState.HIGH_SCORE_KEY, 0);
 	}
 	
 	public void update(){
@@ -57,7 +62,7 @@ public class PlayerComponent extends Component{
 			movementLockTimer--;
 		}
 		
-		SpriteComponent spriteComponent = (SpriteComponent) owner.getComponent(ComponentIdentifier.SPRITE_COMPONENT);
+		SpriteComponent spriteComponent = owner.getComponent(SpriteComponent.class);
 		spriteComponent.getSprite().setScale(radius);
 		
 		if(invincibilityTimer > 0){
@@ -70,6 +75,16 @@ public class PlayerComponent extends Component{
 		radius += RADIUS_GROW_RATE;
 		
 		gameState.setStatusText(getRandomText(GROW_STATUS_TEXTS), Color.GREEN);
+		
+		if(getScore() > highscore){
+			if(!newHighscore){
+				gameState.setStatusText("NEW HIGHSCORE!", Color.GREEN);
+				
+				newHighscore = true;
+			}
+			
+			DodgeGame.PREFERENCES.putInteger(GameOverState.HIGH_SCORE_KEY, getScore());
+		}
 	}
 	
 	public void shrink(){
@@ -98,7 +113,7 @@ public class PlayerComponent extends Component{
 		//lock movement for half a second, avoids confusion when respawning, may need to be changed later
 		movementLockTimer = (int) (0.5f * DodgeGame.UPDATES_PER_SECOND);
 		
-		Tween.from(((SpriteComponent) owner.getComponent(ComponentIdentifier.SPRITE_COMPONENT)).getSprite(),
+		Tween.from(owner.getComponent(SpriteComponent.class).getSprite(),
 				SpriteAccessor.TRANSPARANCY, 0.5f).target(0).start(DodgeGame.TWEEN_MANAGER);
 		
 		gameState.setStatusText(getRandomText(BAD_STUFF_STATUS_TEXTS), Color.BLACK);
@@ -126,13 +141,5 @@ public class PlayerComponent extends Component{
 	
 	public int getLives(){
 		return lives;
-	}
-	
-	public Component getCopy(Entity owner){
-		return new PlayerComponent(owner, gameState);
-	}
-	
-	public ComponentIdentifier getIdentifier(){
-		return ComponentIdentifier.CONTROLLER_COMPONENT;
 	}
 }

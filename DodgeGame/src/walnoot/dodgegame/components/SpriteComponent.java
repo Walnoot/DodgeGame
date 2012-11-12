@@ -54,12 +54,4 @@ public class SpriteComponent extends Component{
 	public Sprite getSprite(){
 		return sprite;
 	}
-	
-	public Component getCopy(Entity owner){
-		return new SpriteComponent(owner, sprite);
-	}
-	
-	public ComponentIdentifier getIdentifier(){
-		return ComponentIdentifier.SPRITE_COMPONENT;
-	}
 }

@@ -31,7 +31,7 @@ public class ObjectModifierComponent extends Component{
 		
 		this.type = type;
 		
-		SpriteComponent spriteComponent = (SpriteComponent) owner.getComponent(ComponentIdentifier.SPRITE_COMPONENT);
+		SpriteComponent spriteComponent = owner.getComponent(SpriteComponent.class);
 		if(spriteComponent == null){
 			spriteComponent = new SpriteComponent(owner, type.getRandomRegion());
 			spriteComponent.setSpinSpeed(SPIN_SPEED * MathUtils.random(-1f, 1f));
@@ -40,14 +40,11 @@ public class ObjectModifierComponent extends Component{
 			spriteComponent.newSprite(type.getRandomRegion());
 		}
 		
-		if(type == ModifierType.SHRINK) spriteComponent.getSprite().setColor(Color.RED);
-		else if(type == ModifierType.DEATH) spriteComponent.getSprite().setColor(Color.MAGENTA);
+		if(type == ModifierType.DEATH) spriteComponent.getSprite().setColor(Color.MAGENTA);
 		
-		Tween tween = Tween.from(
-				((SpriteComponent) owner.getComponent(ComponentIdentifier.SPRITE_COMPONENT)).getSprite(),
-				SpriteAccessor.TRANSPARANCY, FADE_IN_DURATION);
+		Tween tween = Tween.from(spriteComponent.getSprite(), SpriteAccessor.TRANSPARANCY, FADE_IN_DURATION);
 		tween.target(0).start(DodgeGame.TWEEN_MANAGER);
-		
+
 		consumed = false;
 		hasPlayedSound = false;
 		removeTimer = 0;
@@ -70,9 +67,8 @@ public class ObjectModifierComponent extends Component{
 		if(dx * dx + dy * dy < minDistance * minDistance){
 			consumed = true;
 			
-			Tween tween = Tween.to(
-					((SpriteComponent) owner.getComponent(ComponentIdentifier.SPRITE_COMPONENT)).getSprite(),
-					SpriteAccessor.TRANSPARANCY, FADE_OUT_DURATION);
+			Tween tween = Tween.to(owner.getComponent(SpriteComponent.class).getSprite(), SpriteAccessor.TRANSPARANCY,
+					FADE_OUT_DURATION);
 			tween.target(0).start(DodgeGame.TWEEN_MANAGER);
 			
 			switch (type){
@@ -102,16 +98,8 @@ public class ObjectModifierComponent extends Component{
 		}
 	}
 	
-	public Component getCopy(Entity owner){
-		return new ObjectModifierComponent(owner, gameState);
-	}
-	
-	public ComponentIdentifier getIdentifier(){
-		return ComponentIdentifier.OBJECT_MODIFIER_COMPONENT;
-	}
-	
 	public enum ModifierType{
-		GROW(Util.FOOD_ONE), SHRINK(Util.DOT), DEATH(Util.DOT);
+		GROW(Util.FOOD_ONE), SHRINK(Util.BAD_FOOD_ONE), DEATH(Util.DOT);
 		
 		private final TextureRegion[] regions;
 		
