@@ -4,6 +4,7 @@ import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.ui.TextButton;
 import walnoot.dodgegame.ui.TextElement;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -50,13 +51,17 @@ public class MainMenuState extends State{
 			}
 		};
 		
-		TextButton quitGameButton = new TextButton("QUIT GAME", 0, -4f, 2f){
-			public void doAction(){
-				Gdx.app.exit();
-			}
-		};
-		
-		textElements = new TextElement[]{titleElement, newGameButton, creditsButton, optionsButton, quitGameButton};
+		if(Gdx.app.getType() == ApplicationType.Android){
+			textElements = new TextElement[]{titleElement, newGameButton, creditsButton, optionsButton};
+		}else{
+			TextButton quitGameButton = new TextButton("QUIT GAME", 0, -4f, 2f){
+				public void doAction(){
+					Gdx.app.exit();
+				}
+			};
+			
+			textElements = new TextElement[]{titleElement, newGameButton, creditsButton, optionsButton, quitGameButton};
+		}
 	}
 	
 	public void update(){

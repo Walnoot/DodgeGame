@@ -8,22 +8,24 @@ import walnoot.dodgegame.ui.TextElement;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 public class TutorialState extends State{
-	public static final float FOOD_RADIUS = 6f;
-	public static final float FOOD_SIZE = 3f;
+	public static final float FOOD_RADIUS = 5f;
+	public static final float FOOD_SIZE = 4f;
 	
-	public static final int GOOD_FOOD = 0, BAD_FOOD = 1;
+	private static final int PLAYER_EXPLANATION = 0, GOOD_FOOD = 1, BAD_FOOD = 2, POISON_FOOD = 3;
 	public static final String PREF_TUTORIAL_KEY = "showTuturial";
 	private static final int MINIMAL_SKIP_TIME = 120;//ticks
 	
 	private TextElement descriptionElement, skipElement;
-	private int state = GOOD_FOOD;
+	private int state = PLAYER_EXPLANATION;
 	private int skipTimer;
 	
 	private ArrayList<Sprite> sprites = new ArrayList<Sprite>(3);
@@ -43,11 +45,13 @@ public class TutorialState extends State{
 	public void update(){
 		skipTimer++;
 		
-		if(skipTimer > MINIMAL_SKIP_TIME && Gdx.input.isKeyPressed(Keys.SPACE)){
-			skipTimer = 0;
-			
-			state++;
-			initState();
+		if(skipTimer > MINIMAL_SKIP_TIME){
+			if(Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isButtonPressed(Buttons.LEFT)){
+				skipTimer = 0;
+				
+				state++;
+				initState();
+			}
 		}
 		
 		angle++;
@@ -64,9 +68,17 @@ public class TutorialState extends State{
 		String text = null;
 		
 		switch (state){
+			case PLAYER_EXPLANATION:
+				Sprite sprite = new Sprite(Util.DOT);
+				sprite.setColor(Color.BLACK);
+				sprites.add(sprite);
+				
+				text = "THIS IS YOU! (FOR NOW)";
+				
+				break;
 			case GOOD_FOOD:
 				sprites.add(new Sprite(Util.FOOD_ONE));
-				sprites.add(new Sprite(Util.DOT));
+				sprites.add(new Sprite(Util.FOOD_TWO));
 				sprites.add(new Sprite(Util.DOT));
 				
 				text = "EAT THESE TO GROW!";
@@ -77,7 +89,11 @@ public class TutorialState extends State{
 				sprites.add(new Sprite(Util.DOT));
 				sprites.add(new Sprite(Util.DOT));
 				
-				text = "AVOID AT ALL COSTS!";
+				text = "THIS ROTTEN FOOD WILL MAKE YOU SHRINK!";
+				
+				break;
+			case POISON_FOOD:
+				text = "THE PURPLE DOTS KILL YOU, NO SPRITES YET!";
 				
 				break;
 			default:

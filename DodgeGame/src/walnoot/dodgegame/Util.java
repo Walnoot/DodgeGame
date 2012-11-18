@@ -8,6 +8,7 @@ public class Util{
 	public static final TextureRegion FIELD = getRegion(0.25f, 0f, 0.5f, 0.5f);
 	public static final TextureRegion FONT = getRegion(0.25f, 0.5f, 0.5f, 1f);
 	public static final TextureRegion FOOD_ONE = getRegion(0.5f, 0f, 0.625f, 0.25f);
+	public static final TextureRegion FOOD_TWO = getRegion(0.5f, 0.5f, 0.625f, 0.75f);
 	public static final TextureRegion ICON_FALSE = getRegion(0.5f, 0.25f, 0.625f, 0.5f);
 	public static final TextureRegion ICON_TRUE = getRegion(0.625f, 0.25f, 0.75f, 0.5f);
 	public static final TextureRegion BAD_FOOD_ONE = getRegion(0.625f, 0f, 0.75f, 0.25f);

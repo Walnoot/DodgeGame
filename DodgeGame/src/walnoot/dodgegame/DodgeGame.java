@@ -49,7 +49,7 @@ public class DodgeGame implements ApplicationListener{
 		batch = new SpriteBatch(100);
 		
 		TEXTURE = new Texture("images.png");
-		TEXTURE.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		TEXTURE.setFilter(TextureFilter.Nearest, TextureFilter.Linear);
 		
 		FONT = new BitmapFont(Gdx.files.internal("komika_axis.fnt"), Util.FONT, false);
 		

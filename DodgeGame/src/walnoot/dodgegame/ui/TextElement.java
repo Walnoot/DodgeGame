@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TextElement{
 	private String text;
-	//protected final Rectangle rectangle;
 	private float xPos, yPos, scale;
 	private Color color = new Color(Color.BLACK);
 	private TextBounds bounds;

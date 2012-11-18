@@ -16,12 +16,12 @@ import com.badlogic.gdx.math.Vector2;
 public class PlayerComponent extends Component{
 	public static final int NUM_START_LIVES = 3;
 	private static final float WALK_SPEED = 6f;//per second
-	private static final float RADIUS_GROW_RATE = 1 / 32f, RADIUS_SHRINK_FACTOR = 3f / 4f;
+	private static final float RADIUS_GROW_RATE = 1 / 32f, RADIUS_SHRINK_FACTOR = 4f / 5f;
 	private static final float MINIMAL_RADIUS = 0.5f;
 	private static final int INVINCIBILITY_TIME = 240;//ticks
 	
-	public static final String[] GROW_STATUS_TEXTS = {"AWESOME", "NOT BAD", "SPLENDID", "GOOD", "COOL"};
-	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD", "AWW", "NOT GOOD", "QUITE BAD"};//for both shrink and death types because I'm lazy as fuck
+	public static final String[] GROW_STATUS_TEXTS = {"AWESOME!", "NOT BAD!", "SPLENDID!", "GOOD!", "COOL!"};
+	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD!", "AWW!", "NOT GOOD!", "QUITE BAD!"};//for both shrink and death types because I'm lazy as fuck
 	
 	private float radius = 1f;
 	private int lives = NUM_START_LIVES;
@@ -47,7 +47,7 @@ public class PlayerComponent extends Component{
 				float dx = DodgeGame.INPUT.getInputX() - owner.getxPos();
 				float dy = DodgeGame.INPUT.getInputY() - owner.getyPos();
 				
-				if(Math.abs(dx) > 0.1f || Math.abs(dy) > 0.1f) translation.set(dx, dy);
+				translation.set(dx, dy);
 			}
 			
 			if(DodgeGame.INPUT.up.isPressed()) translation.add(0, 1);
@@ -55,8 +55,16 @@ public class PlayerComponent extends Component{
 			if(DodgeGame.INPUT.left.isPressed()) translation.add(-1, 0);
 			if(DodgeGame.INPUT.right.isPressed()) translation.add(1, 0);
 			
-			translation.nor();
-			translation.mul(DodgeGame.SECONDS_PER_UPDATE * WALK_SPEED);
+			float length = translation.len();
+			
+			if(length > DodgeGame.SECONDS_PER_UPDATE * WALK_SPEED){
+				//normalize the vector
+				translation.x /= length;
+				translation.y /= length;
+				
+				translation.mul(DodgeGame.SECONDS_PER_UPDATE * WALK_SPEED);
+			}
+			
 			owner.translate(translation);
 		}else{
 			movementLockTimer--;
@@ -67,7 +75,7 @@ public class PlayerComponent extends Component{
 		
 		if(invincibilityTimer > 0){
 			invincibilityTimer--;
-			spriteComponent.getSprite().setColor(Color.DARK_GRAY);
+			spriteComponent.getSprite().setColor(Color.GRAY);
 		}else spriteComponent.getSprite().setColor(Color.BLACK);
 	}
 	
@@ -120,7 +128,7 @@ public class PlayerComponent extends Component{
 	}
 	
 	private String getRandomText(String[] texts){
-		return texts[MathUtils.random(0, texts.length - 1)] + "!";
+		return texts[MathUtils.random(0, texts.length - 1)];
 	}
 	
 	public int getScore(){

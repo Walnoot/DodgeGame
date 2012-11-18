@@ -22,9 +22,9 @@ import com.badlogic.gdx.math.MathUtils;
 public class GameState extends State{
 	public static final float MAP_SIZE = 8;
 	public static final int MAX_UNUSED_ENTITIES = 10;
-	private static final int GROW_OBJECT_CHANGE = 40, SHRINK_OBJECT_CHANGE = 40; //out of 100
-	private static final int INITIAL_SPAWN_RATE = 40;
-	private static final int SPAWN_RATE_SCALE = 10;
+	private static final int GROW_OBJECT_CHANGE = 60, SHRINK_OBJECT_CHANGE = 20; //out of 100
+	private static final int INITIAL_SPAWN_RATE = 30;
+	private static final int SPAWN_RATE_SCALE = 4;
 	private static final float STATUS_TEXT_SCALE = 2f;//scale of the status text at the beginning
 	
 	private ArrayList<Entity> unusedEntities = new ArrayList<Entity>(MAX_UNUSED_ENTITIES);
@@ -47,6 +47,7 @@ public class GameState extends State{
 		
 		Entity playerEntity = new Entity(map, 0, 0, 0);
 		playerEntity.addComponent(new SpriteComponent(playerEntity, Util.DOT, Color.BLACK));
+		
 		PlayerComponent playerComponent = new PlayerComponent(playerEntity, this);
 		playerEntity.addComponent(playerComponent);
 		

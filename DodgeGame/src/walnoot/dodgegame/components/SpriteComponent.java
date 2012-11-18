@@ -42,9 +42,14 @@ public class SpriteComponent extends Component{
 	}
 	
 	public void newSprite(TextureRegion region){
-		sprite = new Sprite(region);
-		sprite.setSize(1f, 1f);
-		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		if(sprite == null){
+			sprite = new Sprite(region);
+			sprite.setSize(1f, 1f);
+			sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		}else{
+			sprite.setRegion(region);
+			sprite.setColor(Color.WHITE);
+		}
 	}
 	
 	public void setSpinSpeed(float spinSpeed){

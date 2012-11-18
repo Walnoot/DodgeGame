@@ -3,6 +3,9 @@ package walnoot.dodgegame.components;
 import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.states.GameState;
 
+/**
+ * component that represents the heart icons at the top of the screen
+ */
 public class HeartComponent extends Component{
 	public static final float SCALE = 2f;
 	

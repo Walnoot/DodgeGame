@@ -99,7 +99,7 @@ public class ObjectModifierComponent extends Component{
 	}
 	
 	public enum ModifierType{
-		GROW(Util.FOOD_ONE), SHRINK(Util.BAD_FOOD_ONE), DEATH(Util.DOT);
+		GROW(Util.FOOD_ONE, Util.FOOD_TWO), SHRINK(Util.BAD_FOOD_ONE), DEATH(Util.DOT);
 		
 		private final TextureRegion[] regions;
 		
