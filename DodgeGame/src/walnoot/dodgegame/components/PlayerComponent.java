@@ -90,8 +90,6 @@ public class PlayerComponent extends Component{
 				
 				newHighscore = true;
 			}
-			
-			DodgeGame.PREFERENCES.putInteger(GameOverState.HIGH_SCORE_KEY, getScore());
 		}
 	}
 	
