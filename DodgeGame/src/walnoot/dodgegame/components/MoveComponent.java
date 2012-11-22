@@ -35,7 +35,7 @@ public class MoveComponent extends Component{
 		if(absX > GameState.MAP_SIZE || absY > GameState.MAP_SIZE){
 			if(fadeTimer == 0) Tween.to(owner.getComponent(SpriteComponent.class).getSprite(),
 					SpriteAccessor.TRANSPARANCY, 1f).target(0f).start(DodgeGame.TWEEN_MANAGER);
-
+			
 			fadeTimer++;
 			
 			if(fadeTimer > DodgeGame.UPDATES_PER_SECOND) owner.remove();

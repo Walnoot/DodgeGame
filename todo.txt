@@ -1,5 +1,5 @@
-options menu
-sound toggle on main menu
+sound toggle on main menu?
 more food sprites
-scrolling in credits menu, arrow indicating you can scroll
-tutorial
+player sprite
+sound/music slider
+AdMob integration

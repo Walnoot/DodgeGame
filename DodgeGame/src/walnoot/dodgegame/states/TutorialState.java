@@ -22,7 +22,7 @@ public class TutorialState extends State{
 	
 	private static final int PLAYER_EXPLANATION = 0, GOOD_FOOD = 1, BAD_FOOD = 2, POISON_FOOD = 3;
 	public static final String PREF_TUTORIAL_KEY = "showTuturial";
-	private static final int MINIMAL_SKIP_TIME = 120;//ticks
+	private static final int MINIMAL_SKIP_TIME = 80;//ticks
 	
 	private TextElement descriptionElement, skipElement;
 	private int state = PLAYER_EXPLANATION;
