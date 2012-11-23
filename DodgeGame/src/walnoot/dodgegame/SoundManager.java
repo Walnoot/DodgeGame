@@ -18,6 +18,7 @@ public class SoundManager{
 	private boolean soundOn;
 	private Sound[] eatSounds = new Sound[eatSoundPaths.length];
 	private Sound clickSound;
+	private boolean loaded;
 	
 	public void init(){
 		musicFolder = Gdx.files.internal("music/");
@@ -36,6 +37,8 @@ public class SoundManager{
 		}
 		
 		clickSound = Gdx.audio.newSound(soundFolder.child("click.wav"));
+		
+		loaded = true;
 	}
 	
 	public void update(){
@@ -82,6 +85,10 @@ public class SoundManager{
 	
 	public boolean isPlaying(){
 		return soundOn;
+	}
+	
+	public boolean isLoaded(){
+		return loaded;
 	}
 	
 	public void dispose(){

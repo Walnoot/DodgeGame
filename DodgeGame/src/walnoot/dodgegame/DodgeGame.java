@@ -1,9 +1,8 @@
 package walnoot.dodgegame;
 
 import walnoot.dodgegame.states.GameState;
-import walnoot.dodgegame.states.MainMenuState;
+import walnoot.dodgegame.states.LoadingState;
 import walnoot.dodgegame.states.State;
-import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.ApplicationListener;
@@ -23,7 +22,7 @@ public class DodgeGame implements ApplicationListener{
 	public static BitmapFont FONT;
 	public static Texture TEXTURE;
 	public static Preferences PREFERENCES;
-	public static final SoundManager SOUND_MANAGER = new SoundManager();
+	public static SoundManager SOUND_MANAGER = new SoundManager();
 	public static final InputHandler INPUT = new InputHandler();
 	public static TweenManager TWEEN_MANAGER;
 	
@@ -36,10 +35,6 @@ public class DodgeGame implements ApplicationListener{
 	
 	public void create(){
 		Gdx.input.setInputProcessor(INPUT);
-		PREFERENCES = Gdx.app.getPreferences("DodgeGamePrefs");
-		
-		TWEEN_MANAGER = new TweenManager();
-		Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 		
 		camera = new OrthographicCamera();
 		camera.zoom = GameState.MAP_SIZE;
@@ -51,18 +46,10 @@ public class DodgeGame implements ApplicationListener{
 		TEXTURE = new Texture("images.png");
 		TEXTURE.setFilter(TextureFilter.Nearest, TextureFilter.Linear);
 		
-		FONT = new BitmapFont(Gdx.files.internal("komika_axis.fnt"), Util.FONT, false);
-		
-		FONT.setUseIntegerPositions(false);
-		FONT.setScale(FONT_SCALE);
-		
-		SOUND_MANAGER.init();
-		
 		backgroundSprite = new Sprite(Util.BACKGROUND);
-		//backgroundSprite.setColor(40f / 256f, 255f / 256f, 69f / 256f, 0.65f);
 		backgroundSprite.setColor(0.9f, 0.9f, 1f, 0.65f);
 		
-		state = new MainMenuState(camera);
+		state = new LoadingState(camera);
 	}
 	
 	public void dispose(){
@@ -96,8 +83,10 @@ public class DodgeGame implements ApplicationListener{
 		
 		state.render(batch);
 		
-		FONT.setColor(1, 0, 0, 1);
-		FONT.draw(batch, "FPS: " + (int) Gdx.graphics.getFramesPerSecond(), -camera.viewportWidth * camera.zoom / 2f, camera.viewportHeight * camera.zoom / 2f);
+		if(FONT != null){
+			FONT.setColor(1, 0, 0, 1);
+			FONT.draw(batch, "FPS: " + (int) Gdx.graphics.getFramesPerSecond(), -camera.viewportWidth * camera.zoom / 2f, camera.viewportHeight * camera.zoom / 2f);
+		}
 		
 		batch.end();
 	}
@@ -107,9 +96,9 @@ public class DodgeGame implements ApplicationListener{
 		if(INPUT.fullscreen.isJustPressed()) Gdx.graphics.setDisplayMode(1920, 1080, true);//for recording, change later
 		
 		state.update();
-		SOUND_MANAGER.update();
+		if(SOUND_MANAGER.isLoaded()) SOUND_MANAGER.update();
 		INPUT.update();
-		TWEEN_MANAGER.update(SECONDS_PER_UPDATE);
+		if(TWEEN_MANAGER != null) TWEEN_MANAGER.update(SECONDS_PER_UPDATE);
 	}
 	
 	public static void setState(State state){
