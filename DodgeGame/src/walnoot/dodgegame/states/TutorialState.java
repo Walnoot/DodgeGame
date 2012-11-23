@@ -79,7 +79,7 @@ public class TutorialState extends State{
 			case GOOD_FOOD:
 				sprites.add(new Sprite(Util.FOOD_ONE));
 				sprites.add(new Sprite(Util.FOOD_TWO));
-				sprites.add(new Sprite(Util.DOT));
+				sprites.add(new Sprite(Util.FOOD_THREE));
 				
 				text = "EAT THESE TO GROW!";
 				
