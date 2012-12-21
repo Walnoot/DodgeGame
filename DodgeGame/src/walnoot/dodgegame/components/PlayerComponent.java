@@ -3,6 +3,7 @@ package walnoot.dodgegame.components;
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.SpriteAccessor;
+import walnoot.dodgegame.Util;
 import walnoot.dodgegame.states.GameOverState;
 import walnoot.dodgegame.states.GameState;
 import aurelienribon.tweenengine.Tween;
@@ -10,35 +11,55 @@ import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class PlayerComponent extends Component{
 	public static final int NUM_START_LIVES = 3;
 	private static final float WALK_SPEED = 6f;//per second
+	public static final int SCORE_MULTIPLIER_DEFAULT = 32;
 	private static final float RADIUS_GROW_RATE = 1 / 32f, RADIUS_SHRINK_FACTOR = 4f / 5f;
 	private static final float MINIMAL_RADIUS = 0.5f;
 	private static final int INVINCIBILITY_TIME = 240;//ticks
+	private static final int COMBO_BREAK_TIME = (int) (4 * DodgeGame.UPDATES_PER_SECOND);
 	
 	public static final String[] GROW_STATUS_TEXTS = {"AWESOME!", "NOT BAD!", "SPLENDID!", "GOOD!", "COOL!"};
 	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD!", "AWW!", "NOT GOOD!", "QUITE BAD!"};//for both shrink and death types because I'm lazy as fuck
 	
 	private float radius = 1f;
+	
 	private int lives = NUM_START_LIVES;
+	
 	private int invincibilityTimer = INVINCIBILITY_TIME;
 	private int movementLockTimer = 0;
+	
 	private final int highscore;
-	private final GameState gameState;
 	private boolean newHighscore;
+	private int score;
+	private int combo;
+	
+	private int lastGrowTime;
+	
+	private final GameState gameState;
+	private ParticleEffect effect;
 	
 	public PlayerComponent(Entity owner, GameState gameState){
 		super(owner);
 		this.gameState = gameState;
 		
 		highscore = DodgeGame.PREFERENCES.getInteger(GameOverState.HIGH_SCORE_KEY, 0);
+		
+		effect = new ParticleEffect();
+		effect.loadEmitters(Gdx.files.internal("effects/shine.dat"));
+		effect.getEmitters().get(0).setSprite(new Sprite(Util.SHINE));
 	}
 	
 	public void update(){
+		effect.update(DodgeGame.SECONDS_PER_UPDATE);
+		
 		if(movementLockTimer <= 0){
 			Vector2 translation = Vector2.tmp;
 			translation.set(0, 0);
@@ -77,12 +98,27 @@ public class PlayerComponent extends Component{
 			invincibilityTimer--;
 			spriteComponent.getSprite().setColor(Color.GRAY);
 		}else spriteComponent.getSprite().setColor(Color.BLACK);
+		
+		if(DodgeGame.gameTime - lastGrowTime == COMBO_BREAK_TIME){
+			combo = 0;
+			
+			gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
+		}
+	}
+	
+	public void render(SpriteBatch batch){
+		effect.draw(batch);
 	}
 	
 	public void grow(){
+		effect.setPosition(owner.getxPos(), owner.getyPos());
+		effect.start();
+		
 		radius += RADIUS_GROW_RATE;
 		
 		gameState.setStatusText(getRandomText(GROW_STATUS_TEXTS), Color.GREEN);
+		
+		score += (int) (RADIUS_GROW_RATE * SCORE_MULTIPLIER_DEFAULT * getScoreMultiplier());
 		
 		if(getScore() > highscore){
 			if(!newHighscore){
@@ -91,6 +127,12 @@ public class PlayerComponent extends Component{
 				newHighscore = true;
 			}
 		}
+		
+		combo++;
+		gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
+		gameState.getScoreElement().setText(Integer.toString(score));
+		
+		lastGrowTime = DodgeGame.gameTime;
 	}
 	
 	public void shrink(){
@@ -100,6 +142,9 @@ public class PlayerComponent extends Component{
 		}
 		
 		gameState.setStatusText(getRandomText(BAD_STUFF_STATUS_TEXTS), Color.RED);
+		
+		combo = 0;
+		gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
 	}
 	
 	public void die(){
@@ -123,6 +168,13 @@ public class PlayerComponent extends Component{
 				SpriteAccessor.TRANSPARANCY, 0.5f).target(0).start(DodgeGame.TWEEN_MANAGER);
 		
 		gameState.setStatusText(getRandomText(BAD_STUFF_STATUS_TEXTS), Color.BLACK);
+
+		combo = 0;
+		gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
+	}
+	
+	public int getScoreMultiplier(){
+		return combo / 5 + 1;
 	}
 	
 	private String getRandomText(String[] texts){
@@ -130,7 +182,7 @@ public class PlayerComponent extends Component{
 	}
 	
 	public int getScore(){
-		return (int) (radius * 32f - 32f);
+		return score;
 	}
 	
 	private boolean isInvincible(){
@@ -147,5 +199,9 @@ public class PlayerComponent extends Component{
 	
 	public int getLives(){
 		return lives;
+	}
+	
+	public int getCombo(){
+		return combo;
 	}
 }

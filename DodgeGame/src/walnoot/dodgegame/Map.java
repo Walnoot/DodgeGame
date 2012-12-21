@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Map{
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	ArrayList<Entity> removedEntities = new ArrayList<Entity>();
+	
 	private PlayerComponent playerComponent;
 	
 	public Map(){
@@ -20,21 +22,17 @@ public class Map{
 	}
 	
 	public void update(){
-		ArrayList<Entity> removedEntities = null;
-		
 		for(int i = 0; i < entities.size(); i++){
 			Entity entity = entities.get(i);
 			
 			if(!entity.isRemoved()) entity.update();
-			else{
-				if(removedEntities == null) removedEntities = new ArrayList<Entity>();
-				removedEntities.add(entity);
-				
-				//if(gameState.getUnusedEntities().size() < GameState.MAX_UNUSED_ENTITIES) gameState.getUnusedEntities().add(entity);
-			}
+			else removedEntities.add(entity);
 		}
 		
-		if(removedEntities != null) entities.removeAll(removedEntities);
+		if(!removedEntities.isEmpty()){
+			entities.removeAll(removedEntities);
+			removedEntities.clear();
+		}
 	}
 	
 	public void render(SpriteBatch batch){

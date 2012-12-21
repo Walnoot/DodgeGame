@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class MoveComponent extends Component{
 	private static final float SPEED = 3f;
 	private int fadeTimer = 0;
+	private float dx, dy;
 
 	public MoveComponent(Entity owner){
 		super(owner);
@@ -18,12 +19,12 @@ public class MoveComponent extends Component{
 	
 	public void init(){
 		fadeTimer = 0;
+		
+		dx = MathUtils.cosDeg(owner.getRotation()) * SPEED * DodgeGame.SECONDS_PER_UPDATE;
+		dy = MathUtils.sinDeg(owner.getRotation()) * SPEED * DodgeGame.SECONDS_PER_UPDATE;
 	}
 	
 	public void update(){
-		float dx = MathUtils.cosDeg(owner.getRotation()) * SPEED * DodgeGame.SECONDS_PER_UPDATE;
-		float dy = MathUtils.sinDeg(owner.getRotation()) * SPEED * DodgeGame.SECONDS_PER_UPDATE;
-		
 		owner.translate(dx, dy);
 		
 		float absX = owner.getxPos();

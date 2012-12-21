@@ -16,12 +16,12 @@ public class LoadingState extends State{
 		
 		loadingThread = new LoadingThread();
 		new Thread(loadingThread, "Loading thread").start();
-		
 	}
 	
 	public void update(){
-		if(DodgeGame.FONT != null && loadText == null){
-			loadText = new TextElement(loadingThread.getLoadText(), 0, 0);
+		if(DodgeGame.FONT != null){
+			if(loadText == null) loadText = new TextElement(loadingThread.getLoadText(), 0, 0);
+			else if(loadText.getText() != loadingThread.getLoadText()) loadText.setText(loadingThread.getLoadText());
 		}
 		
 		if(loadingThread.isDone()){

@@ -15,7 +15,7 @@ public abstract class BooleanPreferenceButton extends TextButton{
 		super(text, x, y, scale);
 		this.key = key;
 		
-		keyValue = DodgeGame.PREFERENCES.getBoolean(key, false);
+		keyValue = DodgeGame.PREFERENCES.getBoolean(key, true);
 		
 		sprite = new Sprite(keyValue ? Util.ICON_TRUE : Util.ICON_FALSE);
 		sprite.setPosition(x + getWidth() * 0.5f - scale, y - scale * 0.5f);

@@ -13,13 +13,11 @@ public class TextElement{
 	private TextBounds bounds;
 	
 	public TextElement(String text, float x, float y, float scale){
-		this.text = text;
 		xPos = x;
 		yPos = y;
 		this.scale = scale;
 		
-		DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
-		bounds = new TextBounds(DodgeGame.FONT.getBounds(text));
+		setText(text);
 	}
 	
 	public TextElement(String text, float x, float y){
@@ -59,6 +57,17 @@ public class TextElement{
 	
 	public Color getColor(){
 		return color;
+	}
+	
+	public String getText(){
+		return text;
+	}
+	
+	public void setText(String text){
+		this.text = text;
+		
+		DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
+		bounds = new TextBounds(DodgeGame.FONT.getBounds(text));
 	}
 	
 	public void setPos(float x, float y){

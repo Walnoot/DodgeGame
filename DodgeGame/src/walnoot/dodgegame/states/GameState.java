@@ -12,6 +12,7 @@ import walnoot.dodgegame.components.ObjectModifierComponent;
 import walnoot.dodgegame.components.ObjectModifierComponent.ModifierType;
 import walnoot.dodgegame.components.PlayerComponent;
 import walnoot.dodgegame.components.SpriteComponent;
+import walnoot.dodgegame.ui.TextElement;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -35,10 +36,14 @@ public class GameState extends State{
 	private int gameOverTimer; //delays the switch to game over state
 	private boolean gameOver;
 	
+	private int time;
+	
 	private String statusText;
 	private Color statusColor;
 	private int statusTimer;
 	private TextBounds statusBounds = new TextBounds();
+	
+	private TextElement multiplierElement, scoreElement;
 	
 	public GameState(OrthographicCamera camera){
 		super(camera);
@@ -62,12 +67,17 @@ public class GameState extends State{
 			
 			map.addEntity(heart);
 		}
+		
+		multiplierElement = new TextElement(Integer.toString(playerComponent.getScoreMultiplier()), -MAP_SIZE, 0f, 3f);
+		scoreElement = new TextElement(Integer.toString(playerComponent.getScore()), -MAP_SIZE, 3f, 3f);
 	}
 	
 	public void update(){
+		time++;
+		
 		enemySpawnTimer--;
 		if(enemySpawnTimer == 0){
-			enemySpawnTimer = (int) (INITIAL_SPAWN_RATE - SPAWN_RATE_SCALE * (map.getPlayerComponent().getRadius() - 1f));
+			enemySpawnTimer = (int) (20f / ((time / 10000f) + 1f));
 			
 			float x, y, rotation = 0;
 			
@@ -150,6 +160,9 @@ public class GameState extends State{
 			DodgeGame.FONT.draw(batch, statusText, -statusBounds.width * completeness * 0.5f, 7f - completeness);
 			DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
 		}
+		
+		multiplierElement.render(batch);
+		scoreElement.render(batch);
 	}
 	
 	public void setStatusText(String status, Color color){
@@ -165,10 +178,18 @@ public class GameState extends State{
 		return map;
 	}
 	
+	public TextElement getMultiplierElement(){
+		return multiplierElement;
+	}
+	
+	public TextElement getScoreElement(){
+		return scoreElement;
+	}
+	
 	public ArrayList<Entity> getUnusedEntities(){
 		return unusedEntities;
 	}
-
+	
 	public void gameOver(){
 		gameOver = true;
 	}

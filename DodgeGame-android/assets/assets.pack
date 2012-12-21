@@ -1,0 +1,103 @@
+
+assets.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+font
+  rotate: false
+  xy: 1, 215
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+background
+  rotate: false
+  xy: 1, 85
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+field
+  rotate: false
+  xy: 259, 343
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+bone
+  rotate: false
+  xy: 1, 19
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+burger
+  rotate: false
+  xy: 131, 149
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+dot
+  rotate: false
+  xy: 259, 277
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+drumstick
+  rotate: false
+  xy: 389, 407
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+heart
+  rotate: false
+  xy: 67, 19
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+icon_false
+  rotate: false
+  xy: 325, 277
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+icon_true
+  rotate: false
+  xy: 197, 149
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+pizza
+  rotate: false
+  xy: 263, 211
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+soundoff
+  rotate: false
+  xy: 263, 145
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+soundon
+  rotate: false
+  xy: 329, 211
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+shine
+  rotate: false
+  xy: 1, 1
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

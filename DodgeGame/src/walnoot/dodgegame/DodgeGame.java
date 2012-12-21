@@ -10,23 +10,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 60, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
 	public static final float FONT_SCALE = 1f / 64f;
 	public static BitmapFont FONT;
-	public static Texture TEXTURE;
+	//public static Texture TEXTURE;
 	public static Preferences PREFERENCES;
 	public static SoundManager SOUND_MANAGER = new SoundManager();
 	public static final InputHandler INPUT = new InputHandler();
 	public static TweenManager TWEEN_MANAGER;
 	
 	public static State state;
+	public static int gameTime;
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -39,12 +39,18 @@ public class DodgeGame implements ApplicationListener{
 		camera = new OrthographicCamera();
 		camera.zoom = GameState.MAP_SIZE;
 		
+		camera.update();
+		
 		INPUT.setCamera(camera);
 		
 		batch = new SpriteBatch(100);
 		
-		TEXTURE = new Texture("images.png");
-		TEXTURE.setFilter(TextureFilter.Nearest, TextureFilter.Linear);
+		//TEXTURE = new Texture("images.png");
+		//TEXTURE.setFilter(TextureFilter.Nearest, TextureFilter.Linear);
+		
+		Util.ATLAS = new TextureAtlas("assets.pack");
+		
+		Util.loadRegions();
 		
 		backgroundSprite = new Sprite(Util.BACKGROUND);
 		backgroundSprite.setColor(0.9f, 0.9f, 1f, 0.65f);
@@ -58,8 +64,9 @@ public class DodgeGame implements ApplicationListener{
 		
 		batch.dispose();
 		FONT.dispose();
-		TEXTURE.dispose();
+		//TEXTURE.dispose();
 		SOUND_MANAGER.dispose();
+		Util.ATLAS.dispose();
 	}
 	
 	public void render(){
@@ -74,7 +81,6 @@ public class DodgeGame implements ApplicationListener{
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		camera.apply(Gdx.gl10);
-		camera.update();
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
@@ -99,6 +105,8 @@ public class DodgeGame implements ApplicationListener{
 		if(SOUND_MANAGER.isLoaded()) SOUND_MANAGER.update();
 		INPUT.update();
 		if(TWEEN_MANAGER != null) TWEEN_MANAGER.update(SECONDS_PER_UPDATE);
+		
+		gameTime++;
 	}
 	
 	public static void setState(State state){
@@ -113,6 +121,8 @@ public class DodgeGame implements ApplicationListener{
 			camera.viewportWidth = 2f;
 			camera.viewportHeight = 2f * height / width;
 		}
+		
+		camera.update();
 		
 		backgroundSprite.setPosition(-camera.viewportWidth * camera.zoom * 0.5f,
 				-camera.viewportHeight * camera.zoom * 0.5f);

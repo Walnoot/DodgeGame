@@ -26,7 +26,7 @@ public class SpriteComponent extends Component{
 		this(owner, region);
 		sprite.setColor(color);
 	}
-
+	
 	public SpriteComponent(Entity owner, TextureRegion region, float scale){
 		this(owner, region);
 		sprite.setScale(scale);
