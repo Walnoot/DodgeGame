@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 60, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
@@ -32,8 +33,11 @@ public class DodgeGame implements ApplicationListener{
 	private SpriteBatch batch;
 	private float updateTimer;
 	private Sprite backgroundSprite;
+	private ShaderProgram shader;
 	
 	public void create(){
+		if(!Gdx.graphics.isGL20Available()) throw new IllegalStateException("must have GL20");
+		
 		Gdx.input.setInputProcessor(INPUT);
 		
 		camera = new OrthographicCamera();
@@ -43,7 +47,18 @@ public class DodgeGame implements ApplicationListener{
 		
 		INPUT.setCamera(camera);
 		
-		batch = new SpriteBatch(100);
+		shader = new ShaderProgram(Gdx.files.internal("shaders/vertex_default.txt"),
+				Gdx.files.internal("shaders/fragment_default.txt"));
+		ShaderProgram.pedantic = false;
+		
+		if (!shader.isCompiled()) {
+			System.err.println(shader.getLog());
+			System.exit(0);
+		}
+		if (shader.getLog().length()!=0)
+			System.out.println(shader.getLog());
+		
+		batch = new SpriteBatch(200, shader);
 		
 		//TEXTURE = new Texture("images.png");
 		//TEXTURE.setFilter(TextureFilter.Nearest, TextureFilter.Linear);
@@ -80,7 +95,7 @@ public class DodgeGame implements ApplicationListener{
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		camera.apply(Gdx.gl10);
+		//camera.apply(Gdx.gl10);
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
@@ -121,6 +136,10 @@ public class DodgeGame implements ApplicationListener{
 			camera.viewportWidth = 2f;
 			camera.viewportHeight = 2f * height / width;
 		}
+		
+		shader.begin();
+		shader.setUniformf("resolution", width, height);
+		shader.end();
 		
 		camera.update();
 		
