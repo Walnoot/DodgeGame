@@ -20,9 +20,9 @@ public class TutorialState extends State{
 	public static final float FOOD_RADIUS = 5f;
 	public static final float FOOD_SIZE = 4f;
 	
-	private static final int PLAYER_EXPLANATION = 0, GOOD_FOOD = 1, BAD_FOOD = 2, POISON_FOOD = 3;
+	private static final int PLAYER_EXPLANATION = 0, GOOD_FOOD = 1, BAD_FOOD = 2;
 	public static final String PREF_TUTORIAL_KEY = "showTuturial";
-	private static final int MINIMAL_SKIP_TIME = 80;//ticks
+	private static final float MINIMAL_SKIP_TIME = 1.0f;//seconds
 	
 	private TextElement descriptionElement, skipElement;
 	private int state = PLAYER_EXPLANATION;
@@ -45,7 +45,7 @@ public class TutorialState extends State{
 	public void update(){
 		skipTimer++;
 		
-		if(skipTimer > MINIMAL_SKIP_TIME){
+		if(skipTimer > MINIMAL_SKIP_TIME * DodgeGame.UPDATES_PER_SECOND){
 			if(Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isButtonPressed(Buttons.LEFT)){
 				skipTimer = 0;
 				
@@ -57,7 +57,8 @@ public class TutorialState extends State{
 		angle++;
 		
 		for(int i = 0; i < sprites.size(); i++){
-			sprites.get(i).setPosition((MathUtils.cosDeg(i * (360f / sprites.size()) + angle) * FOOD_RADIUS) - 0.5f * FOOD_SIZE,
+			sprites.get(i).setPosition(
+					(MathUtils.cosDeg(i * (360f / sprites.size()) + angle) * FOOD_RADIUS) - 0.5f * FOOD_SIZE,
 					(MathUtils.sinDeg(i * (360f / sprites.size()) + angle) * FOOD_RADIUS) - 0.5f * FOOD_SIZE);
 		}
 	}
@@ -89,11 +90,7 @@ public class TutorialState extends State{
 				sprites.add(new Sprite(Util.DOT));
 				sprites.add(new Sprite(Util.DOT));
 				
-				text = "THIS ROTTEN FOOD WILL MAKE YOU SHRINK!";
-				
-				break;
-			case POISON_FOOD:
-				text = "THE PURPLE DOTS KILL YOU, NO SPRITES YET!";
+				text = "THIS ROTTEN FOOD WILL MAKE YOU DIE!";
 				
 				break;
 			default:
@@ -105,7 +102,8 @@ public class TutorialState extends State{
 		
 		for(int i = 0; i < sprites.size(); i++){
 			sprites.get(i).setSize(FOOD_SIZE, FOOD_SIZE);
-			sprites.get(i).setPosition((MathUtils.cosDeg(i * (360f / sprites.size()) + angle) * FOOD_RADIUS) - 0.5f * FOOD_SIZE,
+			sprites.get(i).setPosition(
+					(MathUtils.cosDeg(i * (360f / sprites.size()) + angle) * FOOD_RADIUS) - 0.5f * FOOD_SIZE,
 					(MathUtils.sinDeg(i * (360f / sprites.size()) + angle) * FOOD_RADIUS) - 0.5f * FOOD_SIZE);
 		}
 	}
@@ -116,7 +114,7 @@ public class TutorialState extends State{
 		}
 		
 		descriptionElement.render(batch);
-		if(skipTimer > MINIMAL_SKIP_TIME) skipElement.render(batch);
+		if(skipTimer > MINIMAL_SKIP_TIME * DodgeGame.UPDATES_PER_SECOND) skipElement.render(batch);
 	}
 	
 	public void dispose(){

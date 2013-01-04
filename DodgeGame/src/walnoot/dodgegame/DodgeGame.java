@@ -17,10 +17,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class DodgeGame implements ApplicationListener{
-	public static final float UPDATES_PER_SECOND = 60, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
+	public static final float UPDATES_PER_SECOND = 30, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
 	public static final float FONT_SCALE = 1f / 64f;
 	public static BitmapFont FONT;
-	//public static Texture TEXTURE;
 	public static Preferences PREFERENCES;
 	public static SoundManager SOUND_MANAGER = new SoundManager();
 	public static final InputHandler INPUT = new InputHandler();
@@ -33,7 +32,7 @@ public class DodgeGame implements ApplicationListener{
 	private SpriteBatch batch;
 	private float updateTimer;
 	private Sprite backgroundSprite;
-	private ShaderProgram shader;
+	private ShaderProgram defaultShader;
 	
 	public void create(){
 		if(!Gdx.graphics.isGL20Available()) throw new IllegalStateException("must have GL20");
@@ -47,32 +46,32 @@ public class DodgeGame implements ApplicationListener{
 		
 		INPUT.setCamera(camera);
 		
-		shader = new ShaderProgram(Gdx.files.internal("shaders/vertex_default.txt"),
-				Gdx.files.internal("shaders/fragment_default.txt"));
 		ShaderProgram.pedantic = false;
 		
-		if (!shader.isCompiled()) {
-			System.err.println(shader.getLog());
-			System.exit(0);
-		}
-		if (shader.getLog().length()!=0)
-			System.out.println(shader.getLog());
+		defaultShader = new ShaderProgram(Gdx.files.internal("shaders/default.vsh"),
+				Gdx.files.internal("shaders/default.fsh"));
 		
-		batch = new SpriteBatch(200, shader);
+		checkShader(defaultShader);
 		
-		//TEXTURE = new Texture("images.png");
-		//TEXTURE.setFilter(TextureFilter.Nearest, TextureFilter.Linear);
+		batch = new SpriteBatch(200, defaultShader);
 		
 		Util.ATLAS = new TextureAtlas("assets.pack");
 		
 		Util.loadRegions();
 		
 		backgroundSprite = new Sprite(Util.BACKGROUND);
-		backgroundSprite.setColor(0.9f, 0.9f, 1f, 0.65f);
 		
 		state = new LoadingState(camera);
 	}
 	
+	private void checkShader(ShaderProgram shader){
+		if(!shader.isCompiled()){
+			System.err.println(shader.getLog());
+			System.exit(0);
+		}
+		if(shader.getLog().length() != 0) System.out.println(shader.getLog());
+	}
+
 	public void dispose(){
 		PREFERENCES.putBoolean(SoundManager.PREF_SOUND_KEY, SOUND_MANAGER.isPlaying());
 		PREFERENCES.flush();
@@ -95,8 +94,6 @@ public class DodgeGame implements ApplicationListener{
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		//camera.apply(Gdx.gl10);
-		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		
@@ -106,7 +103,8 @@ public class DodgeGame implements ApplicationListener{
 		
 		if(FONT != null){
 			FONT.setColor(1, 0, 0, 1);
-			FONT.draw(batch, "FPS: " + (int) Gdx.graphics.getFramesPerSecond(), -camera.viewportWidth * camera.zoom / 2f, camera.viewportHeight * camera.zoom / 2f);
+			FONT.draw(batch, "FPS: " + (int) Gdx.graphics.getFramesPerSecond(),
+					-camera.viewportWidth * camera.zoom / 2f, camera.viewportHeight * camera.zoom / 2f);
 		}
 		
 		batch.end();
@@ -115,13 +113,16 @@ public class DodgeGame implements ApplicationListener{
 	public void update(){
 		if(INPUT.escape.isPressed()) Gdx.app.exit();
 		if(INPUT.fullscreen.isJustPressed()) Gdx.graphics.setDisplayMode(1920, 1080, true);//for recording, change later
-		
+			
 		state.update();
 		if(SOUND_MANAGER.isLoaded()) SOUND_MANAGER.update();
 		INPUT.update();
 		if(TWEEN_MANAGER != null) TWEEN_MANAGER.update(SECONDS_PER_UPDATE);
 		
 		gameTime++;
+		
+		//System.out.println(batch.maxSpritesInBatch);
+		//batch.maxSpritesInBatch = 0;
 	}
 	
 	public static void setState(State state){
@@ -137,16 +138,12 @@ public class DodgeGame implements ApplicationListener{
 			camera.viewportHeight = 2f * height / width;
 		}
 		
-		shader.begin();
-		shader.setUniformf("resolution", width, height);
-		shader.end();
-		
 		camera.update();
 		
 		backgroundSprite.setPosition(-camera.viewportWidth * camera.zoom * 0.5f,
 				-camera.viewportHeight * camera.zoom * 0.5f);
 		backgroundSprite.setSize(camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
-
+		
 		state.resize();
 	}
 	

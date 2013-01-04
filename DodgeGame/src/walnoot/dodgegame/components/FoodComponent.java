@@ -7,26 +7,25 @@ import walnoot.dodgegame.Util;
 import walnoot.dodgegame.states.GameState;
 import aurelienribon.tweenengine.Tween;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
-public class ObjectModifierComponent extends Component{
+public class FoodComponent extends Component{
 	public static final float FADE_OUT_DURATION = .25f, FADE_IN_DURATION = .25f;//seconds
 	private static final float SPIN_SPEED = 6f;
 	
-	private ModifierType type;
+	private FoodType type;
 	private boolean consumed, hasPlayedSound;
 	private int removeTimer;
 	
 	private final GameState gameState;
 	
-	public ObjectModifierComponent(Entity owner, GameState gameState){
+	public FoodComponent(Entity owner, GameState gameState){
 		super(owner);
 		this.gameState = gameState;
 	}
 	
-	public void init(ModifierType type){
+	public void init(FoodType type){
 		//i hate pooling
 		
 		this.type = type;
@@ -40,11 +39,9 @@ public class ObjectModifierComponent extends Component{
 			spriteComponent.newSprite(type.getRandomRegion());
 		}
 		
-		if(type == ModifierType.DEATH) spriteComponent.getSprite().setColor(Color.MAGENTA);
-		
 		Tween tween = Tween.from(spriteComponent.getSprite(), SpriteAccessor.TRANSPARANCY, FADE_IN_DURATION);
 		tween.target(0).start(DodgeGame.TWEEN_MANAGER);
-
+		
 		consumed = false;
 		hasPlayedSound = false;
 		removeTimer = 0;
@@ -75,10 +72,7 @@ public class ObjectModifierComponent extends Component{
 				case GROW:
 					map.getPlayerComponent().grow();
 					break;
-				case SHRINK:
-					map.getPlayerComponent().shrink();
-					break;
-				case DEATH:
+				case DIE:
 					map.getPlayerComponent().die();
 					break;
 				default:
@@ -98,12 +92,12 @@ public class ObjectModifierComponent extends Component{
 		}
 	}
 	
-	public enum ModifierType{
-		GROW(Util.FOOD_ONE, Util.FOOD_TWO, Util.FOOD_THREE), SHRINK(Util.BAD_FOOD_ONE), DEATH(Util.DOT);
+	public enum FoodType{
+		GROW(Util.FOOD_ONE, Util.FOOD_TWO, Util.FOOD_THREE), DIE(Util.BAD_FOOD_ONE);
 		
 		private final TextureRegion[] regions;
 		
-		private ModifierType(TextureRegion... regions){
+		private FoodType(TextureRegion... regions){
 			this.regions = regions;
 		}
 		

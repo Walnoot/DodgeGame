@@ -74,4 +74,8 @@ public class TextElement{
 		xPos = x;
 		yPos = y;
 	}
+	
+	public void setScale(float scale){
+		this.scale = scale;
+	}
 }

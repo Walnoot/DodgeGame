@@ -8,8 +8,8 @@ import walnoot.dodgegame.Map;
 import walnoot.dodgegame.Util;
 import walnoot.dodgegame.components.HeartComponent;
 import walnoot.dodgegame.components.MoveComponent;
-import walnoot.dodgegame.components.ObjectModifierComponent;
-import walnoot.dodgegame.components.ObjectModifierComponent.ModifierType;
+import walnoot.dodgegame.components.FoodComponent;
+import walnoot.dodgegame.components.FoodComponent.FoodType;
 import walnoot.dodgegame.components.PlayerComponent;
 import walnoot.dodgegame.components.SpriteComponent;
 import walnoot.dodgegame.ui.TextElement;
@@ -23,8 +23,7 @@ import com.badlogic.gdx.math.MathUtils;
 public class GameState extends State{
 	public static final float MAP_SIZE = 8;
 	public static final int MAX_UNUSED_ENTITIES = 10;
-	private static final int GROW_OBJECT_CHANGE = 60, SHRINK_OBJECT_CHANGE = 20; //out of 100
-	private static final int INITIAL_SPAWN_RATE = 30;
+	private static final int GROW_OBJECT_CHANGE = 70;//out of 100
 	private static final int SPAWN_RATE_SCALE = 4;
 	private static final float STATUS_TEXT_SCALE = 2f;//scale of the status text at the beginning
 	
@@ -77,7 +76,7 @@ public class GameState extends State{
 		
 		enemySpawnTimer--;
 		if(enemySpawnTimer == 0){
-			enemySpawnTimer = (int) (20f / ((time / 10000f) + 1f));
+			enemySpawnTimer = (int) (10f / ((time / (10000f * (DodgeGame.UPDATES_PER_SECOND / 60f))) + 1f));
 			
 			float x, y, rotation = 0;
 			
@@ -97,22 +96,21 @@ public class GameState extends State{
 				if(side == 3) rotation = MathUtils.random(135f, 225f);
 			}
 			
-			Entity object = getNewObject();
-			object.setxPos(x);
-			object.setyPos(y);
-			object.setRotation(rotation);
+			Entity food = getNewFood();
+			food.setxPos(x);
+			food.setyPos(y);
+			food.setRotation(rotation);
 			
-			ModifierType type;
+			FoodType type;
 			int randomInt = MathUtils.random(0, 99);
 			
-			if(randomInt < GROW_OBJECT_CHANGE) type = ModifierType.GROW;
-			else if(randomInt < GROW_OBJECT_CHANGE + SHRINK_OBJECT_CHANGE) type = ModifierType.SHRINK;
-			else type = ModifierType.DEATH;
+			if(randomInt < GROW_OBJECT_CHANGE) type = FoodType.GROW;
+			else type = FoodType.DIE;
 			
-			object.getComponent(ObjectModifierComponent.class).init(type);
-			object.getComponent(MoveComponent.class).init();
+			food.getComponent(FoodComponent.class).init(type);
+			food.getComponent(MoveComponent.class).init();
 			
-			map.addEntity(object);
+			map.addEntity(food);
 		}
 		
 		if(gameOver){
@@ -130,14 +128,17 @@ public class GameState extends State{
 		if(DodgeGame.INPUT.pause.isJustPressed() && !gameOver){
 			DodgeGame.setState(new PauseState(camera, this));
 		}
+		
+		multiplierElement.setScale(3f + MathUtils.cosDeg(DodgeGame.gameTime * 3 * map.getPlayerComponent()
+				.getScoreMultiplier()));
 	}
 	
-	private Entity getNewObject(){
+	private Entity getNewFood(){
 		if(unusedEntities.isEmpty()){
 			Entity e = new Entity(map, 0, 0, 0);
 			
 			e.addComponent(new MoveComponent(e));
-			e.addComponent(new ObjectModifierComponent(e, this));
+			e.addComponent(new FoodComponent(e, this));
 			
 			return e;
 		}else{
