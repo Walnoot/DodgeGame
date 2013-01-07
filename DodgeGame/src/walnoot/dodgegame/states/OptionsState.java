@@ -17,13 +17,13 @@ public class OptionsState extends State{
 		
 		ReturnButton returnButton = new ReturnButton(camera, new MainMenuState(camera));
 		
-		TextButton soundButton = new BooleanPreferenceButton("SOUND:", 0, 6f, 3f, SoundManager.PREF_SOUND_KEY){
+		TextButton soundButton = new BooleanPreferenceButton("SOUND:", 0, 4f, 3f, SoundManager.PREF_SOUND_KEY){
 			public void setChanges(boolean value){
 				DodgeGame.SOUND_MANAGER.toggleSound();
 			}
 		};
 		
-		TextButton tutorialButton = new BooleanPreferenceButton("TUTORIAL:", 0, 3f, 3f, TutorialState.PREF_TUTORIAL_KEY){
+		TextButton tutorialButton = new BooleanPreferenceButton("TUTORIAL:", 0, 1f, 3f, TutorialState.PREF_TUTORIAL_KEY){
 			public void setChanges(boolean value){
 			}
 		};

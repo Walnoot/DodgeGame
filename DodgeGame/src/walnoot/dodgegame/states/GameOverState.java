@@ -20,13 +20,14 @@ public class GameOverState extends State{
 		super(gameState.camera);
 		this.gameState = gameState;
 		
-		retryButton = new TextButton("RETRY" + ((Gdx.app.getType() == ApplicationType.Android) ? "" : " (R)"), 0, -2.5f, 4f, Keys.R){
+		retryButton = new TextButton("RETRY" + ((Gdx.app.getType() == ApplicationType.Android) ? "" : " (R)"), 0,
+				-2.5f, 3f, Keys.R){
 			public void doAction(){
 				DodgeGame.setState(new GameState(camera));
 			}
 		};
 		
-		mainMenuButton = new TextButton("MAIN MENU", 0, -5.5f, 4f){
+		mainMenuButton = new TextButton("MAIN MENU", 0, -4.5f, 3f){
 			public void doAction(){
 				DodgeGame.setState(new MainMenuState(camera));
 			}
@@ -43,8 +44,8 @@ public class GameOverState extends State{
 			newHighScore = true;
 		}
 		
-		scoreElement = new TextElement("SCORE: " + score, 0, 4f, 2f);
-		highScoreElement = new TextElement("HIGHSCORE: " + highscore + (newHighScore ? "!" : ""), 0, 2f, 2f);
+		scoreElement = new TextElement("SCORE: " + score, 0, 4f, 1.5f);
+		highScoreElement = new TextElement("HIGHSCORE: " + highscore + (newHighScore ? "!" : ""), 0, 2f, 1.5f);
 	}
 	
 	public void update(){

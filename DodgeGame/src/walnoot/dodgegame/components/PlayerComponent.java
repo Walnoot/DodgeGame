@@ -20,7 +20,7 @@ public class PlayerComponent extends Component{
 	private static final float WALK_SPEED = 6f;//per second
 	public static final int SCORE_MULTIPLIER_DEFAULT = 32;
 	private static final float RADIUS_GROW_RATE = 1 / 64f;
-	private static final int INVINCIBILITY_TIME = 240;//ticks
+	private static final int INVINCIBILITY_TIME = (int) (4 * DodgeGame.UPDATES_PER_SECOND);//ticks
 	private static final int COMBO_BREAK_TIME = (int) (2 * DodgeGame.UPDATES_PER_SECOND);
 	
 	public static final String[] GROW_STATUS_TEXTS = {"AWESOME!", "NOT BAD!", "SPLENDID!", "GOOD!", "COOL!"};

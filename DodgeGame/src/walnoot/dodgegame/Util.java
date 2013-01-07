@@ -21,6 +21,8 @@ public class Util{
 	public static TextureRegion BAD_FOOD_ONE;
 	public static TextureRegion BACKGROUND;
 	public static TextureRegion SHINE;
+	public static TextureRegion PAUSE;
+	public static TextureRegion RESUME;
 	
 	public static ParticleEffect SHINE_EFFECT;
 	
@@ -45,6 +47,8 @@ public class Util{
 		BAD_FOOD_ONE = ATLAS.findRegion("bone");
 		BACKGROUND = ATLAS.findRegion("background");
 		SHINE = ATLAS.findRegion("shine");
+		PAUSE = ATLAS.findRegion("pause");
+		RESUME = ATLAS.findRegion("resume");
 		
 		SHINE_EFFECT = getShineEffect();
 	}

@@ -6,10 +6,10 @@ import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.Map;
 import walnoot.dodgegame.Util;
-import walnoot.dodgegame.components.HeartComponent;
-import walnoot.dodgegame.components.MoveComponent;
 import walnoot.dodgegame.components.FoodComponent;
 import walnoot.dodgegame.components.FoodComponent.FoodType;
+import walnoot.dodgegame.components.HeartComponent;
+import walnoot.dodgegame.components.MoveComponent;
 import walnoot.dodgegame.components.PlayerComponent;
 import walnoot.dodgegame.components.SpriteComponent;
 import walnoot.dodgegame.ui.TextElement;
@@ -21,7 +21,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 public class GameState extends State{
-	public static final float MAP_SIZE = 8;
+	public static final float MAP_SIZE = 6;
 	public static final int MAX_UNUSED_ENTITIES = 10;
 	private static final int GROW_OBJECT_CHANGE = 70;//out of 100
 	private static final int SPAWN_RATE_SCALE = 4;

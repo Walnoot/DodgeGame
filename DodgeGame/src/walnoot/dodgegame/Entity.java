@@ -37,7 +37,6 @@ public class Entity{
 		components.add(component);
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	public <T extends Component> T getComponent(Class<T> componentClass){
 		for(int i = 0; i < components.size(); i++){
@@ -51,7 +50,7 @@ public class Entity{
 	
 	public void moveForward(float amount){
 		xPos -= MathUtils.sinDeg(rotation) * amount;
-		yPos += MathUtils.cosDeg(-rotation) * amount;
+		yPos += MathUtils.cosDeg(rotation) * amount;
 	}
 	
 	public void translate(float x, float y){

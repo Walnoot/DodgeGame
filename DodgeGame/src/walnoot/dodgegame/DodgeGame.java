@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 30, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
 	public static final float FONT_SCALE = 1f / 64f;
+	
 	public static BitmapFont FONT;
 	public static Preferences PREFERENCES;
 	public static SoundManager SOUND_MANAGER = new SoundManager();

@@ -10,6 +10,7 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -55,6 +56,17 @@ public class LoadingState extends State{
 				DodgeGame.SOUND_MANAGER.init();
 				
 				loadText.setText("LOADED SOUNDS");
+				break;
+			case 4:
+				Pixmap[] icons = new Pixmap[3];
+				
+				icons[0] = new Pixmap(Gdx.files.internal("icons/burger16.png"));
+				icons[1] = new Pixmap(Gdx.files.internal("icons/burger32.png"));
+				icons[2] = new Pixmap(Gdx.files.internal("icons/burger128.png"));
+				
+				Gdx.graphics.setIcon(icons);
+				
+				loadText.setText("LOADED ICONS");
 				break;
 			default:
 				DodgeGame.setState(new MainMenuState(camera));

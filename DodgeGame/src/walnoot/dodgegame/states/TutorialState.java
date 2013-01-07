@@ -37,7 +37,7 @@ public class TutorialState extends State{
 		DodgeGame.PREFERENCES.putBoolean(PREF_TUTORIAL_KEY, false);
 		
 		skipElement = new TextElement(String.format("%s TO CONTINUE",
-				Gdx.app.getType() == ApplicationType.Android ? "TAP" : "SPACE"), 0, -7f, 2f);
+				Gdx.app.getType() == ApplicationType.Android ? "TAP" : "SPACE"), 0, GameState.MAP_SIZE - 1f, 2f);
 		
 		initState();
 	}
@@ -90,7 +90,7 @@ public class TutorialState extends State{
 				sprites.add(new Sprite(Util.DOT));
 				sprites.add(new Sprite(Util.DOT));
 				
-				text = "THIS ROTTEN FOOD WILL MAKE YOU DIE!";
+				text = "THIS ROTTEN FOOD WILL KILL YOU!";
 				
 				break;
 			default:
