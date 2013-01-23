@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class InputHandler implements InputProcessor{
@@ -24,6 +25,7 @@ public class InputHandler implements InputProcessor{
 	private OrthographicCamera camera;
 	private boolean keyDown;
 	private int scrollAmount;
+	private boolean justTouched;
 	
 	/**
 	 * Make sure to call after game logic update() is called
@@ -35,6 +37,7 @@ public class InputHandler implements InputProcessor{
 		
 		keyDown = false;
 		scrollAmount = 0;
+		justTouched = false;
 	}
 	
 	public float getInputX(){
@@ -59,6 +62,10 @@ public class InputHandler implements InputProcessor{
 	
 	public int getScrollAmount(){
 		return scrollAmount;
+	}
+	
+	public boolean isJustTouched(){
+		return justTouched;
 	}
 	
 	public void setCamera(OrthographicCamera camera){
@@ -88,6 +95,7 @@ public class InputHandler implements InputProcessor{
 	}
 	
 	public boolean touchDown(int x, int y, int pointer, int button){
+		if(button == Buttons.LEFT) justTouched = true;
 		return true;
 	}
 	

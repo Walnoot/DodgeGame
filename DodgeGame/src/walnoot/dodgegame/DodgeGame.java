@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 30, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
@@ -24,6 +23,7 @@ public class DodgeGame implements ApplicationListener{
 	public static Preferences PREFERENCES;
 	public static SoundManager SOUND_MANAGER = new SoundManager();
 	public static final InputHandler INPUT = new InputHandler();
+	public static final ParticleHandler PARTICLE_HANDLER = new ParticleHandler();
 	public static TweenManager TWEEN_MANAGER;
 	
 	public static State state;
@@ -33,11 +33,9 @@ public class DodgeGame implements ApplicationListener{
 	private SpriteBatch batch;
 	private float updateTimer;
 	private Sprite backgroundSprite;
-	private ShaderProgram defaultShader;
+	private boolean paused;
 	
 	public void create(){
-		if(!Gdx.graphics.isGL20Available()) throw new IllegalStateException("must have GL20");
-		
 		Gdx.input.setInputProcessor(INPUT);
 		
 		camera = new OrthographicCamera();
@@ -47,14 +45,7 @@ public class DodgeGame implements ApplicationListener{
 		
 		INPUT.setCamera(camera);
 		
-		ShaderProgram.pedantic = false;
-		
-		defaultShader = new ShaderProgram(Gdx.files.internal("shaders/default.vsh"),
-				Gdx.files.internal("shaders/default.fsh"));
-		
-		checkShader(defaultShader);
-		
-		batch = new SpriteBatch(200, defaultShader);
+		batch = new SpriteBatch(200);
 		
 		Util.ATLAS = new TextureAtlas("assets.pack");
 		
@@ -63,14 +54,6 @@ public class DodgeGame implements ApplicationListener{
 		backgroundSprite = new Sprite(Util.BACKGROUND);
 		
 		state = new LoadingState(camera);
-	}
-	
-	private void checkShader(ShaderProgram shader){
-		if(!shader.isCompiled()){
-			System.err.println(shader.getLog());
-			System.exit(0);
-		}
-		if(shader.getLog().length() != 0) System.out.println(shader.getLog());
 	}
 
 	public void dispose(){
@@ -101,6 +84,7 @@ public class DodgeGame implements ApplicationListener{
 		backgroundSprite.draw(batch);
 		
 		state.render(batch);
+		if(PARTICLE_HANDLER.isLoaded()) PARTICLE_HANDLER.render(batch);
 		
 		if(FONT != null){
 			FONT.setColor(1, 0, 0, 1);
@@ -116,7 +100,8 @@ public class DodgeGame implements ApplicationListener{
 		if(INPUT.fullscreen.isJustPressed()) Gdx.graphics.setDisplayMode(1920, 1080, true);//for recording, change later
 			
 		state.update();
-		if(SOUND_MANAGER.isLoaded()) SOUND_MANAGER.update();
+		if(!paused && SOUND_MANAGER.isLoaded()) SOUND_MANAGER.update();
+		if(PARTICLE_HANDLER.isLoaded()) PARTICLE_HANDLER.update();
 		INPUT.update();
 		if(TWEEN_MANAGER != null) TWEEN_MANAGER.update(SECONDS_PER_UPDATE);
 		
@@ -128,6 +113,7 @@ public class DodgeGame implements ApplicationListener{
 	
 	public static void setState(State state){
 		DodgeGame.state = state;
+		state.resize();
 	}
 	
 	public void resize(int width, int height){
@@ -149,8 +135,12 @@ public class DodgeGame implements ApplicationListener{
 	}
 	
 	public void pause(){
+		paused = true;
+		
+		state.pause();
 	}
 	
 	public void resume(){
+		paused = false;
 	}
 }

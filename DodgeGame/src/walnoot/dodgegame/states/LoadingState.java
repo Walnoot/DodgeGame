@@ -8,6 +8,7 @@ import walnoot.dodgegame.ui.TextElement;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -58,6 +59,8 @@ public class LoadingState extends State{
 				loadText.setText("LOADED SOUNDS");
 				break;
 			case 4:
+				if(Gdx.app.getType() != ApplicationType.Desktop) break;
+				
 				Pixmap[] icons = new Pixmap[3];
 				
 				icons[0] = new Pixmap(Gdx.files.internal("icons/burger16.png"));
@@ -67,6 +70,10 @@ public class LoadingState extends State{
 				Gdx.graphics.setIcon(icons);
 				
 				loadText.setText("LOADED ICONS");
+				break;
+			case 5:
+				DodgeGame.PARTICLE_HANDLER.load();
+				
 				break;
 			default:
 				DodgeGame.setState(new MainMenuState(camera));

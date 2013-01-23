@@ -6,7 +6,6 @@ import walnoot.dodgegame.ui.TextElement;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -35,7 +34,7 @@ public class PauseState extends State{
 	}
 	
 	public void update(){
-		if(DodgeGame.INPUT.pause.isJustPressed() || Gdx.input.isButtonPressed(Buttons.LEFT)){
+		if(DodgeGame.INPUT.pause.isJustPressed() || DodgeGame.INPUT.isJustTouched()){
 			DodgeGame.setState(oldState);
 		}
 		
@@ -54,6 +53,10 @@ public class PauseState extends State{
 		pauseElement.render(batch);
 		continueElement.render(batch);
 		returnButton.render(batch);
+	}
+	
+	public void resize(){
+		oldState.resize();
 	}
 	
 	public void dispose(){

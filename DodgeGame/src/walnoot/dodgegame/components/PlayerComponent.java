@@ -2,16 +2,12 @@ package walnoot.dodgegame.components;
 
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Entity;
-import walnoot.dodgegame.Util;
 import walnoot.dodgegame.states.GameOverState;
 import walnoot.dodgegame.states.GameState;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -19,7 +15,7 @@ public class PlayerComponent extends Component{
 	public static final int NUM_START_LIVES = 3;
 	private static final float WALK_SPEED = 6f;//per second
 	public static final int SCORE_MULTIPLIER_DEFAULT = 32;
-	private static final float RADIUS_GROW_RATE = 1 / 64f;
+	private static final float RADIUS_GROW_RATE = 1 / 128f;
 	private static final int INVINCIBILITY_TIME = (int) (4 * DodgeGame.UPDATES_PER_SECOND);//ticks
 	private static final int COMBO_BREAK_TIME = (int) (2 * DodgeGame.UPDATES_PER_SECOND);
 	
@@ -40,22 +36,15 @@ public class PlayerComponent extends Component{
 	private int lastGrowTime;
 	
 	private final GameState gameState;
-	private ParticleEffect effect;
 	
 	public PlayerComponent(Entity owner, GameState gameState){
 		super(owner);
 		this.gameState = gameState;
 		
 		highscore = DodgeGame.PREFERENCES.getInteger(GameOverState.HIGH_SCORE_KEY, 0);
-		
-		effect = new ParticleEffect();
-		effect.loadEmitters(Gdx.files.internal("effects/shine.dat"));
-		effect.getEmitters().get(0).setSprite(new Sprite(Util.SHINE));
 	}
 	
 	public void update(){
-		effect.update(DodgeGame.SECONDS_PER_UPDATE);
-		
 		Vector2 translation = Vector2.tmp;
 		translation.set(0, 0);
 		
@@ -98,14 +87,7 @@ public class PlayerComponent extends Component{
 		}
 	}
 	
-	public void render(SpriteBatch batch){
-		effect.draw(batch);
-	}
-	
 	public void grow(){
-		effect.setPosition(owner.getxPos(), owner.getyPos());
-		effect.start();
-		
 		radius += RADIUS_GROW_RATE;
 		
 		gameState.setStatusText(getRandomText(GROW_STATUS_TEXTS), Color.GREEN);

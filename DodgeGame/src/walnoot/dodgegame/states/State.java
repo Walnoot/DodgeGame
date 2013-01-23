@@ -17,10 +17,16 @@ public abstract class State{
 	
 	public abstract void dispose();
 	
+	/**
+	 * Called when the window is resized or the state is instantiated.
+	 */
 	public void resize(){
 	}
 	
 	public Camera getCamera(){
 		return camera;
+	}
+	
+	public void pause(){
 	}
 }

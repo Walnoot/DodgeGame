@@ -71,6 +71,10 @@ public class FoodComponent extends Component{
 			switch (type){
 				case GROW:
 					map.getPlayerComponent().grow();
+					
+					DodgeGame.PARTICLE_HANDLER.shine.setPosition(owner.getxPos(), owner.getyPos());
+					DodgeGame.PARTICLE_HANDLER.shine.start();
+					
 					break;
 				case DIE:
 					map.getPlayerComponent().die();

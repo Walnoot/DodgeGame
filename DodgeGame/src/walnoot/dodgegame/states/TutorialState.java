@@ -8,7 +8,6 @@ import walnoot.dodgegame.ui.TextElement;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -46,7 +45,7 @@ public class TutorialState extends State{
 		skipTimer++;
 		
 		if(skipTimer > MINIMAL_SKIP_TIME * DodgeGame.UPDATES_PER_SECOND){
-			if(Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isButtonPressed(Buttons.LEFT)){
+			if(Gdx.input.isKeyPressed(Keys.SPACE) || DodgeGame.INPUT.isJustTouched()){
 				skipTimer = 0;
 				
 				state++;

@@ -64,6 +64,10 @@ public class GameOverState extends State{
 		highScoreElement.render(batch);
 	}
 	
+	public void resize(){
+		gameState.resize();
+	}
+	
 	public void dispose(){
 		
 	}
