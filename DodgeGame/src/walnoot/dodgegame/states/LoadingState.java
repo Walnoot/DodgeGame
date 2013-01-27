@@ -76,8 +76,8 @@ public class LoadingState extends State{
 				
 				break;
 			default:
-				//DodgeGame.setState(new MainMenuState(camera));
-				DodgeGame.setState(new StageState(camera));
+				DodgeGame.setState(new MainMenuState(camera));
+				//DodgeGame.setState(new StageState(camera));
 				
 				break;
 		}

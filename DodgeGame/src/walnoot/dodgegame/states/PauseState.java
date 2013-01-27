@@ -14,28 +14,27 @@ import com.badlogic.gdx.math.Vector2;
 public class PauseState extends State{
 	private static Vector2 textTranslation = new Vector2(0, 1);
 	
-	private final State oldState;
 	private TextElement pauseElement, continueElement;
 	private ReturnButton returnButton;
 	
-	public PauseState(OrthographicCamera camera, State oldState){
+	public PauseState(OrthographicCamera camera){
 		super(camera);
-		this.oldState = oldState;
 		
 		pauseElement = new TextElement("PAUSED", 0f, 0f, 2f);
 		
-		String continueText = String.format("%s TO CONTINUE", Gdx.app.getType() == ApplicationType.Android ? "TAP" : "SPACE");
+		String continueText = String.format("%s TO CONTINUE",
+				Gdx.app.getType() == ApplicationType.Android ? "TAP" : "SPACE");
 		
 		continueElement = new TextElement(continueText, 0, 0f);
 		
 		returnButton = new ReturnButton(camera, new MainMenuState(camera), "MAIN MENU");
 		
-		update();//so the position of the textelements is right at the beginning
+		//update();//so the position of the textelements is right at the beginning
 	}
 	
 	public void update(){
 		if(DodgeGame.INPUT.pause.isJustPressed() || DodgeGame.INPUT.isJustTouched()){
-			DodgeGame.setState(oldState);
+			DodgeGame.popState(this);
 		}
 		
 		textTranslation.rotate(1f);
@@ -47,8 +46,6 @@ public class PauseState extends State{
 	}
 	
 	public void render(SpriteBatch batch){
-		oldState.render(batch);
-		
 		DodgeGame.FONT.setColor(Color.BLACK);
 		pauseElement.render(batch);
 		continueElement.render(batch);
@@ -56,7 +53,6 @@ public class PauseState extends State{
 	}
 	
 	public void resize(){
-		oldState.resize();
 	}
 	
 	public void dispose(){

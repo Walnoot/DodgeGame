@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 
 public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 30, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
@@ -27,7 +28,8 @@ public class DodgeGame implements ApplicationListener{
 	public static final ParticleHandler PARTICLE_HANDLER = new ParticleHandler();
 	public static TweenManager TWEEN_MANAGER;
 	
-	public static State state;
+	//public static State state;
+	public static Array<State> states = new Array<State>(true, 3);
 	public static int gameTime;
 	public static InputMultiplexer inputs;
 	
@@ -55,7 +57,7 @@ public class DodgeGame implements ApplicationListener{
 		
 		backgroundSprite = new Sprite(Util.BACKGROUND);
 		
-		state = new LoadingState(camera);
+		setState(new LoadingState(camera));
 	}
 
 	public void dispose(){
@@ -85,25 +87,36 @@ public class DodgeGame implements ApplicationListener{
 		
 		backgroundSprite.draw(batch);
 		
-		state.render(batch);
-		if(PARTICLE_HANDLER.isLoaded()) PARTICLE_HANDLER.render(batch);
+		batch.end();
+		
+		for(State state: states){
+			batch.begin();
+			state.render(batch);
+			batch.end();
+			
+			state.renderUI();
+		}
+		
+		if(PARTICLE_HANDLER.isLoaded()){
+			batch.begin();
+			PARTICLE_HANDLER.render(batch);
+			batch.end();
+		}
 		
 		/*if(FONT != null){
 			FONT.setColor(1, 0, 0, 1);
 			FONT.draw(batch, "FPS: " + (int) Gdx.graphics.getFramesPerSecond(),
 					-camera.viewportWidth * camera.zoom / 2f, camera.viewportHeight * camera.zoom / 2f);
 		}*/
-		
-		batch.end();
-		
-		state.renderUI();
 	}
 	
 	public void update(){
 		if(INPUT.escape.isPressed()) Gdx.app.exit();
 		if(INPUT.fullscreen.isJustPressed()) Gdx.graphics.setDisplayMode(1920, 1080, true);//for recording, change later
-			
-		state.update();
+		
+		for(State state: states){
+			state.update();
+		}
 		if(SOUND_MANAGER.isLoaded()) SOUND_MANAGER.update();
 		if(PARTICLE_HANDLER.isLoaded()) PARTICLE_HANDLER.update();
 		INPUT.update();
@@ -116,8 +129,19 @@ public class DodgeGame implements ApplicationListener{
 	}
 	
 	public static void setState(State state){
-		DodgeGame.state = state;
+		states.clear();
+		states.add(state);
 		state.resize();
+	}
+	
+	public static void pushState(State state){
+		states.add(state);
+		state.resize();
+	}
+	
+	public static void popState(State state){
+		System.out.println("asddaf");
+		states.removeValue(state, true);
 	}
 	
 	public void resize(int width, int height){
@@ -135,11 +159,15 @@ public class DodgeGame implements ApplicationListener{
 				-camera.viewportHeight * camera.zoom * 0.5f);
 		backgroundSprite.setSize(camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
 		
-		state.resize();
+		for(State state: states){
+			state.resize();
+		}
 	}
 	
 	public void pause(){
-		state.pause();
+		for(State state: states){
+			state.pause();
+		}
 	}
 	
 	public void resume(){

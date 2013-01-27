@@ -150,7 +150,7 @@ public class GameState extends State{
 	}
 	
 	public void pause(){
-		DodgeGame.setState(new PauseState(camera, this));
+		DodgeGame.pushState(new PauseState(camera));
 	}
 	
 	private Entity getNewFood(){

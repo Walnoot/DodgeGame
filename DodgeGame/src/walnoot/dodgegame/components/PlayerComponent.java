@@ -118,7 +118,7 @@ public class PlayerComponent extends Component{
 		if(lives == 0){
 			owner.remove();
 			
-			((GameState) DodgeGame.state).gameOver();
+			((GameState) DodgeGame.states.get(0)).gameOver();
 		}
 		
 		gameState.setStatusText(getRandomText(BAD_STUFF_STATUS_TEXTS), Color.BLACK);

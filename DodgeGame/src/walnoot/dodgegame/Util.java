@@ -5,8 +5,11 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 public class Util{
+	private static final float UI_SCALE = 640f;
+
 	public static TextureAtlas ATLAS;
 	
 	public static TextureRegion HEART;
@@ -53,5 +56,13 @@ public class Util{
 		SLIDER = ATLAS.findRegion("slider");
 		
 		SHINE_EFFECT = getShineEffect();
+	}
+	
+	public static Vector2 getStageDimensions(){
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+		float minDimension = Math.min(width, height);
+		
+		return Vector2.tmp.set(width / minDimension * UI_SCALE, height / minDimension * UI_SCALE);
 	}
 }
