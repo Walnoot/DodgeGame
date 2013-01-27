@@ -23,6 +23,7 @@ public class Util{
 	public static TextureRegion SHINE;
 	public static TextureRegion PAUSE;
 	public static TextureRegion RESUME;
+	public static TextureRegion SLIDER;
 	
 	public static ParticleEffect SHINE_EFFECT;
 	
@@ -49,6 +50,7 @@ public class Util{
 		SHINE = ATLAS.findRegion("shine");
 		PAUSE = ATLAS.findRegion("pause");
 		RESUME = ATLAS.findRegion("resume");
+		SLIDER = ATLAS.findRegion("slider");
 		
 		SHINE_EFFECT = getShineEffect();
 	}

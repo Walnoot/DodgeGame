@@ -79,7 +79,7 @@ public class InputHandler implements InputProcessor{
 		
 		keyDown = true;
 		
-		return true;
+		return false;
 	}
 	
 	public boolean keyUp(int keyCode){
@@ -87,34 +87,34 @@ public class InputHandler implements InputProcessor{
 			if(keys.get(i).has(keyCode)) keys.get(i).release();
 		}
 		
-		return true;
+		return false;
 	}
 	
 	public boolean keyTyped(char character){
-		return true;
+		return false;
 	}
 	
 	public boolean touchDown(int x, int y, int pointer, int button){
 		if(button == Buttons.LEFT) justTouched = true;
-		return true;
+		return false;
 	}
 	
 	public boolean touchUp(int x, int y, int pointer, int button){
-		return true;
+		return false;
 	}
 	
 	public boolean touchDragged(int x, int y, int pointer){
-		return true;
+		return false;
 	}
 	
 	public boolean touchMoved(int x, int y){
-		return true;
+		return false;
 	}
 	
 	public boolean scrolled(int amount){
 		scrollAmount += amount;
 		
-		return true;
+		return false;
 	}
 	
 	public class Key{

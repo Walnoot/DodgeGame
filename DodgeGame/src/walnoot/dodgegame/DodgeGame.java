@@ -7,6 +7,7 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -28,15 +29,16 @@ public class DodgeGame implements ApplicationListener{
 	
 	public static State state;
 	public static int gameTime;
+	public static InputMultiplexer inputs;
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private float updateTimer;
 	private Sprite backgroundSprite;
-	private boolean paused;
 	
 	public void create(){
-		Gdx.input.setInputProcessor(INPUT);
+		inputs = new InputMultiplexer(INPUT);
+		Gdx.input.setInputProcessor(inputs);
 		
 		camera = new OrthographicCamera();
 		camera.zoom = GameState.MAP_SIZE;
@@ -86,13 +88,15 @@ public class DodgeGame implements ApplicationListener{
 		state.render(batch);
 		if(PARTICLE_HANDLER.isLoaded()) PARTICLE_HANDLER.render(batch);
 		
-		if(FONT != null){
+		/*if(FONT != null){
 			FONT.setColor(1, 0, 0, 1);
 			FONT.draw(batch, "FPS: " + (int) Gdx.graphics.getFramesPerSecond(),
 					-camera.viewportWidth * camera.zoom / 2f, camera.viewportHeight * camera.zoom / 2f);
-		}
+		}*/
 		
 		batch.end();
+		
+		state.renderUI();
 	}
 	
 	public void update(){
@@ -100,7 +104,7 @@ public class DodgeGame implements ApplicationListener{
 		if(INPUT.fullscreen.isJustPressed()) Gdx.graphics.setDisplayMode(1920, 1080, true);//for recording, change later
 			
 		state.update();
-		if(!paused && SOUND_MANAGER.isLoaded()) SOUND_MANAGER.update();
+		if(SOUND_MANAGER.isLoaded()) SOUND_MANAGER.update();
 		if(PARTICLE_HANDLER.isLoaded()) PARTICLE_HANDLER.update();
 		INPUT.update();
 		if(TWEEN_MANAGER != null) TWEEN_MANAGER.update(SECONDS_PER_UPDATE);
@@ -135,12 +139,9 @@ public class DodgeGame implements ApplicationListener{
 	}
 	
 	public void pause(){
-		paused = true;
-		
 		state.pause();
 	}
 	
 	public void resume(){
-		paused = false;
 	}
 }

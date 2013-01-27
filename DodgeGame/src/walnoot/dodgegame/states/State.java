@@ -15,6 +15,8 @@ public abstract class State{
 	
 	public abstract void render(SpriteBatch batch);
 	
+	public void renderUI(){}
+	
 	public abstract void dispose();
 	
 	/**
