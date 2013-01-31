@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public abstract class State{
 	protected final OrthographicCamera camera;
@@ -23,8 +24,10 @@ public abstract class State{
 	
 	public abstract void render(SpriteBatch batch);
 	
-	public void renderUI(){
+	public void renderUI(SpriteBatch stateBatch){
+		stage.act();
 		stage.draw();
+		Table.drawDebug(stage);
 	}
 	
 	public abstract void dispose();

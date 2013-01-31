@@ -12,7 +12,6 @@ import walnoot.dodgegame.components.HeartComponent;
 import walnoot.dodgegame.components.MoveComponent;
 import walnoot.dodgegame.components.PlayerComponent;
 import walnoot.dodgegame.components.SpriteComponent;
-import walnoot.dodgegame.ui.SpriteButton;
 import walnoot.dodgegame.ui.TextElement;
 
 import com.badlogic.gdx.graphics.Color;
@@ -20,6 +19,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class GameState extends State{
 	public static final float MAP_SIZE = 6;
@@ -27,7 +31,6 @@ public class GameState extends State{
 	private static final int GROW_OBJECT_CHANGE = 70;//out of 100
 	private static final int SPAWN_RATE_SCALE = 4;
 	private static final float STATUS_TEXT_SCALE = 2f;//scale of the status text at the beginning
-	private static final float PAUSE_BUTTON_SCALE = 4f;
 	
 	private ArrayList<Entity> unusedEntities = new ArrayList<Entity>(MAX_UNUSED_ENTITIES);
 	
@@ -45,7 +48,6 @@ public class GameState extends State{
 	private TextBounds statusBounds = new TextBounds();
 	
 	private TextElement multiplierElement, scoreElement;
-	private SpriteButton pauseButton;
 	
 	public GameState(OrthographicCamera camera){
 		super(camera);
@@ -73,12 +75,17 @@ public class GameState extends State{
 		multiplierElement = new TextElement(Integer.toString(playerComponent.getScoreMultiplier()), -MAP_SIZE, 0f, 3f);
 		scoreElement = new TextElement(Integer.toString(playerComponent.getScore()), -MAP_SIZE, 3f, 3f);
 		
-		pauseButton = new SpriteButton(-MAP_SIZE - PAUSE_BUTTON_SCALE / 2f, MAP_SIZE - PAUSE_BUTTON_SCALE / 2f,
-				PAUSE_BUTTON_SCALE, Util.PAUSE){
-			public void activate(){
-				pause();
+		Image image = new Image(Util.PAUSE);
+		image.setSize(160f, 160f);
+		image.addListener(new EventListener(){
+			public boolean handle(Event event){
+				if(event instanceof InputEvent){
+					if(((InputEvent) event).getType() == Type.touchDown) pause();
+				}
+				return false;
 			}
-		};
+		});
+		stage.addActor(image);
 	}
 	
 	public void update(){
@@ -105,7 +112,7 @@ public class GameState extends State{
 		multiplierElement.setScale(3f + MathUtils.cosDeg(DodgeGame.gameTime * 3 * map.getPlayerComponent()
 				.getScoreMultiplier()));
 		
-		pauseButton.update();
+		//pauseButton.update();
 	}
 	
 	private void checkFoodSpawn(){
@@ -150,7 +157,7 @@ public class GameState extends State{
 	}
 	
 	public void pause(){
-		DodgeGame.pushState(new PauseState(camera));
+		DodgeGame.setState(new PauseState(camera, this));
 	}
 	
 	private Entity getNewFood(){
@@ -184,7 +191,6 @@ public class GameState extends State{
 		
 		multiplierElement.render(batch);
 		scoreElement.render(batch);
-		pauseButton.render(batch);
 	}
 	
 	public void setStatusText(String status, Color color){
@@ -197,8 +203,6 @@ public class GameState extends State{
 	}
 	
 	public void resize(){
-		pauseButton.setPosition((-camera.viewportWidth * camera.zoom + PAUSE_BUTTON_SCALE) / 2f,
-				(camera.viewportHeight * camera.zoom - PAUSE_BUTTON_SCALE) / 2f);
 	}
 	
 	public Map getMap(){

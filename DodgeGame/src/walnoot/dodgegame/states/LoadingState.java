@@ -34,16 +34,19 @@ public class LoadingState extends State{
 				DodgeGame.FONT.setUseIntegerPositions(false);
 				DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
 				
+				DodgeGame.UI_FONT = new BitmapFont(Gdx.files.internal("komika_axis.fnt"), Util.FONT, false);
+				DodgeGame.UI_FONT.setUseIntegerPositions(false);
+				
 				loadText = new TextElement("LOADED FONT", 0, 0);
 				break;
 			case 1:
 				DodgeGame.PREFERENCES = Gdx.app.getPreferences("DodgeGamePrefs");
 				
-				if(!DodgeGame.PREFERENCES.contains(SoundManager.PREF_SOUND_KEY)) DodgeGame.PREFERENCES.putBoolean(
-						SoundManager.PREF_SOUND_KEY, true);
+				if(!DodgeGame.PREFERENCES.contains(SoundManager.PREF_SOUND_KEY))
+					DodgeGame.PREFERENCES.putFloat(SoundManager.PREF_SOUND_KEY, 1f);
 				
-				if(!DodgeGame.PREFERENCES.contains(TutorialState.PREF_TUTORIAL_KEY)) DodgeGame.PREFERENCES.putBoolean(
-						TutorialState.PREF_TUTORIAL_KEY, true);
+				if(!DodgeGame.PREFERENCES.contains(TutorialState.PREF_TUTORIAL_KEY))
+					DodgeGame.PREFERENCES.putBoolean(TutorialState.PREF_TUTORIAL_KEY, true);
 				
 				loadText.setText("LOADED PREFERENCES");
 				break;
@@ -59,20 +62,11 @@ public class LoadingState extends State{
 				loadText.setText("LOADED SOUNDS");
 				break;
 			case 4:
-				if(Gdx.app.getType() != ApplicationType.Desktop) break;
+				DodgeGame.PARTICLE_HANDLER.load();
 				
-				Pixmap[] icons = new Pixmap[3];
-				
-				icons[0] = new Pixmap(Gdx.files.internal("icons/burger16.png"));
-				icons[1] = new Pixmap(Gdx.files.internal("icons/burger32.png"));
-				icons[2] = new Pixmap(Gdx.files.internal("icons/burger128.png"));
-				
-				Gdx.graphics.setIcon(icons);
-				
-				loadText.setText("LOADED ICONS");
 				break;
 			case 5:
-				DodgeGame.PARTICLE_HANDLER.load();
+				Util.setSkin();
 				
 				break;
 			default:

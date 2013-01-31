@@ -16,9 +16,13 @@ public class PauseState extends State{
 	
 	private TextElement pauseElement, continueElement;
 	private ReturnButton returnButton;
+	private int timer = 10;
 	
-	public PauseState(OrthographicCamera camera){
+	private final State oldState;
+	
+	public PauseState(OrthographicCamera camera, State oldState){
 		super(camera);
+		this.oldState = oldState;
 		
 		pauseElement = new TextElement("PAUSED", 0f, 0f, 2f);
 		
@@ -29,12 +33,13 @@ public class PauseState extends State{
 		
 		returnButton = new ReturnButton(camera, new MainMenuState(camera), "MAIN MENU");
 		
-		//update();//so the position of the textelements is right at the beginning
+		update();//so the position of the textelements is right at the beginning
 	}
 	
 	public void update(){
-		if(DodgeGame.INPUT.pause.isJustPressed() || DodgeGame.INPUT.isJustTouched()){
-			DodgeGame.popState(this);
+		if(timer > 0) timer--;
+		if(DodgeGame.INPUT.pause.isJustPressed() || (DodgeGame.INPUT.isJustTouched() && timer == 0)){
+			DodgeGame.setState(oldState);
 		}
 		
 		textTranslation.rotate(1f);
@@ -46,6 +51,8 @@ public class PauseState extends State{
 	}
 	
 	public void render(SpriteBatch batch){
+		oldState.render(batch);
+		
 		DodgeGame.FONT.setColor(Color.BLACK);
 		pauseElement.render(batch);
 		continueElement.render(batch);

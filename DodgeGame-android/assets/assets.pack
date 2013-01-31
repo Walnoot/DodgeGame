@@ -108,6 +108,13 @@ slider
   orig: 32, 32
   offset: 0, 0
   index: -1
+slider_big
+  rotate: false
+  xy: 456, 456
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 soundon
   rotate: false
   xy: 134, 100
@@ -117,7 +124,7 @@ soundon
   index: -1
 shine
   rotate: false
-  xy: 456, 472
+  xy: 390, 406
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

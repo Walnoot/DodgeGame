@@ -15,21 +15,21 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.math.Vector2;
 
 public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 30, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
 	public static final float FONT_SCALE = 1f / 64f;
 	
 	public static BitmapFont FONT;
+	public static BitmapFont UI_FONT;//temporary, hopefully
 	public static Preferences PREFERENCES;
 	public static SoundManager SOUND_MANAGER = new SoundManager();
 	public static final InputHandler INPUT = new InputHandler();
 	public static final ParticleHandler PARTICLE_HANDLER = new ParticleHandler();
 	public static TweenManager TWEEN_MANAGER;
 	
-	//public static State state;
-	public static Array<State> states = new Array<State>(true, 3);
+	public static State state;
 	public static int gameTime;
 	public static InputMultiplexer inputs;
 	
@@ -59,11 +59,11 @@ public class DodgeGame implements ApplicationListener{
 		
 		setState(new LoadingState(camera));
 	}
-
+	
 	public void dispose(){
-		PREFERENCES.putBoolean(SoundManager.PREF_SOUND_KEY, SOUND_MANAGER.isPlaying());
 		PREFERENCES.flush();
 		
+		state.dispose();
 		batch.dispose();
 		FONT.dispose();
 		//TEXTURE.dispose();
@@ -87,20 +87,12 @@ public class DodgeGame implements ApplicationListener{
 		
 		backgroundSprite.draw(batch);
 		
-		batch.end();
+		batch.flush();
 		
-		for(State state: states){
-			batch.begin();
-			state.render(batch);
-			batch.end();
-			
-			state.renderUI();
-		}
+		state.render(batch);
 		
 		if(PARTICLE_HANDLER.isLoaded()){
-			batch.begin();
 			PARTICLE_HANDLER.render(batch);
-			batch.end();
 		}
 		
 		/*if(FONT != null){
@@ -108,15 +100,17 @@ public class DodgeGame implements ApplicationListener{
 			FONT.draw(batch, "FPS: " + (int) Gdx.graphics.getFramesPerSecond(),
 					-camera.viewportWidth * camera.zoom / 2f, camera.viewportHeight * camera.zoom / 2f);
 		}*/
+		
+		batch.end();
+		
+		state.renderUI(batch);
 	}
 	
 	public void update(){
 		if(INPUT.escape.isPressed()) Gdx.app.exit();
 		if(INPUT.fullscreen.isJustPressed()) Gdx.graphics.setDisplayMode(1920, 1080, true);//for recording, change later
-		
-		for(State state: states){
-			state.update();
-		}
+			
+		state.update();
 		if(SOUND_MANAGER.isLoaded()) SOUND_MANAGER.update();
 		if(PARTICLE_HANDLER.isLoaded()) PARTICLE_HANDLER.update();
 		INPUT.update();
@@ -129,19 +123,14 @@ public class DodgeGame implements ApplicationListener{
 	}
 	
 	public static void setState(State state){
-		states.clear();
-		states.add(state);
+		if(DodgeGame.state != null){
+			inputs.removeProcessor(DodgeGame.state.stage);
+			DodgeGame.state.dispose();
+		}
+		inputs.addProcessor(state.stage);
+		
+		DodgeGame.state = state;
 		state.resize();
-	}
-	
-	public static void pushState(State state){
-		states.add(state);
-		state.resize();
-	}
-	
-	public static void popState(State state){
-		System.out.println("asddaf");
-		states.removeValue(state, true);
 	}
 	
 	public void resize(int width, int height){
@@ -159,15 +148,14 @@ public class DodgeGame implements ApplicationListener{
 				-camera.viewportHeight * camera.zoom * 0.5f);
 		backgroundSprite.setSize(camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
 		
-		for(State state: states){
-			state.resize();
-		}
+		state.resize();
+		
+		Vector2 dims = Util.getStageDimensions();
+		state.stage.setViewport(dims.x, dims.y, false);
 	}
 	
 	public void pause(){
-		for(State state: states){
-			state.pause();
-		}
+		state.pause();
 	}
 	
 	public void resume(){

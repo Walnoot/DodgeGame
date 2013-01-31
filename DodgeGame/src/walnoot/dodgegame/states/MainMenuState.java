@@ -1,23 +1,24 @@
 package walnoot.dodgegame.states;
 
+import walnoot.dodgegame.ButtonClickListener;
 import walnoot.dodgegame.DodgeGame;
-import walnoot.dodgegame.ui.TextButton;
-import walnoot.dodgegame.ui.TextElement;
+import walnoot.dodgegame.Util;
 
-import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class MainMenuState extends State{
 	private static final float COLOR_VALUE_MAX = 0.5f;
 	private static final float COLOR_VALUE_MIN = 0f;
 	
-	private TextElement[] textElements;
-	private int colorChangeTimer;
+	private int colorChangeTimer;//this color stuff is for the now non-existant logo, may be used later
 	private Color oldColor, newColor;
+	private Table table;
 	
 	public MainMenuState(final OrthographicCamera camera){
 		super(camera);
@@ -27,45 +28,46 @@ public class MainMenuState extends State{
 		newColor = new Color(MathUtils.random(COLOR_VALUE_MIN, COLOR_VALUE_MAX), MathUtils.random(COLOR_VALUE_MIN,
 				COLOR_VALUE_MAX), MathUtils.random(COLOR_VALUE_MIN, COLOR_VALUE_MAX), 1f);
 		
-		TextElement titleElement = new TextElement("DODGE GAME", 0, 5f, 4f);
-		titleElement.setColor(oldColor);
+		table = new Table();
+		table.setFillParent(true);
+		stage.addActor(table);
 		
-		TextButton newGameButton = new TextButton("NEW GAME", 0, 2f, 2f){
-			public void doAction(){
+		table.defaults().width(480f);
+		table.defaults().height(96f);
+		
+		TextButton playButton = new TextButton("PLAY", Util.SKIN);
+		playButton.addListener(new ButtonClickListener(){
+			public void click(Actor actor){
 				if(DodgeGame.PREFERENCES.getBoolean(TutorialState.PREF_TUTORIAL_KEY, true))
 					DodgeGame.setState(new TutorialState(camera));
 				else
 					DodgeGame.setState(new GameState(camera));
 			}
-		};
+		});
+		table.add(playButton).height(128f).padBottom(32f);
+		table.row();
 		
-		TextButton creditsButton = new TextButton("CREDITS", 0, 0, 2f){
-			public void doAction(){
-				DodgeGame.setState(new CreditsState(camera));
-			}
-		};
-		
-		TextButton optionsButton = new TextButton("OPTIONS", 0, -2f, 2f){
-			public void doAction(){
+		TextButton optionsButton = new TextButton("OPTIONS", Util.SKIN);
+		optionsButton.addListener(new ButtonClickListener(){
+			public void click(Actor actor){
 				DodgeGame.setState(new OptionsState(camera));
 			}
-		};
+		});
+		table.add(optionsButton);
+		table.row();
 		
-		if(Gdx.app.getType() == ApplicationType.Android){
-			textElements = new TextElement[]{titleElement, newGameButton, creditsButton, optionsButton};
-		}else{
-			TextButton quitGameButton = new TextButton("QUIT GAME", 0, -4f, 2f){
-				public void doAction(){
-					Gdx.app.exit();
-				}
-			};
-			
-			textElements = new TextElement[]{titleElement, newGameButton, creditsButton, optionsButton, quitGameButton};
-		}
+		TextButton creditsButton = new TextButton("CREDITS", Util.SKIN);
+		creditsButton.addListener(new ButtonClickListener(){
+			public void click(Actor actor){
+				DodgeGame.setState(new CreditsState(camera));
+			}
+		});
+		table.add(creditsButton);
+		table.row();
 	}
 	
 	public void update(){
-		for(int i = 0; i < textElements.length; i++){
+		/*for(int i = 0; i < textElements.length; i++){
 			if(textElements[i] instanceof TextButton) ((TextButton) textElements[i]).update();
 		}
 		
@@ -84,7 +86,7 @@ public class MainMenuState extends State{
 			
 			newColor = new Color(getNewColorValue(oldColor.r), getNewColorValue(oldColor.g),
 					getNewColorValue(oldColor.b), 1f);
-		}
+		}*/
 	}
 	
 	private float getNewColorValue(float oldValue){
@@ -92,9 +94,9 @@ public class MainMenuState extends State{
 	}
 	
 	public void render(SpriteBatch batch){
-		for(int i = 0; i < textElements.length; i++){
+		/*for(int i = 0; i < textElements.length; i++){
 			textElements[i].render(batch);
-		}
+		}*/
 	}
 	
 	public void dispose(){

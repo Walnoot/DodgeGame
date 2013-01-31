@@ -117,6 +117,10 @@ public class InputHandler implements InputProcessor{
 		return false;
 	}
 	
+	public boolean mouseMoved(int screenX, int screenY){
+		return false;
+	}
+	
 	public class Key{
 		private final int[] keyCodes;
 		private boolean pressed, justPressed;
