@@ -1,24 +1,24 @@
-package walnoot.dodgegame;
+package walnoot.dodgegame.components;
 
 import java.util.ArrayList;
 
-import walnoot.dodgegame.components.Component;
+import walnoot.dodgegame.gameplay.Map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Entity{
-	private float xPos, yPos, rotation;
+//	private float xPos, yPos/*, rotation*/;
+	private Vector2 pos = new Vector2();
 	private ArrayList<Component> components = new ArrayList<Component>();//fuck yeah entity-component design
 	private boolean removed = false;
 	private Map map;
 	
 	public Entity(Map map, float xPos, float yPos, float rotation){
 		this.map = map;
-		this.xPos = xPos;
-		this.yPos = yPos;
-		this.rotation = rotation;
+		pos.set(xPos, yPos);
+//		this.rotation = rotation;
 	}
 	
 	public void render(SpriteBatch batch){
@@ -48,61 +48,64 @@ public class Entity{
 		return null;
 	}
 	
-	public void moveForward(float amount){
+	/*public void moveForward(float amount){
 		xPos -= MathUtils.sinDeg(rotation) * amount;
 		yPos += MathUtils.cosDeg(rotation) * amount;
-	}
+	}*/
 	
 	public void translate(float x, float y){
-		xPos += x;
-		yPos += y;
+		pos.add(x, y);
 	}
 	
 	public void translate(Vector2 translation){
 		translate(translation.x, translation.y);
 	}
 	
-	public void rotate(float rotation){
+	/*public void rotate(float rotation){
 		this.rotation += rotation;
 		
 		if(rotation < MathUtils.PI) rotation += 2 * MathUtils.PI;
 		if(rotation > MathUtils.PI) rotation -= 2 * MathUtils.PI;
-	}
+	}*/
 	
 	public Map getMap(){
 		return map;
 	}
 	
 	public float getxPos(){
-		return xPos;
+		return pos.x;
 	}
 	
 	public float getyPos(){
-		return yPos;
+		return pos.y;
 	}
 	
-	public float getRotation(){
-		return rotation;
+	public Vector2 getPos(){
+		return pos;
 	}
+	
+	/*public float getRotation(){
+		return rotation;
+	}*/
 	
 	public boolean isRemoved(){
 		return removed;
 	}
 	
 	public void setxPos(float xPos){
-		this.xPos = xPos;
+		pos.x = xPos;
 	}
 	
 	public void setyPos(float yPos){
-		this.yPos = yPos;
+		pos.y = yPos;
 	}
 	
-	public void setRotation(float rotation){
+	/*public void setRotation(float rotation){
 		this.rotation = rotation;
 		
 		if(rotation < MathUtils.PI) rotation += 2 * MathUtils.PI;
 		if(rotation > MathUtils.PI) rotation -= 2 * MathUtils.PI;
-	}
+	}*/
 	
 	public void setRemoved(boolean removed){
 		this.removed = removed;

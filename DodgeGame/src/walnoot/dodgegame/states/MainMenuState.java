@@ -32,7 +32,7 @@ public class MainMenuState extends State{
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		table.defaults().width(480f);
+		table.defaults();
 		table.defaults().height(96f);
 		
 		TextButton playButton = new TextButton("PLAY", Util.SKIN);
@@ -44,7 +44,7 @@ public class MainMenuState extends State{
 					DodgeGame.setState(new GameState(camera));
 			}
 		});
-		table.add(playButton).height(128f).padBottom(32f);
+		table.add(playButton).height(128f).padBottom(32f).width(480f).colspan(2);
 		table.row();
 		
 		TextButton optionsButton = new TextButton("OPTIONS", Util.SKIN);
@@ -53,8 +53,7 @@ public class MainMenuState extends State{
 				DodgeGame.setState(new OptionsState(camera));
 			}
 		});
-		table.add(optionsButton);
-		table.row();
+		table.add(optionsButton).fillX();
 		
 		TextButton creditsButton = new TextButton("CREDITS", Util.SKIN);
 		creditsButton.addListener(new ButtonClickListener(){
@@ -62,7 +61,7 @@ public class MainMenuState extends State{
 				DodgeGame.setState(new CreditsState(camera));
 			}
 		});
-		table.add(creditsButton);
+		table.add(creditsButton).fillX();
 		table.row();
 	}
 	

@@ -2,7 +2,6 @@ package walnoot.dodgegame.components;
 
 import aurelienribon.tweenengine.Tween;
 import walnoot.dodgegame.DodgeGame;
-import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.SpriteAccessor;
 import walnoot.dodgegame.states.GameState;
 

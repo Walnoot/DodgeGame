@@ -1,7 +1,9 @@
-package walnoot.dodgegame;
+package walnoot.dodgegame.gameplay;
 
 import java.util.ArrayList;
 
+import walnoot.dodgegame.Util;
+import walnoot.dodgegame.components.Entity;
 import walnoot.dodgegame.components.PlayerComponent;
 import walnoot.dodgegame.components.SpriteComponent;
 import walnoot.dodgegame.states.GameState;

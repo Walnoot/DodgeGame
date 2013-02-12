@@ -1,7 +1,6 @@
 package walnoot.dodgegame.components;
 
-import walnoot.dodgegame.Entity;
-import walnoot.dodgegame.Map;
+import walnoot.dodgegame.gameplay.Map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 

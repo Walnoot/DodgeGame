@@ -1,7 +1,6 @@
 package walnoot.dodgegame.components;
 
 import walnoot.dodgegame.DodgeGame;
-import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.states.GameOverState;
 import walnoot.dodgegame.states.GameState;
 
@@ -9,15 +8,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 
 public class PlayerComponent extends Component{
+	public static final float MOVE_RADIUS = 2f;//radius of circle player moves in
+	
 	public static final int NUM_START_LIVES = 3;
-	private static final float WALK_SPEED = 6f;//per second
-	public static final int SCORE_MULTIPLIER_DEFAULT = 32;
-	private static final float RADIUS_GROW_RATE = 1 / 128f;
-	private static final int INVINCIBILITY_TIME = (int) (4 * DodgeGame.UPDATES_PER_SECOND);//ticks
-	private static final int COMBO_BREAK_TIME = (int) (2 * DodgeGame.UPDATES_PER_SECOND);
+	private static final int INVINCIBILITY_TIME = (int) (2 * DodgeGame.UPDATES_PER_SECOND);//ticks
+	private static final int COMBO_BREAK_TIME = (int) (1 * DodgeGame.UPDATES_PER_SECOND);
 	
 	public static final String[] GROW_STATUS_TEXTS = {"AWESOME!", "NOT BAD!", "SPLENDID!", "GOOD!", "COOL!"};
 	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD!", "AWW!", "NOT GOOD!", "QUITE BAD!"};//for both shrink and death types because I'm lazy as fuck
@@ -27,6 +24,8 @@ public class PlayerComponent extends Component{
 	private int lives = NUM_START_LIVES;
 	
 	private int invincibilityTimer = INVINCIBILITY_TIME;
+	
+	private float rotation;
 	
 	private final int highscore;
 	private boolean newHighscore;
@@ -45,7 +44,7 @@ public class PlayerComponent extends Component{
 	}
 	
 	public void update(){
-		Vector2 translation = Vector2.tmp;
+		/*Vector2 translation = Vector2.tmp;
 		translation.set(0, 0);
 		
 		if(Gdx.input.isButtonPressed(Buttons.LEFT)){
@@ -70,8 +69,18 @@ public class PlayerComponent extends Component{
 			translation.mul(DodgeGame.SECONDS_PER_UPDATE * WALK_SPEED);
 		}
 		
-		owner.translate(translation);
-
+		owner.translate(translation);*/
+		
+		if(DodgeGame.INPUT.left.isPressed()) rotation -= 10f;
+		if(DodgeGame.INPUT.right.isPressed()) rotation += 10f;
+		if(Gdx.input.isButtonPressed(Buttons.LEFT)){
+			if(DodgeGame.INPUT.getInputX() > 0) rotation += 10f;
+			else rotation -= 10f;
+		}
+		
+		owner.setxPos(MathUtils.sinDeg(rotation) * MOVE_RADIUS);
+		owner.setyPos(MathUtils.cosDeg(rotation) * MOVE_RADIUS);
+		
 		SpriteComponent spriteComponent = owner.getComponent(SpriteComponent.class);
 		spriteComponent.getSprite().setScale(radius);
 		
@@ -87,12 +96,10 @@ public class PlayerComponent extends Component{
 		}
 	}
 	
-	public void grow(){
-		radius += RADIUS_GROW_RATE;
-		
+	public void eat(){
 		gameState.setStatusText(getRandomText(GROW_STATUS_TEXTS), Color.GREEN);
 		
-		score += (int) (RADIUS_GROW_RATE * SCORE_MULTIPLIER_DEFAULT * getScoreMultiplier());
+		score += getScoreMultiplier();
 		
 		if(getScore() > highscore){
 			if(!newHighscore){
@@ -122,7 +129,7 @@ public class PlayerComponent extends Component{
 		}
 		
 		gameState.setStatusText(getRandomText(BAD_STUFF_STATUS_TEXTS), Color.BLACK);
-
+		
 		combo = 0;
 		gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
 	}

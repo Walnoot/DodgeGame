@@ -1,6 +1,5 @@
 package walnoot.dodgegame.components;
 
-import walnoot.dodgegame.Entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;

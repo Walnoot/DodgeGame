@@ -4,8 +4,6 @@ import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.ui.TextButton;
 import walnoot.dodgegame.ui.TextElement;
 
-import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -20,8 +18,7 @@ public class GameOverState extends State{
 		super(gameState.camera);
 		this.gameState = gameState;
 		
-		retryButton = new TextButton("RETRY" + ((Gdx.app.getType() == ApplicationType.Android) ? "" : " (R)"), 0,
-				-2.5f, 3f, Keys.R){
+		retryButton = new TextButton("RETRY", 0, -2.5f, 3f, Keys.R){
 			public void doAction(){
 				DodgeGame.setState(new GameState(camera));
 			}

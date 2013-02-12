@@ -1,7 +1,6 @@
 package walnoot.dodgegame.components;
 
 import walnoot.dodgegame.DodgeGame;
-import walnoot.dodgegame.Entity;
 import walnoot.dodgegame.SpriteAccessor;
 import walnoot.dodgegame.Util;
 import walnoot.dodgegame.states.GameState;
@@ -64,16 +63,16 @@ public class FoodComponent extends Component{
 		if(dx * dx + dy * dy < minDistance * minDistance){
 			consumed = true;
 			
-			Tween tween = Tween.to(owner.getComponent(SpriteComponent.class).getSprite(), SpriteAccessor.TRANSPARANCY,
+			Tween tween =
+					Tween.to(owner.getComponent(SpriteComponent.class).getSprite(), SpriteAccessor.TRANSPARANCY,
 					FADE_OUT_DURATION);
 			tween.target(0).start(DodgeGame.TWEEN_MANAGER);
 			
 			switch (type){
-				case GROW:
-					map.getPlayerComponent().grow();
+				case EAT:
+					map.getPlayerComponent().eat();
 					
-					DodgeGame.PARTICLE_HANDLER.shine.setPosition(owner.getxPos(), owner.getyPos());
-					DodgeGame.PARTICLE_HANDLER.shine.start();
+					DodgeGame.PARTICLE_HANDLER.addShineEffect(owner.getxPos(), owner.getyPos());
 					
 					break;
 				case DIE:
@@ -97,7 +96,7 @@ public class FoodComponent extends Component{
 	}
 	
 	public enum FoodType{
-		GROW(Util.FOOD_ONE, Util.FOOD_TWO, Util.FOOD_THREE), DIE(Util.BAD_FOOD_ONE);
+		EAT(Util.FOOD_ONE, Util.FOOD_TWO, Util.FOOD_THREE), DIE(Util.BAD_FOOD_ONE);
 		
 		private final TextureRegion[] regions;
 		

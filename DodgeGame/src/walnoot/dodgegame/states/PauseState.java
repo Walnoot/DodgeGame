@@ -4,8 +4,6 @@ import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.ui.ReturnButton;
 import walnoot.dodgegame.ui.TextElement;
 
-import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,10 +24,7 @@ public class PauseState extends State{
 		
 		pauseElement = new TextElement("PAUSED", 0f, 0f, 2f);
 		
-		String continueText = String.format("%s TO CONTINUE",
-				Gdx.app.getType() == ApplicationType.Android ? "TAP" : "SPACE");
-		
-		continueElement = new TextElement(continueText, 0, 0f);
+		continueElement = new TextElement("TAP TO CONTINUE", 0, 0f);
 		
 		returnButton = new ReturnButton(camera, new MainMenuState(camera), "MAIN MENU");
 		

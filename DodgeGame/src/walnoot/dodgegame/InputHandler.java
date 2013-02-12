@@ -1,13 +1,28 @@
 package walnoot.dodgegame;
 
-import static com.badlogic.gdx.Input.Keys.*;
+import static com.badlogic.gdx.Input.Keys.A;
+import static com.badlogic.gdx.Input.Keys.BACKSPACE;
+import static com.badlogic.gdx.Input.Keys.D;
+import static com.badlogic.gdx.Input.Keys.DOWN;
+import static com.badlogic.gdx.Input.Keys.ESCAPE;
+import static com.badlogic.gdx.Input.Keys.F12;
+import static com.badlogic.gdx.Input.Keys.LEFT;
+import static com.badlogic.gdx.Input.Keys.P;
+import static com.badlogic.gdx.Input.Keys.Q;
+import static com.badlogic.gdx.Input.Keys.RIGHT;
+import static com.badlogic.gdx.Input.Keys.S;
+import static com.badlogic.gdx.Input.Keys.SPACE;
+import static com.badlogic.gdx.Input.Keys.TAB;
+import static com.badlogic.gdx.Input.Keys.UP;
+import static com.badlogic.gdx.Input.Keys.W;
 
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 
 public class InputHandler implements InputProcessor{
 	public Key up = new Key(W, UP);
@@ -26,6 +41,7 @@ public class InputHandler implements InputProcessor{
 	private boolean keyDown;
 	private int scrollAmount;
 	private boolean justTouched;
+	private Vector2 lastMousePos = new Vector2();
 	
 	/**
 	 * Make sure to call after game logic update() is called
@@ -38,6 +54,8 @@ public class InputHandler implements InputProcessor{
 		keyDown = false;
 		scrollAmount = 0;
 		justTouched = false;
+		
+		lastMousePos.set(getInputX(), getInputY());
 	}
 	
 	public float getInputX(){
@@ -54,6 +72,14 @@ public class InputHandler implements InputProcessor{
 		inputY *= (camera.viewportHeight / 2f) * camera.zoom;
 		
 		return inputY;
+	}
+	
+	public float getMousedx(){
+		return getInputX() - lastMousePos.x;
+	}
+	
+	public float getMousedy(){
+		return getInputY() - lastMousePos.y;
 	}
 	
 	public boolean isAnyKeyDown(){

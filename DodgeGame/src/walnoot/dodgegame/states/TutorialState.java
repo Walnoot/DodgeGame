@@ -6,7 +6,6 @@ import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Util;
 import walnoot.dodgegame.ui.TextElement;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -35,8 +34,7 @@ public class TutorialState extends State{
 		
 		DodgeGame.PREFERENCES.putBoolean(PREF_TUTORIAL_KEY, false);
 		
-		skipElement = new TextElement(String.format("%s TO CONTINUE",
-				Gdx.app.getType() == ApplicationType.Android ? "TAP" : "SPACE"), 0, GameState.MAP_SIZE - 1f, 2f);
+		skipElement = new TextElement("TAP TO CONTINUE", 0, GameState.MAP_SIZE - 1f, 2f);
 		
 		initState();
 	}

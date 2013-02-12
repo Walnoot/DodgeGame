@@ -3,15 +3,16 @@ package walnoot.dodgegame.states;
 import java.util.ArrayList;
 
 import walnoot.dodgegame.DodgeGame;
-import walnoot.dodgegame.Entity;
-import walnoot.dodgegame.Map;
 import walnoot.dodgegame.Util;
+import walnoot.dodgegame.components.Entity;
 import walnoot.dodgegame.components.FoodComponent;
-import walnoot.dodgegame.components.FoodComponent.FoodType;
 import walnoot.dodgegame.components.HeartComponent;
 import walnoot.dodgegame.components.MoveComponent;
 import walnoot.dodgegame.components.PlayerComponent;
 import walnoot.dodgegame.components.SpriteComponent;
+import walnoot.dodgegame.gameplay.BasicSpawnHandler;
+import walnoot.dodgegame.gameplay.Map;
+import walnoot.dodgegame.gameplay.SpawnHandler;
 import walnoot.dodgegame.ui.TextElement;
 
 import com.badlogic.gdx.graphics.Color;
@@ -28,7 +29,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class GameState extends State{
 	public static final float MAP_SIZE = 6;
 	public static final int MAX_UNUSED_ENTITIES = 10;
-	private static final int GROW_OBJECT_CHANGE = 70;//out of 100
 	private static final int SPAWN_RATE_SCALE = 4;
 	private static final float STATUS_TEXT_SCALE = 2f;//scale of the status text at the beginning
 	
@@ -48,6 +48,9 @@ public class GameState extends State{
 	private TextBounds statusBounds = new TextBounds();
 	
 	private TextElement multiplierElement, scoreElement;
+	
+	private SpawnHandler spawnHandler = new BasicSpawnHandler();
+	private int spawnHandlerTimer = spawnHandler.getDuration();
 	
 	public GameState(OrthographicCamera camera){
 		super(camera);
@@ -111,48 +114,25 @@ public class GameState extends State{
 		
 		multiplierElement.setScale(3f + MathUtils.cosDeg(DodgeGame.gameTime * 3 * map.getPlayerComponent()
 				.getScoreMultiplier()));
-		
-		//pauseButton.update();
 	}
 	
 	private void checkFoodSpawn(){
 		enemySpawnTimer--;
 		if(enemySpawnTimer == 0){
-			enemySpawnTimer = (int) (10f / ((time / (10000f * (DodgeGame.UPDATES_PER_SECOND / 60f))) + 1f));
-			
-			float x, y, rotation = 0;
-			
-			int side = MathUtils.random(0, 3);
-			
-			if(side == 0 || side == 2){
-				x = MathUtils.random(-MAP_SIZE, MAP_SIZE);
-				y = side == 0 ? -MAP_SIZE : MAP_SIZE;
-				
-				if(side == 0) rotation = MathUtils.random(45f, 135f);
-				if(side == 2) rotation = MathUtils.random(-135f, -45f);
-			}else{
-				y = MathUtils.random(-MAP_SIZE, MAP_SIZE);
-				x = side == 1 ? -MAP_SIZE : MAP_SIZE;
-				
-				if(side == 1) rotation = MathUtils.random(-45f, 45f);
-				if(side == 3) rotation = MathUtils.random(135f, 225f);
-			}
+			enemySpawnTimer = spawnHandler.getPauseTicks(time);
 			
 			Entity food = getNewFood();
-			food.setxPos(x);
-			food.setyPos(y);
-			food.setRotation(rotation);
 			
-			FoodType type;
-			int randomInt = MathUtils.random(0, 99);
-			
-			if(randomInt < GROW_OBJECT_CHANGE) type = FoodType.GROW;
-			else type = FoodType.DIE;
-			
-			food.getComponent(FoodComponent.class).init(type);
-			food.getComponent(MoveComponent.class).init();
+			spawnHandler.spawn(food, spawnHandlerTimer);
 			
 			map.addEntity(food);
+		}
+		
+		spawnHandlerTimer--;
+		if(spawnHandlerTimer == 0){
+			spawnHandler = spawnHandler.getNextHandler();
+			spawnHandler.init();
+			spawnHandlerTimer = spawnHandler.getDuration();
 		}
 	}
 	
@@ -161,7 +141,7 @@ public class GameState extends State{
 	}
 	
 	private Entity getNewFood(){
-		if(unusedEntities.isEmpty()){
+		/*if(unusedEntities.isEmpty()){
 			Entity e = new Entity(map, 0, 0, 0);
 			
 			e.addComponent(new MoveComponent(e));
@@ -174,7 +154,14 @@ public class GameState extends State{
 			e.setRemoved(false);
 			
 			return e;
-		}
+		}*/
+		
+		Entity e = new Entity(map, 0, 0, 0);
+		
+		e.addComponent(new MoveComponent(e));
+		e.addComponent(new FoodComponent(e, this));
+		
+		return e;
 	}
 	
 	public void render(SpriteBatch batch){

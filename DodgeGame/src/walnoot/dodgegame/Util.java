@@ -89,13 +89,17 @@ public class Util{
 		NinePatchDrawable patchBig = new NinePatchDrawable(PATCH_SLIDER_BIG);
 		
 		SKIN.add("default-horizontal", new SliderStyle(patchSmall, new TextureRegionDrawable(DOT)));
+		
 		TextButtonStyle textButtonStyle = new TextButtonStyle(patchSmall, patchBig, null);
 		textButtonStyle.font = DodgeGame.UI_FONT;
 		textButtonStyle.fontColor = Color.BLACK;
 		SKIN.add("default", textButtonStyle);
+		
 		SKIN.add("default", new CheckBoxStyle(new TextureRegionDrawable(ICON_FALSE), new TextureRegionDrawable(
 				ICON_TRUE), DodgeGame.UI_FONT, Color.BLACK));
+		
 		SKIN.add("default", new LabelStyle(DodgeGame.UI_FONT, Color.BLACK));
+		
 		SKIN.add("default", new ScrollPaneStyle(null, null, patchSmall, null, patchSmall));
 	}
 	

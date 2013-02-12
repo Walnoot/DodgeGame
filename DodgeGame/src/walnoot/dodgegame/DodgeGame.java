@@ -21,8 +21,8 @@ public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 30, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
 	public static final float FONT_SCALE = 1f / 64f;
 	
-	public static BitmapFont FONT;
-	public static BitmapFont UI_FONT;//temporary, hopefully
+	public static BitmapFont FONT;//temporary, hopefully
+	public static BitmapFont UI_FONT;
 	public static Preferences PREFERENCES;
 	public static SoundManager SOUND_MANAGER = new SoundManager();
 	public static final InputHandler INPUT = new InputHandler();
