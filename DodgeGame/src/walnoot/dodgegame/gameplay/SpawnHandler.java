@@ -2,8 +2,8 @@ package walnoot.dodgegame.gameplay;
 
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.components.Entity;
-import walnoot.dodgegame.components.FoodComponent;
-import walnoot.dodgegame.components.FoodComponent.FoodType;
+import walnoot.dodgegame.components.UnitComponent;
+import walnoot.dodgegame.components.UnitComponent.UnitType;
 import walnoot.dodgegame.components.MoveComponent;
 
 import com.badlogic.gdx.math.Vector2;
@@ -24,15 +24,15 @@ public abstract class SpawnHandler{
 		return (int) (10f / ((time / (10000f * (DodgeGame.UPDATES_PER_SECOND / 60f))) + 1f));
 	}
 	
-	protected void spawnToCenter(Entity entity, Vector2 pos, FoodType type){
+	protected void spawnToCenter(Entity entity, Vector2 pos, UnitType type){
 		spawnToCenter(entity, pos.x, pos.y, type);
 	}
 	
-	protected void spawnToCenter(Entity entity, float x, float y, FoodType type){
+	protected void spawnToCenter(Entity entity, float x, float y, UnitType type){
 		entity.setxPos(x);
 		entity.setyPos(y);
 		
-		entity.getComponent(FoodComponent.class).init(type);
+		entity.getComponent(UnitComponent.class).init(type);
 		
 		entity.getComponent(MoveComponent.class).init(Vector2.tmp3.set(x, y).mul(-1f).nor());
 	}

@@ -1,33 +1,38 @@
 package walnoot.dodgegame.components;
 
 import walnoot.dodgegame.DodgeGame;
-import walnoot.dodgegame.states.GameOverState;
+import walnoot.dodgegame.Stat;
+import walnoot.dodgegame.Util;
 import walnoot.dodgegame.states.GameState;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 public class PlayerComponent extends Component{
 	public static final float MOVE_RADIUS = 2f;//radius of circle player moves in
 	
 	public static final int NUM_START_LIVES = 3;
 	private static final int INVINCIBILITY_TIME = (int) (2 * DodgeGame.UPDATES_PER_SECOND);//ticks
-	private static final int COMBO_BREAK_TIME = (int) (1 * DodgeGame.UPDATES_PER_SECOND);
+	private static final int COMBO_BREAK_TIME = (int) (1.1f * DodgeGame.UPDATES_PER_SECOND);
+	private static final int HAND_CLOSE_TIME = (int) (0.25f * DodgeGame.UPDATES_PER_SECOND);
 	
 	public static final String[] GROW_STATUS_TEXTS = {"AWESOME!", "NOT BAD!", "SPLENDID!", "GOOD!", "COOL!"};
-	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD!", "AWW!", "NOT GOOD!", "QUITE BAD!"};//for both shrink and death types because I'm lazy as fuck
+	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD!", "AWW!", "NOT GOOD!", "QUITE BAD!"};
 	
-	private float radius = 1f;
+	private float radius = 0.5f;
 	
 	private int lives = NUM_START_LIVES;
 	
-	private int invincibilityTimer = INVINCIBILITY_TIME;
+	private int invincibilityTimer = 0;
+	private int handCloseTimer;
 	
-	private float rotation;
+	private float targetRotation, actualRotation;//actualRotation follow targetRotation
 	
-	private final int highscore;
 	private boolean newHighscore;
 	private int score;
 	private int combo;
@@ -36,72 +41,71 @@ public class PlayerComponent extends Component{
 	
 	private final GameState gameState;
 	
+	private Sprite sprite;
+	
 	public PlayerComponent(Entity owner, GameState gameState){
 		super(owner);
 		this.gameState = gameState;
 		
-		highscore = DodgeGame.PREFERENCES.getInteger(GameOverState.HIGH_SCORE_KEY, 0);
+		sprite = new Sprite(Util.HAND);
+		sprite.setSize(1f, 2f);
+		sprite.setOrigin(0.5f, 0f);
 	}
 	
 	public void update(){
-		/*Vector2 translation = Vector2.tmp;
-		translation.set(0, 0);
-		
+		if(DodgeGame.INPUT.left.isPressed()) targetRotation -= 10f;
+		if(DodgeGame.INPUT.right.isPressed()) targetRotation += 10f;
 		if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-			float dx = DodgeGame.INPUT.getInputX() - owner.getxPos();
-			float dy = DodgeGame.INPUT.getInputY() - owner.getyPos();
-			
-			translation.set(dx, dy);
+			if(DodgeGame.INPUT.getInputX() > 0) targetRotation += 10f;
+			else targetRotation -= 10f;
 		}
 		
-		if(DodgeGame.INPUT.up.isPressed()) translation.add(0, 1);
-		if(DodgeGame.INPUT.down.isPressed()) translation.add(0, -1);
-		if(DodgeGame.INPUT.left.isPressed()) translation.add(-1, 0);
-		if(DodgeGame.INPUT.right.isPressed()) translation.add(1, 0);
+		actualRotation += (targetRotation - actualRotation) * 0.5f;
+
+		sprite.setRotation(-actualRotation);
 		
-		float length = translation.len();
+		Vector2.tmp.set(MathUtils.sinDeg(actualRotation), MathUtils.cosDeg(actualRotation));
 		
-		if(length > DodgeGame.SECONDS_PER_UPDATE * WALK_SPEED){
-			//normalize the vector
-			translation.x /= length;
-			translation.y /= length;
-			
-			translation.mul(DodgeGame.SECONDS_PER_UPDATE * WALK_SPEED);
-		}
+		float handDist = (0.7f - handCloseTimer / 50f);
+		sprite.setPosition(Vector2.tmp.x * handDist - 0.5f, Vector2.tmp.y * handDist);
 		
-		owner.translate(translation);*/
+		owner.setPosition(Vector2.tmp.mul(MOVE_RADIUS));
 		
-		if(DodgeGame.INPUT.left.isPressed()) rotation -= 10f;
-		if(DodgeGame.INPUT.right.isPressed()) rotation += 10f;
-		if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-			if(DodgeGame.INPUT.getInputX() > 0) rotation += 10f;
-			else rotation -= 10f;
-		}
-		
-		owner.setxPos(MathUtils.sinDeg(rotation) * MOVE_RADIUS);
-		owner.setyPos(MathUtils.cosDeg(rotation) * MOVE_RADIUS);
-		
+		if(invincibilityTimer > 0) invincibilityTimer--;
+
 		SpriteComponent spriteComponent = owner.getComponent(SpriteComponent.class);
-		spriteComponent.getSprite().setScale(radius);
-		
-		if(invincibilityTimer > 0){
-			invincibilityTimer--;
-			spriteComponent.getSprite().setColor(Color.GRAY);
-		}else spriteComponent.getSprite().setColor(Color.BLACK);
+		if(spriteComponent != null){
+			spriteComponent.getSprite().setScale(radius);
+			
+			if(isInvincible()) spriteComponent.getSprite().setColor(Color.GRAY);
+			else spriteComponent.getSprite().setColor(Color.BLACK);
+		}
 		
 		if(DodgeGame.gameTime - lastGrowTime == COMBO_BREAK_TIME){
 			combo = 0;
 			
 			gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
 		}
+		
+		if(handCloseTimer > 0){
+			handCloseTimer--;
+			
+			if(handCloseTimer == 0){
+				sprite.setRegion(Util.HAND);
+			}
+		}
 	}
 	
-	public void eat(){
+	public void render(SpriteBatch batch){
+		if(!isInvincible() || (DodgeGame.gameTime / 5) % 2 == 0) sprite.draw(batch);
+	}
+
+	public void score(){
 		gameState.setStatusText(getRandomText(GROW_STATUS_TEXTS), Color.GREEN);
 		
 		score += getScoreMultiplier();
 		
-		if(getScore() > highscore){
+		if(getScore() > Stat.HIGH_SCORE.getInt()){
 			if(!newHighscore){
 				gameState.setStatusText("NEW HIGHSCORE!", Color.GREEN);
 				
@@ -114,8 +118,12 @@ public class PlayerComponent extends Component{
 		gameState.getScoreElement().setText(Integer.toString(score));
 		
 		lastGrowTime = DodgeGame.gameTime;
+		
+		Stat.NUM_FOOD_EATEN.addInt(1);
+		
+		closeHand();
 	}
-	
+
 	public void die(){
 		if(isInvincible()) return;
 		
@@ -132,6 +140,15 @@ public class PlayerComponent extends Component{
 		
 		combo = 0;
 		gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
+		
+		Stat.NUM_DEATHS.addInt(1);
+		
+		closeHand();
+	}
+	
+	private void closeHand(){
+		handCloseTimer = HAND_CLOSE_TIME;
+		sprite.setRegion(Util.HAND_CLOSED);
 	}
 	
 	public int getScoreMultiplier(){

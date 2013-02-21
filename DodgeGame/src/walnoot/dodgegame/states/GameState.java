@@ -1,16 +1,14 @@
 package walnoot.dodgegame.states;
 
-import java.util.ArrayList;
-
 import walnoot.dodgegame.DodgeGame;
+import walnoot.dodgegame.Stat;
 import walnoot.dodgegame.Util;
 import walnoot.dodgegame.components.Entity;
-import walnoot.dodgegame.components.FoodComponent;
 import walnoot.dodgegame.components.HeartComponent;
-import walnoot.dodgegame.components.MoveComponent;
 import walnoot.dodgegame.components.PlayerComponent;
 import walnoot.dodgegame.components.SpriteComponent;
 import walnoot.dodgegame.gameplay.BasicSpawnHandler;
+import walnoot.dodgegame.gameplay.EntityPool;
 import walnoot.dodgegame.gameplay.Map;
 import walnoot.dodgegame.gameplay.SpawnHandler;
 import walnoot.dodgegame.ui.TextElement;
@@ -25,16 +23,17 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Pool;
 
 public class GameState extends State{
-	public static final float MAP_SIZE = 6;
+	public static final float MAP_SIZE = 6f;
 	public static final int MAX_UNUSED_ENTITIES = 10;
 	private static final int SPAWN_RATE_SCALE = 4;
-	private static final float STATUS_TEXT_SCALE = 2f;//scale of the status text at the beginning
+	private static final float STATUS_TEXT_SCALE = 1f;//scale of the status text at the beginning
 	
-	private ArrayList<Entity> unusedEntities = new ArrayList<Entity>(MAX_UNUSED_ENTITIES);
+	//private ArrayList<Entity> unusedEntities = new ArrayList<Entity>(MAX_UNUSED_ENTITIES);
 	
-	private Map map;
+	private Map map = new Map();
 	private int enemySpawnTimer = SPAWN_RATE_SCALE; //an enemy spawn when this is zero
 	
 	private int gameOverTimer; //delays the switch to game over state
@@ -52,13 +51,13 @@ public class GameState extends State{
 	private SpawnHandler spawnHandler = new BasicSpawnHandler();
 	private int spawnHandlerTimer = spawnHandler.getDuration();
 	
+	private Pool<Entity> entityPool = new EntityPool(map, this);
+
 	public GameState(OrthographicCamera camera){
 		super(camera);
 		
-		map = new Map();
-		
-		Entity playerEntity = new Entity(map, 0, 0, 0);
-		playerEntity.addComponent(new SpriteComponent(playerEntity, Util.DOT, Color.BLACK));
+		Entity playerEntity = new Entity(map, 0, 0);
+//		playerEntity.addComponent(new SpriteComponent(playerEntity, Util.DOT, Color.BLACK));//for testing purposes
 		
 		PlayerComponent playerComponent = new PlayerComponent(playerEntity, this);
 		playerEntity.addComponent(playerComponent);
@@ -67,7 +66,7 @@ public class GameState extends State{
 		map.setPlayerComponent(playerComponent);
 		
 		for(int i = 0; i < PlayerComponent.NUM_START_LIVES; i++){
-			Entity heart = new Entity(map, 0, 0, 0);
+			Entity heart = new Entity(map, 0, 0);
 			
 			heart.addComponent(new SpriteComponent(heart, Util.HEART, HeartComponent.SCALE));
 			heart.addComponent(new HeartComponent(heart, i));
@@ -89,31 +88,32 @@ public class GameState extends State{
 			}
 		});
 		stage.addActor(image);
+		
+		Stat.NUM_TIMES_PLAYED.addInt(1);
 	}
 	
 	public void update(){
 		time++;
 		
+
 		checkFoodSpawn();
 		
 		if(gameOver){
 			gameOverTimer++;
 			
 			if(gameOverTimer == (int) DodgeGame.UPDATES_PER_SECOND) DodgeGame.setState(new GameOverState(this));
+		}else{
+			Stat.TICKS_PLAYED.addInt(1);
 		}
 		
-		if(statusTimer != 0){
-			statusTimer--;
-		}
+		if(statusTimer != 0) statusTimer--;
 		
 		map.update();
 		
-		if(DodgeGame.INPUT.pause.isJustPressed() && !gameOver){
-			pause();
-		}
+		if(DodgeGame.INPUT.pause.isJustPressed() && !gameOver) pause();
 		
-		multiplierElement.setScale(3f + MathUtils.cosDeg(DodgeGame.gameTime * 3 * map.getPlayerComponent()
-				.getScoreMultiplier()));
+		multiplierElement.setScale(3f + MathUtils.cosDeg(DodgeGame.gameTime * 3
+				* map.getPlayerComponent().getScoreMultiplier()));
 	}
 	
 	private void checkFoodSpawn(){
@@ -121,7 +121,7 @@ public class GameState extends State{
 		if(enemySpawnTimer == 0){
 			enemySpawnTimer = spawnHandler.getPauseTicks(time);
 			
-			Entity food = getNewFood();
+			Entity food = getNewUnit();
 			
 			spawnHandler.spawn(food, spawnHandlerTimer);
 			
@@ -140,7 +140,12 @@ public class GameState extends State{
 		DodgeGame.setState(new PauseState(camera, this));
 	}
 	
-	private Entity getNewFood(){
+	private Entity getNewUnit(){
+		Entity e = entityPool.obtain();
+		e.setRemoved(false);
+		
+		return e;
+
 		/*if(unusedEntities.isEmpty()){
 			Entity e = new Entity(map, 0, 0, 0);
 			
@@ -156,12 +161,12 @@ public class GameState extends State{
 			return e;
 		}*/
 		
-		Entity e = new Entity(map, 0, 0, 0);
+		/*Entity e = new Entity(map, 0, 0);
 		
 		e.addComponent(new MoveComponent(e));
 		e.addComponent(new FoodComponent(e, this));
 		
-		return e;
+		return e;*/
 	}
 	
 	public void render(SpriteBatch batch){
@@ -170,10 +175,11 @@ public class GameState extends State{
 		if(statusTimer != 0){
 			float completeness = (statusTimer / DodgeGame.UPDATES_PER_SECOND);//scale of status thing between 0 and 1
 			
-			DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE * STATUS_TEXT_SCALE * completeness);
-			DodgeGame.FONT.setColor(statusColor);
-			DodgeGame.FONT.draw(batch, statusText, -statusBounds.width * completeness * 0.5f, 7f - completeness);
-			DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
+			DodgeGame.SCALE_FONT.setScale(DodgeGame.FONT_SCALE * STATUS_TEXT_SCALE * completeness);
+			DodgeGame.SCALE_FONT.setColor(statusColor);
+			DodgeGame.SCALE_FONT
+					.draw(batch, statusText, -statusBounds.width * 0.5f * completeness, completeness * 0.5f);
+			DodgeGame.SCALE_FONT.setScale(DodgeGame.FONT_SCALE);
 		}
 		
 		multiplierElement.render(batch);
@@ -185,8 +191,8 @@ public class GameState extends State{
 		statusColor = color;
 		statusTimer = (int) DodgeGame.UPDATES_PER_SECOND;
 		
-		DodgeGame.FONT.setScale(STATUS_TEXT_SCALE);
-		statusBounds = DodgeGame.FONT.getBounds(statusText, statusBounds);
+		DodgeGame.SCALE_FONT.setScale(STATUS_TEXT_SCALE * DodgeGame.FONT_SCALE);
+		statusBounds = DodgeGame.SCALE_FONT.getBounds(statusText, statusBounds);
 	}
 	
 	public void resize(){
@@ -196,6 +202,10 @@ public class GameState extends State{
 		return map;
 	}
 	
+	public Pool<Entity> getPool(){
+		return entityPool;
+	}
+
 	public TextElement getMultiplierElement(){
 		return multiplierElement;
 	}
@@ -204,14 +214,13 @@ public class GameState extends State{
 		return scoreElement;
 	}
 	
-	public ArrayList<Entity> getUnusedEntities(){
-		return unusedEntities;
-	}
-	
 	public void gameOver(){
 		gameOver = true;
+		
+		Stat.saveStats();
 	}
 	
 	public void dispose(){
+		DodgeGame.PREFERENCES.flush();//for the stats
 	}
 }

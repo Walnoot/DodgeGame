@@ -48,7 +48,7 @@ public class PauseState extends State{
 	public void render(SpriteBatch batch){
 		oldState.render(batch);
 		
-		DodgeGame.FONT.setColor(Color.BLACK);
+		DodgeGame.SCALE_FONT.setColor(Color.BLACK);
 		pauseElement.render(batch);
 		continueElement.render(batch);
 		returnButton.render(batch);

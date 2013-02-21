@@ -17,7 +17,7 @@ public class Map{
 	private PlayerComponent playerComponent;
 	
 	public Map(){
-		Entity backgroundEntity = new Entity(this, 0, 0, 0);
+		Entity backgroundEntity = new Entity(this, 0, 0);
 		backgroundEntity.addComponent(new SpriteComponent(backgroundEntity, Util.FIELD, 2f * GameState.MAP_SIZE));
 		
 		addEntity(backgroundEntity);

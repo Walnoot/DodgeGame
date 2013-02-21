@@ -21,7 +21,7 @@ public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 30, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
 	public static final float FONT_SCALE = 1f / 64f;
 	
-	public static BitmapFont FONT;//temporary, hopefully
+	public static BitmapFont SCALE_FONT;//temporary, hopefully
 	public static BitmapFont UI_FONT;
 	public static Preferences PREFERENCES;
 	public static SoundManager SOUND_MANAGER = new SoundManager();
@@ -31,8 +31,8 @@ public class DodgeGame implements ApplicationListener{
 	
 	public static State state;
 	public static int gameTime;
-	public static InputMultiplexer inputs;
-	
+
+	private static InputMultiplexer inputs;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private float updateTimer;
@@ -61,12 +61,13 @@ public class DodgeGame implements ApplicationListener{
 	}
 	
 	public void dispose(){
+		Stat.saveStats();
+
 		PREFERENCES.flush();
 		
 		state.dispose();
 		batch.dispose();
-		FONT.dispose();
-		//TEXTURE.dispose();
+		SCALE_FONT.dispose();
 		SOUND_MANAGER.dispose();
 		Util.ATLAS.dispose();
 	}

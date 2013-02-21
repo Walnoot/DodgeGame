@@ -2,7 +2,7 @@ package walnoot.dodgegame.gameplay;
 
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.components.Entity;
-import walnoot.dodgegame.components.FoodComponent.FoodType;
+import walnoot.dodgegame.components.UnitComponent.UnitType;
 import walnoot.dodgegame.states.GameState;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -19,7 +19,7 @@ public class BasicSpawnHandler extends SpawnHandler{
 		translation.y = MathUtils.randomBoolean() ? -GameState.MAP_SIZE : GameState.MAP_SIZE;
 		if(MathUtils.randomBoolean()) translation.set(translation.y, translation.x);
 		
-		spawnToCenter(entity, translation, MathUtils.random(99) < GROW_OBJECT_CHANGE ? FoodType.EAT : FoodType.DIE);
+		spawnToCenter(entity, translation, MathUtils.random(99) < GROW_OBJECT_CHANGE ? UnitType.SCORE : UnitType.DIE);
 	}
 	
 	public int getDuration(){

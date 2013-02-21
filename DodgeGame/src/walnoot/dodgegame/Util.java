@@ -31,7 +31,10 @@ public class Util{
 	public static TextureAtlas ATLAS;
 	
 	public static TextureRegion HEART;
+	public static TextureRegion HAND;
+	public static TextureRegion HAND_CLOSED;
 	public static TextureRegion DOT;
+	public static TextureRegion COIN;
 	public static TextureRegion FIELD;
 	public static TextureRegion FONT;
 	public static TextureRegion FOOD_ONE;
@@ -39,13 +42,14 @@ public class Util{
 	public static TextureRegion FOOD_THREE;
 	public static TextureRegion ICON_FALSE;
 	public static TextureRegion ICON_TRUE;
-	public static TextureRegion BAD_FOOD_ONE;
+	public static TextureRegion BOMB;
 	public static TextureRegion BACKGROUND;
 	public static TextureRegion SHINE;
 	public static TextureRegion PAUSE;
 	public static TextureRegion RESUME;
 	public static TextureRegion SLIDER;
 	public static TextureRegion SLIDER_BIG;
+	public static TextureRegion SLIDER_KNOB;
 	
 	public static NinePatch PATCH_SLIDER;
 	public static NinePatch PATCH_SLIDER_BIG;
@@ -62,7 +66,10 @@ public class Util{
 	
 	public static void loadRegions(){
 		HEART = ATLAS.findRegion("heart");
+		HAND = ATLAS.findRegion("hand");
+		HAND_CLOSED = ATLAS.findRegion("hand_closed");
 		DOT = ATLAS.findRegion("dot");
+		COIN = ATLAS.findRegion("coin");
 		FIELD = ATLAS.findRegion("field");
 		FONT = ATLAS.findRegion("font");
 		FOOD_ONE = ATLAS.findRegion("drumstick");
@@ -70,13 +77,14 @@ public class Util{
 		FOOD_THREE = ATLAS.findRegion("pizza");
 		ICON_FALSE = ATLAS.findRegion("icon_false");
 		ICON_TRUE = ATLAS.findRegion("icon_true");
-		BAD_FOOD_ONE = ATLAS.findRegion("bone");
+		BOMB = ATLAS.findRegion("bone");
 		BACKGROUND = ATLAS.findRegion("background");
 		SHINE = ATLAS.findRegion("shine");
 		PAUSE = ATLAS.findRegion("pause");
 		RESUME = ATLAS.findRegion("resume");
 		SLIDER = ATLAS.findRegion("slider");
 		SLIDER_BIG = ATLAS.findRegion("slider_big");
+		SLIDER_KNOB = ATLAS.findRegion("slider_knob");
 		
 		PATCH_SLIDER = getNinePatch(SLIDER);
 		PATCH_SLIDER_BIG = getNinePatch(SLIDER_BIG);
@@ -88,7 +96,7 @@ public class Util{
 		NinePatchDrawable patchSmall = new NinePatchDrawable(PATCH_SLIDER);
 		NinePatchDrawable patchBig = new NinePatchDrawable(PATCH_SLIDER_BIG);
 		
-		SKIN.add("default-horizontal", new SliderStyle(patchSmall, new TextureRegionDrawable(DOT)));
+		SKIN.add("default-horizontal", new SliderStyle(patchSmall, new TextureRegionDrawable(SLIDER_KNOB)));
 		
 		TextButtonStyle textButtonStyle = new TextButtonStyle(patchSmall, patchBig, null);
 		textButtonStyle.font = DodgeGame.UI_FONT;

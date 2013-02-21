@@ -28,9 +28,9 @@ public class LoadingState extends State{
 	public void render(SpriteBatch batch){
 		switch (loadIndex){
 			case 0:
-				DodgeGame.FONT = new BitmapFont(Gdx.files.internal("komika_axis.fnt"), Util.FONT, false);
-				DodgeGame.FONT.setUseIntegerPositions(false);
-				DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
+				DodgeGame.SCALE_FONT = new BitmapFont(Gdx.files.internal("komika_axis.fnt"), Util.FONT, false);
+				DodgeGame.SCALE_FONT.setUseIntegerPositions(false);
+				DodgeGame.SCALE_FONT.setScale(DodgeGame.FONT_SCALE);
 				
 				DodgeGame.UI_FONT = new BitmapFont(Gdx.files.internal("komika_axis.fnt"), Util.FONT, false);
 				DodgeGame.UI_FONT.setUseIntegerPositions(false);

@@ -20,8 +20,8 @@ public class ReturnButton extends TextButton{
 		this.camera = camera;
 		this.previousState = previousState;
 		
-		DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE * SCALE);
-		bounds = new TextBounds(DodgeGame.FONT.getBounds(text));
+		DodgeGame.SCALE_FONT.setScale(DodgeGame.FONT_SCALE * SCALE);
+		bounds = new TextBounds(DodgeGame.SCALE_FONT.getBounds(text));
 	}
 	
 	public ReturnButton(OrthographicCamera camera, State previousState){

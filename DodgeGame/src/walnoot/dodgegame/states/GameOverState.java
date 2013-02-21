@@ -1,6 +1,7 @@
 package walnoot.dodgegame.states;
 
 import walnoot.dodgegame.DodgeGame;
+import walnoot.dodgegame.Stat;
 import walnoot.dodgegame.ui.TextButton;
 import walnoot.dodgegame.ui.TextElement;
 
@@ -30,7 +31,7 @@ public class GameOverState extends State{
 			}
 		};
 		
-		int highscore = DodgeGame.PREFERENCES.getInteger(HIGH_SCORE_KEY, 0);
+		int highscore = Stat.HIGH_SCORE.getInt();
 		int score = gameState.getMap().getPlayerComponent().getScore();
 		boolean newHighScore = false;
 		

@@ -1,5 +1,0 @@
-sound toggle on main menu?
-more food sprites
-player sprite
-sound/music slider
-AdMob integration

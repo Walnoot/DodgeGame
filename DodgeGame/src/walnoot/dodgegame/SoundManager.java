@@ -7,8 +7,10 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.MathUtils;
 
 public class SoundManager{
-	private static final String[] musicPaths = {"Comparsa.mp3", "CumbiaNoFrillsFaster.mp3", "No Frills Salsa.mp3", "Notanico Merengue.mp3", "Peppy Pepe.mp3"};
-	private static final String[] eatSoundPaths = {"apple.wav", "apple2.wav", "bite.mp3", "bite2.wav", "burp.wav"};
+	private static final String[] musicPaths = {"Comparsa.mp3", "CumbiaNoFrillsFaster.mp3", "No Frills Salsa.mp3",
+			"Notanico Merengue.mp3", "Peppy Pepe.mp3"};
+//	private static final String[] eatSoundPaths = {"apple.wav", "apple2.wav", "bite.mp3", "bite2.wav", "burp.wav"};
+	private static final String[] eatSoundPaths = {"register.mp3"};
 	public static final String PREF_SOUND_KEY = "SoundVolume";
 	private static final float VOLUME_THRESHOLD = 0.05f;
 	
@@ -20,6 +22,7 @@ public class SoundManager{
 	private Sound clickSound;
 	private boolean loaded;
 	private float volume;
+	private boolean disposed;
 	
 	public void init(){
 		musicFolder = Gdx.files.internal("music/");
@@ -46,15 +49,24 @@ public class SoundManager{
 	}
 	
 	public void update(){
-		if(!currentSong.isPlaying() && soundOn){
-			currentSong.dispose();
-			
-			songIndex++;
-			if(songIndex >= musicPaths.length) songIndex = 0;
-			
-			currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
-			currentSong.setVolume(volume);
-			currentSong.play();
+		if(soundOn){
+			if(disposed){//returning from disposal
+				currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
+				currentSong.setVolume(volume);
+				
+				currentSong.play();
+
+				disposed = false;
+			}else if(!currentSong.isPlaying()){
+				currentSong.dispose();
+				
+				songIndex++;
+				if(songIndex >= musicPaths.length) songIndex = 0;
+				
+				currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
+				currentSong.setVolume(volume);
+				currentSong.play();
+			}
 		}
 	}
 	
@@ -105,6 +117,10 @@ public class SoundManager{
 	}
 	
 	public void dispose(){
+		disposed = true;
+		
+		currentSong.stop();
+
 		currentSong.dispose();
 	}
 }

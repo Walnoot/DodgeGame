@@ -44,7 +44,7 @@ public class MainMenuState extends State{
 					DodgeGame.setState(new GameState(camera));
 			}
 		});
-		table.add(playButton).height(128f).padBottom(32f).width(480f).colspan(2);
+		table.add(playButton).height(128f).padBottom(32f).width(480f).colspan(3);
 		table.row();
 		
 		TextButton optionsButton = new TextButton("OPTIONS", Util.SKIN);
@@ -62,7 +62,14 @@ public class MainMenuState extends State{
 			}
 		});
 		table.add(creditsButton).fillX();
-		table.row();
+		
+		TextButton statsButton = new TextButton("STATS", Util.SKIN);
+		statsButton.addListener(new ButtonClickListener(){
+			public void click(Actor actor){
+				DodgeGame.setState(new StatState(camera));
+			}
+		});
+		table.add(statsButton).fillX();
 	}
 	
 	public void update(){

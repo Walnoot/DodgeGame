@@ -2,7 +2,7 @@ package walnoot.dodgegame.gameplay;
 
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.components.Entity;
-import walnoot.dodgegame.components.FoodComponent.FoodType;
+import walnoot.dodgegame.components.UnitComponent.UnitType;
 import walnoot.dodgegame.states.GameState;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -12,7 +12,7 @@ public class TestSpawnHandler extends SpawnHandler{
 	
 	private int startTime;
 	private float startAngle;
-	private FoodType type;
+	private UnitType type;
 	private float speed;
 	
 	public void init(){
@@ -20,7 +20,7 @@ public class TestSpawnHandler extends SpawnHandler{
 		
 		startAngle = MathUtils.random(0f, 2f * MathUtils.PI);
 		
-		type = MathUtils.randomBoolean() ? FoodType.DIE : FoodType.EAT;
+		type = MathUtils.randomBoolean() ? UnitType.DIE : UnitType.SCORE;
 		
 		speed = MathUtils.random(1f, 2f);
 		if(MathUtils.randomBoolean()) speed = -speed;
@@ -34,7 +34,7 @@ public class TestSpawnHandler extends SpawnHandler{
 	}
 	
 	public int getPauseTicks(int time){
-		return 4;
+		return 6;
 	}
 
 	public int getDuration(){

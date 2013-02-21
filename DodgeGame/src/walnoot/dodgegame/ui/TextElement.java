@@ -25,10 +25,10 @@ public class TextElement{
 	}
 	
 	public void render(SpriteBatch batch){
-		DodgeGame.FONT.setColor(color);
-		DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE * scale);
-		DodgeGame.FONT.draw(batch, text, xPos - getWidth() * 0.5f, yPos + getHeight() * 0.5f);
-		DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
+		DodgeGame.SCALE_FONT.setColor(color);
+		DodgeGame.SCALE_FONT.setScale(DodgeGame.FONT_SCALE * scale);
+		DodgeGame.SCALE_FONT.draw(batch, text, xPos - getWidth() * 0.5f, yPos + getHeight() * 0.5f);
+		DodgeGame.SCALE_FONT.setScale(DodgeGame.FONT_SCALE);
 	}
 	
 	protected float getWidth(){
@@ -66,8 +66,8 @@ public class TextElement{
 	public void setText(String text){
 		this.text = text;
 		
-		DodgeGame.FONT.setScale(DodgeGame.FONT_SCALE);
-		bounds = new TextBounds(DodgeGame.FONT.getBounds(text));
+		DodgeGame.SCALE_FONT.setScale(DodgeGame.FONT_SCALE);
+		bounds = new TextBounds(DodgeGame.SCALE_FONT.getBounds(text));
 	}
 	
 	public void setPos(float x, float y){

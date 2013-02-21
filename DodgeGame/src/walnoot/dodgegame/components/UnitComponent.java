@@ -9,22 +9,22 @@ import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
-public class FoodComponent extends Component{
+public class UnitComponent extends Component{
 	public static final float FADE_OUT_DURATION = .25f, FADE_IN_DURATION = .25f;//seconds
 	private static final float SPIN_SPEED = 6f;
 	
-	private FoodType type;
+	private UnitType type;
 	private boolean consumed, hasPlayedSound;
 	private int removeTimer;
 	
 	private final GameState gameState;
 	
-	public FoodComponent(Entity owner, GameState gameState){
+	public UnitComponent(Entity owner, GameState gameState){
 		super(owner);
 		this.gameState = gameState;
 	}
 	
-	public void init(FoodType type){
+	public void init(UnitType type){
 		//i hate pooling
 		
 		this.type = type;
@@ -69,8 +69,8 @@ public class FoodComponent extends Component{
 			tween.target(0).start(DodgeGame.TWEEN_MANAGER);
 			
 			switch (type){
-				case EAT:
-					map.getPlayerComponent().eat();
+				case SCORE:
+					map.getPlayerComponent().score();
 					
 					DodgeGame.PARTICLE_HANDLER.addShineEffect(owner.getxPos(), owner.getyPos());
 					
@@ -90,17 +90,14 @@ public class FoodComponent extends Component{
 	}
 	
 	public void onEntityRemove(){
-		if(gameState.getUnusedEntities().size() < GameState.MAX_UNUSED_ENTITIES){
-			gameState.getUnusedEntities().add(owner);
-		}
 	}
 	
-	public enum FoodType{
-		EAT(Util.FOOD_ONE, Util.FOOD_TWO, Util.FOOD_THREE), DIE(Util.BAD_FOOD_ONE);
+	public enum UnitType{
+		SCORE(Util.COIN), DIE(Util.BOMB);
 		
 		private final TextureRegion[] regions;
 		
-		private FoodType(TextureRegion... regions){
+		private UnitType(TextureRegion... regions){
 			this.regions = regions;
 		}
 		

@@ -8,7 +8,6 @@ import walnoot.dodgegame.ui.TextElement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,7 +17,7 @@ public class TutorialState extends State{
 	public static final float FOOD_RADIUS = 5f;
 	public static final float FOOD_SIZE = 4f;
 	
-	private static final int PLAYER_EXPLANATION = 0, GOOD_FOOD = 1, BAD_FOOD = 2;
+	private static final int PLAYER_EXPLANATION = 0, COINS = 1, BOMBS = 2;
 	public static final String PREF_TUTORIAL_KEY = "showTuturial";
 	private static final float MINIMAL_SKIP_TIME = 1.0f;//seconds
 	
@@ -67,27 +66,25 @@ public class TutorialState extends State{
 		
 		switch (state){
 			case PLAYER_EXPLANATION:
-				Sprite sprite = new Sprite(Util.DOT);
-				sprite.setColor(Color.BLACK);
-				sprites.add(sprite);
+				sprites.add(new Sprite(Util.HAND));
 				
-				text = "THIS IS YOU! (FOR NOW)";
+				text = "THIS IS YOU!";
 				
 				break;
-			case GOOD_FOOD:
-				sprites.add(new Sprite(Util.FOOD_ONE));
-				sprites.add(new Sprite(Util.FOOD_TWO));
-				sprites.add(new Sprite(Util.FOOD_THREE));
+			case COINS:
+				sprites.add(new Sprite(Util.COIN));
+				sprites.add(new Sprite(Util.COIN));
+				sprites.add(new Sprite(Util.COIN));
 				
-				text = "EAT THESE TO GROW!";
+				text = "GRAB THESE COINS!";
 				
 				break;
-			case BAD_FOOD:
-				sprites.add(new Sprite(Util.BAD_FOOD_ONE));
-				sprites.add(new Sprite(Util.DOT));
-				sprites.add(new Sprite(Util.DOT));
+			case BOMBS:
+				sprites.add(new Sprite(Util.BOMB));
+				sprites.add(new Sprite(Util.BOMB));
+				sprites.add(new Sprite(Util.BOMB));
 				
-				text = "THIS ROTTEN FOOD WILL KILL YOU!";
+				text = "WATCH OUT FOR BOMBS!";
 				
 				break;
 			default:
@@ -98,7 +95,8 @@ public class TutorialState extends State{
 		if(text != null) descriptionElement = new TextElement(text, 0, 0);
 		
 		for(int i = 0; i < sprites.size(); i++){
-			sprites.get(i).setSize(FOOD_SIZE, FOOD_SIZE);
+			if(state == PLAYER_EXPLANATION) sprites.get(i).setSize(FOOD_SIZE * 0.5f, FOOD_SIZE);
+			else sprites.get(i).setSize(FOOD_SIZE, FOOD_SIZE);
 			sprites.get(i).setPosition(
 					(MathUtils.cosDeg(i * (360f / sprites.size()) + angle) * FOOD_RADIUS) - 0.5f * FOOD_SIZE,
 					(MathUtils.sinDeg(i * (360f / sprites.size()) + angle) * FOOD_RADIUS) - 0.5f * FOOD_SIZE);

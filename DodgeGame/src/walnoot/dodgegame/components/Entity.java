@@ -5,20 +5,17 @@ import java.util.ArrayList;
 import walnoot.dodgegame.gameplay.Map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Entity{
-//	private float xPos, yPos/*, rotation*/;
 	private Vector2 pos = new Vector2();
 	private ArrayList<Component> components = new ArrayList<Component>();//fuck yeah entity-component design
 	private boolean removed = false;
 	private Map map;
 	
-	public Entity(Map map, float xPos, float yPos, float rotation){
+	public Entity(Map map, float xPos, float yPos){
 		this.map = map;
 		pos.set(xPos, yPos);
-//		this.rotation = rotation;
 	}
 	
 	public void render(SpriteBatch batch){
@@ -100,6 +97,10 @@ public class Entity{
 		pos.y = yPos;
 	}
 	
+	public void setPosition(Vector2 position){
+		pos.set(position);
+	}
+
 	/*public void setRotation(float rotation){
 		this.rotation = rotation;
 		

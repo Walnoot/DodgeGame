@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
@@ -16,8 +15,7 @@ public class ParticleHandler{
 
 	public void load(){
 		ParticleEffect shine = new ParticleEffect();
-		shine.loadEmitters(Gdx.files.internal("effects/shine.dat"));
-		shine.getEmitters().get(0).setSprite(new Sprite(Util.SHINE));
+		shine.load(Gdx.files.internal("effects/shine.dat"), Util.ATLAS);
 		
 		pool = new ParticleEffectPool(shine, 2, 8);
 
@@ -35,7 +33,7 @@ public class ParticleHandler{
 	public void render(SpriteBatch batch){
 		for(int i = effects.size - 1; i >= 0; i--){
 			PooledEffect effect = effects.get(i);
-			effect.draw(batch);
+			effect.draw(batch, Gdx.graphics.getDeltaTime());
 			
 			if(effect.isComplete()){
 				effect.free();
@@ -45,9 +43,6 @@ public class ParticleHandler{
 	}
 	
 	public void update(){
-		for(int i = effects.size - 1; i >= 0; i--){
-			effects.get(i).update(DodgeGame.SECONDS_PER_UPDATE);
-		}
 	}
 	
 	public boolean isLoaded(){
