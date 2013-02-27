@@ -11,17 +11,17 @@ public class SoundManager{
 			"Notanico Merengue.mp3", "Peppy Pepe.mp3"};
 //	private static final String[] eatSoundPaths = {"apple.wav", "apple2.wav", "bite.mp3", "bite2.wav", "burp.wav"};
 	private static final String[] eatSoundPaths = {"register.mp3"};
-	public static final String PREF_SOUND_KEY = "SoundVolume";
+	public static final String PREF_SOUND_KEY = "SoundVolume", PREF_MUSIC_KEY = "musicVolume";
 	private static final float VOLUME_THRESHOLD = 0.05f;
 	
 	private Music currentSong;
 	private int songIndex;
 	private FileHandle musicFolder, soundFolder;
-	private boolean soundOn;
+//	private boolean soundOn;
 	private Sound[] eatSounds = new Sound[eatSoundPaths.length];
 	private Sound clickSound;
 	private boolean loaded;
-	private float volume;
+	private float soundVolume, musicVolume;
 	private boolean disposed;
 	
 	public void init(){
@@ -31,12 +31,12 @@ public class SoundManager{
 		songIndex = MathUtils.random(musicPaths.length - 1);
 		currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
 		
-		volume = DodgeGame.PREFERENCES.getFloat(PREF_SOUND_KEY, 1f);
+		soundVolume = DodgeGame.PREFERENCES.getFloat(PREF_SOUND_KEY, 1f);
+		musicVolume = DodgeGame.PREFERENCES.getFloat(PREF_MUSIC_KEY, 1f);
 		
-		if(volume > VOLUME_THRESHOLD){
+		if(musicVolume > VOLUME_THRESHOLD){
 			currentSong.play();
-			currentSong.setVolume(volume);
-			soundOn = true;
+			currentSong.setVolume(soundVolume);
 		}
 		
 		for(int i = 0; i < eatSounds.length; i++){
@@ -49,10 +49,10 @@ public class SoundManager{
 	}
 	
 	public void update(){
-		if(soundOn){
+		if(musicVolume > VOLUME_THRESHOLD){
 			if(disposed){//returning from disposal
 				currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
-				currentSong.setVolume(volume);
+				currentSong.setVolume(musicVolume);
 				
 				currentSong.play();
 
@@ -64,52 +64,48 @@ public class SoundManager{
 				if(songIndex >= musicPaths.length) songIndex = 0;
 				
 				currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
-				currentSong.setVolume(volume);
+				currentSong.setVolume(musicVolume);
 				currentSong.play();
 			}
 		}
 	}
 	
 	public void playRandomEatSound(){
-		if(soundOn) eatSounds[MathUtils.random(0, eatSounds.length - 1)].play(volume);
+		if(soundVolume > VOLUME_THRESHOLD) eatSounds[MathUtils.random(0, eatSounds.length - 1)].play(soundVolume);
 	}
 	
 	public void playClickSound(){
-		if(soundOn) clickSound.play(volume);
+		if(soundVolume > VOLUME_THRESHOLD) clickSound.play(soundVolume);
 	}
 	
-	public void pause(){
-		soundOn = false;
+	public void setSoundVolume(float volume){
+		this.soundVolume = volume;
 		
-		currentSong.pause();
-	}
-	
-	public void resume(){
-		soundOn = true;
+		if(volume < VOLUME_THRESHOLD) this.soundVolume = 0f;
 		
-		currentSong.play();
+		DodgeGame.PREFERENCES.putFloat(PREF_SOUND_KEY, this.soundVolume);
 	}
 	
-	public void setVolume(float volume){
-		currentSong.setVolume(volume);
-		this.volume = volume;
+	public void setMusicVolume(float volume){
+		this.musicVolume = volume;
 		
 		if(volume < VOLUME_THRESHOLD){
-			this.volume = 0f;
-			if(soundOn) pause();
+			this.musicVolume = 0f;
+			currentSong.pause();
 		}else{
-			if(!soundOn) resume();
+			if(!currentSong.isPlaying()) currentSong.play();
+			currentSong.setVolume(volume);
 		}
 		
-		DodgeGame.PREFERENCES.putFloat(PREF_SOUND_KEY, this.volume);
+		DodgeGame.PREFERENCES.putFloat(PREF_MUSIC_KEY, this.musicVolume);
 	}
 	
-	public float getVolume(){
-		return volume;
+	public float getSoundVolume(){
+		return soundVolume;
 	}
 	
-	public boolean isPlaying(){
-		return soundOn;
+	public float getMusicVolume(){
+		return musicVolume;
 	}
 	
 	public boolean isLoaded(){

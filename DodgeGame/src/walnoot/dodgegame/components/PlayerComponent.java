@@ -101,13 +101,13 @@ public class PlayerComponent extends Component{
 	}
 
 	public void score(){
-		gameState.setStatusText(getRandomText(GROW_STATUS_TEXTS), Color.GREEN);
+		gameState.setAnnouncement(getRandomText(GROW_STATUS_TEXTS), Color.GREEN);
 		
 		score += getScoreMultiplier();
 		
 		if(getScore() > Stat.HIGH_SCORE.getInt()){
 			if(!newHighscore){
-				gameState.setStatusText("NEW HIGHSCORE!", Color.GREEN);
+				gameState.setAnnouncement("NEW HIGHSCORE!", Color.GREEN);
 				
 				newHighscore = true;
 			}
@@ -136,7 +136,7 @@ public class PlayerComponent extends Component{
 			((GameState) DodgeGame.state).gameOver();
 		}
 		
-		gameState.setStatusText(getRandomText(BAD_STUFF_STATUS_TEXTS), Color.BLACK);
+		gameState.setAnnouncement(getRandomText(BAD_STUFF_STATUS_TEXTS), Color.BLACK);
 		
 		combo = 0;
 		gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));

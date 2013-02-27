@@ -4,17 +4,14 @@ import walnoot.dodgegame.ButtonClickListener;
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Util;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class OptionsState extends State{
 	public OptionsState(OrthographicCamera camera){
@@ -25,22 +22,32 @@ public class OptionsState extends State{
 		table.pad(64);
 		stage.addActor(table);
 		
-		LabelStyle labelStyle = new LabelStyle(DodgeGame.UI_FONT, Color.BLACK);
-		Label label = new Label("VOLUME", labelStyle);
-		table.add(label);
+		table.add(new Label("SOUND", Util.SKIN));
 		
-		Slider slider = new Slider(0f, 1f, 1f / 1000f, false, Util.SKIN);
-		slider.setValue(DodgeGame.SOUND_MANAGER.getVolume());
+		Slider soundSlider = new Slider(0f, 1f, 1f / 1000f, false, Util.SKIN);
+		soundSlider.setValue(DodgeGame.SOUND_MANAGER.getSoundVolume());
 		
-		slider.addListener(new EventListener(){
-			public boolean handle(Event event){
-				DodgeGame.SOUND_MANAGER.setVolume(((Slider) event.getTarget()).getValue());
-				
-				return false;
+		soundSlider.addListener(new ChangeListener(){
+			public void changed(ChangeEvent event, Actor actor){
+				DodgeGame.SOUND_MANAGER.setSoundVolume(((Slider) actor).getValue());
 			}
 		});
 		
-		table.add(slider).expandX().fill();
+		table.add(soundSlider).expandX().fill();
+		table.row();
+		
+		table.add(new Label("MUSIC", Util.SKIN));
+		
+		Slider musicSlider = new Slider(0f, 1f, 1f / 1000f, false, Util.SKIN);
+		musicSlider.setValue(DodgeGame.SOUND_MANAGER.getMusicVolume());
+		
+		musicSlider.addListener(new ChangeListener(){
+			public void changed(ChangeEvent event, Actor actor){
+				DodgeGame.SOUND_MANAGER.setMusicVolume(((Slider) actor).getValue());
+			}
+		});
+		
+		table.add(musicSlider).expandX().fill();
 		table.row();
 		
 		CheckBox tutorialBox = new CheckBox("TUTORIAL", Util.SKIN);

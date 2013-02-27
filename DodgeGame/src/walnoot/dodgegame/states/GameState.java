@@ -41,9 +41,9 @@ public class GameState extends State{
 	
 	private int time;
 	
-	private String statusText;
-	private Color statusColor;
-	private int statusTimer;
+	private String announcementText;
+	private Color announcementColor;
+	private int announcementTimer;
 	private TextBounds statusBounds = new TextBounds();
 	
 	private TextElement multiplierElement, scoreElement;
@@ -95,7 +95,6 @@ public class GameState extends State{
 	public void update(){
 		time++;
 		
-
 		checkFoodSpawn();
 		
 		if(gameOver){
@@ -106,7 +105,7 @@ public class GameState extends State{
 			Stat.TICKS_PLAYED.addInt(1);
 		}
 		
-		if(statusTimer != 0) statusTimer--;
+		if(announcementTimer != 0) announcementTimer--;
 		
 		map.update();
 		
@@ -172,13 +171,13 @@ public class GameState extends State{
 	public void render(SpriteBatch batch){
 		map.render(batch);
 		
-		if(statusTimer != 0){
-			float completeness = (statusTimer / DodgeGame.UPDATES_PER_SECOND);//scale of status thing between 0 and 1
+		if(announcementTimer != 0){
+			float completeness = (announcementTimer / DodgeGame.UPDATES_PER_SECOND);//scale of status thing between 0 and 1
 			
 			DodgeGame.SCALE_FONT.setScale(DodgeGame.FONT_SCALE * STATUS_TEXT_SCALE * completeness);
-			DodgeGame.SCALE_FONT.setColor(statusColor);
-			DodgeGame.SCALE_FONT
-					.draw(batch, statusText, -statusBounds.width * 0.5f * completeness, completeness * 0.5f);
+			DodgeGame.SCALE_FONT.setColor(announcementColor);
+			DodgeGame.SCALE_FONT.draw(batch, announcementText, -statusBounds.width * 0.5f * completeness,
+					completeness * 0.5f);
 			DodgeGame.SCALE_FONT.setScale(DodgeGame.FONT_SCALE);
 		}
 		
@@ -186,13 +185,13 @@ public class GameState extends State{
 		scoreElement.render(batch);
 	}
 	
-	public void setStatusText(String status, Color color){
-		statusText = status;
-		statusColor = color;
-		statusTimer = (int) DodgeGame.UPDATES_PER_SECOND;
+	public void setAnnouncement(String status, Color color){
+		announcementText = status;
+		announcementColor = color;
+		announcementTimer = (int) DodgeGame.UPDATES_PER_SECOND;
 		
 		DodgeGame.SCALE_FONT.setScale(STATUS_TEXT_SCALE * DodgeGame.FONT_SCALE);
-		statusBounds = DodgeGame.SCALE_FONT.getBounds(statusText, statusBounds);
+		statusBounds = DodgeGame.SCALE_FONT.getBounds(announcementText, statusBounds);
 	}
 	
 	public void resize(){
@@ -221,6 +220,7 @@ public class GameState extends State{
 	}
 	
 	public void dispose(){
+		Stat.HIGH_SCORE.putValue(DodgeGame.PREFERENCES);
 		DodgeGame.PREFERENCES.flush();//for the stats
 	}
 }
