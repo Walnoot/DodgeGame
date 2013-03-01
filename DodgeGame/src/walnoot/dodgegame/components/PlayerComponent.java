@@ -15,23 +15,18 @@ import com.badlogic.gdx.utils.Array;
 public class PlayerComponent extends Component{
 	public static final float MOVE_RADIUS = 2f;//radius of circle player moves in
 	
-	public static final int NUM_START_LIVES = 3;
-	private static final int INVINCIBILITY_TIME = (int) (2 * DodgeGame.UPDATES_PER_SECOND);//ticks
+	public static final int NUM_START_HANDS = 3;
 	private static final int COMBO_BREAK_TIME = (int) (1.1f * DodgeGame.UPDATES_PER_SECOND);
-	private static final int HAND_CLOSE_TIME = (int) (0.25f * DodgeGame.UPDATES_PER_SECOND);
 	
 	public static final String[] GROW_STATUS_TEXTS = {"AWESOME!", "NOT BAD!", "SPLENDID!", "GOOD!", "COOL!"};
 	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD!", "AWW!", "NOT GOOD!", "QUITE BAD!"};
 	
 	private float radius = 0.25f;
 	
-//	private int lives = NUM_START_LIVES;
-	
 	private int invincibilityTimer = 0;
-//	private int handCloseTimer;
 	
 	private float targetRotation, actualRotation;//actualRotation follow targetRotation
-	private Array<Hand> hands = new Array<Hand>(NUM_START_LIVES);
+	private Array<Hand> hands = new Array<Hand>(NUM_START_HANDS);
 	
 	private boolean newHighscore;
 	private int score;
@@ -45,7 +40,7 @@ public class PlayerComponent extends Component{
 		super(owner);
 		this.gameState = gameState;
 		
-		for(int i = 0; i < NUM_START_LIVES; i++){
+		for(int i = 0; i < NUM_START_HANDS; i++){
 			hands.add(new Hand());
 		}
 	}
@@ -80,19 +75,9 @@ public class PlayerComponent extends Component{
 			
 			gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
 		}
-		
-		/*if(handCloseTimer > 0){
-			handCloseTimer--;
-			
-			if(handCloseTimer == 0){
-				sprite.setRegion(Util.HAND);
-			}
-		}*/
 	}
 	
 	public void render(SpriteBatch batch){
-//		if(!isInvincible() || (DodgeGame.gameTime / 5) % 2 == 0) sprite.draw(batch);
-		
 		for(int i = 0; i < hands.size; i++){
 			hands.get(i).sprite.draw(batch);
 		}
@@ -109,6 +94,8 @@ public class PlayerComponent extends Component{
 				
 				newHighscore = true;
 			}
+			
+			Stat.HIGH_SCORE.setInt(getScore());
 		}
 		
 		combo++;
@@ -118,36 +105,7 @@ public class PlayerComponent extends Component{
 		lastGrowTime = DodgeGame.gameTime;
 		
 		Stat.NUM_FOOD_EATEN.addInt(1);
-		
-//		closeHand();
 	}
-	
-	/*public void die(){
-		if(isInvincible()) return;
-		
-		lives--;
-		invincibilityTimer = INVINCIBILITY_TIME;
-		
-		if(lives == 0){
-			owner.remove();
-			
-			((GameState) DodgeGame.state).gameOver();
-		}
-		
-		gameState.setAnnouncement(getRandomText(BAD_STUFF_STATUS_TEXTS), Color.BLACK);
-		
-		combo = 0;
-		gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
-		
-		Stat.NUM_DEATHS.addInt(1);
-		
-	//		closeHand();
-	}*/
-	
-	/*private void closeHand(){
-		handCloseTimer = HAND_CLOSE_TIME;
-		sprite.setRegion(Util.HAND_CLOSED);
-	}*/
 	
 	public int getScoreMultiplier(){
 		return combo / 5 + 1;
@@ -161,10 +119,6 @@ public class PlayerComponent extends Component{
 		return score;
 	}
 	
-	private boolean isInvincible(){
-		return invincibilityTimer > 0;
-	}
-	
 	public boolean isGameOver(){
 		return hands.size == 0;
 	}
@@ -176,10 +130,6 @@ public class PlayerComponent extends Component{
 	public Array<Hand> getHands(){
 		return hands;
 	}
-	
-	/*public int getLives(){
-		return lives;
-	}*/
 	
 	public int getCombo(){
 		return combo;

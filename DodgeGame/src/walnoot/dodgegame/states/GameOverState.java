@@ -33,17 +33,9 @@ public class GameOverState extends State{
 		
 		int highscore = Stat.HIGH_SCORE.getInt();
 		int score = gameState.getMap().getPlayerComponent().getScore();
-		boolean newHighScore = false;
-		
-		if(score > highscore){
-			highscore = score;
-			DodgeGame.PREFERENCES.putInteger(HIGH_SCORE_KEY, highscore);
-			
-			newHighScore = true;
-		}
 		
 		scoreElement = new TextElement("SCORE: " + score, 0, 4f, 1.5f);
-		highScoreElement = new TextElement("HIGHSCORE: " + highscore + (newHighScore ? "!" : ""), 0, 2f, 1.5f);
+		highScoreElement = new TextElement("HIGHSCORE: " + highscore, 0, 2f, 1.5f);
 	}
 	
 	public void update(){

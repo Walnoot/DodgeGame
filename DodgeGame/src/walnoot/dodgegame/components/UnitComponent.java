@@ -85,12 +85,12 @@ public class UnitComponent extends Component{
 			switch (type){
 				case SCORE:
 					map.getPlayerComponent().score();
+					closestHand.closeHand();
 					
 					DodgeGame.PARTICLE_HANDLER.addShineEffect(owner.getxPos(), owner.getyPos());
 					
 					break;
 				case DIE:
-//					map.getPlayerComponent().die();
 					closestHand.die();
 					
 					break;
