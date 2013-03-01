@@ -4,9 +4,7 @@ import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Stat;
 import walnoot.dodgegame.Util;
 import walnoot.dodgegame.components.Entity;
-import walnoot.dodgegame.components.HeartComponent;
 import walnoot.dodgegame.components.PlayerComponent;
-import walnoot.dodgegame.components.SpriteComponent;
 import walnoot.dodgegame.gameplay.BasicSpawnHandler;
 import walnoot.dodgegame.gameplay.EntityPool;
 import walnoot.dodgegame.gameplay.Map;
@@ -52,7 +50,7 @@ public class GameState extends State{
 	private int spawnHandlerTimer = spawnHandler.getDuration();
 	
 	private Pool<Entity> entityPool = new EntityPool(map, this);
-
+	
 	public GameState(OrthographicCamera camera){
 		super(camera);
 		
@@ -65,14 +63,14 @@ public class GameState extends State{
 		map.addEntity(playerEntity);
 		map.setPlayerComponent(playerComponent);
 		
-		for(int i = 0; i < PlayerComponent.NUM_START_LIVES; i++){
+		/*for(int i = 0; i < PlayerComponent.NUM_START_LIVES; i++){
 			Entity heart = new Entity(map, 0, 0);
 			
 			heart.addComponent(new SpriteComponent(heart, Util.HEART, HeartComponent.SCALE));
 			heart.addComponent(new HeartComponent(heart, i));
 			
 			map.addEntity(heart);
-		}
+		}*/
 		
 		multiplierElement = new TextElement(Integer.toString(playerComponent.getScoreMultiplier()), -MAP_SIZE, 0f, 3f);
 		scoreElement = new TextElement(Integer.toString(playerComponent.getScore()), -MAP_SIZE, 3f, 3f);
@@ -144,7 +142,7 @@ public class GameState extends State{
 		e.setRemoved(false);
 		
 		return e;
-
+		
 		/*if(unusedEntities.isEmpty()){
 			Entity e = new Entity(map, 0, 0, 0);
 			
@@ -194,9 +192,6 @@ public class GameState extends State{
 		statusBounds = DodgeGame.SCALE_FONT.getBounds(announcementText, statusBounds);
 	}
 	
-	public void resize(){
-	}
-	
 	public Map getMap(){
 		return map;
 	}
@@ -204,7 +199,7 @@ public class GameState extends State{
 	public Pool<Entity> getPool(){
 		return entityPool;
 	}
-
+	
 	public TextElement getMultiplierElement(){
 		return multiplierElement;
 	}
@@ -217,10 +212,9 @@ public class GameState extends State{
 		gameOver = true;
 		
 		Stat.saveStats();
+		DodgeGame.PREFERENCES.flush();//for the stats
 	}
 	
 	public void dispose(){
-		Stat.HIGH_SCORE.putValue(DodgeGame.PREFERENCES);
-		DodgeGame.PREFERENCES.flush();//for the stats
 	}
 }

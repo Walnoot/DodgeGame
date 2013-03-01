@@ -2,16 +2,15 @@ package walnoot.dodgegame.components;
 
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Stat;
-import walnoot.dodgegame.Util;
+import walnoot.dodgegame.gameplay.Hand;
 import walnoot.dodgegame.states.GameState;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 public class PlayerComponent extends Component{
 	public static final float MOVE_RADIUS = 2f;//radius of circle player moves in
@@ -24,14 +23,15 @@ public class PlayerComponent extends Component{
 	public static final String[] GROW_STATUS_TEXTS = {"AWESOME!", "NOT BAD!", "SPLENDID!", "GOOD!", "COOL!"};
 	public static final String[] BAD_STUFF_STATUS_TEXTS = {"TOO BAD!", "AWW!", "NOT GOOD!", "QUITE BAD!"};
 	
-	private float radius = 0.5f;
+	private float radius = 0.25f;
 	
-	private int lives = NUM_START_LIVES;
+//	private int lives = NUM_START_LIVES;
 	
 	private int invincibilityTimer = 0;
-	private int handCloseTimer;
+//	private int handCloseTimer;
 	
 	private float targetRotation, actualRotation;//actualRotation follow targetRotation
+	private Array<Hand> hands = new Array<Hand>(NUM_START_LIVES);
 	
 	private boolean newHighscore;
 	private int score;
@@ -41,15 +41,13 @@ public class PlayerComponent extends Component{
 	
 	private final GameState gameState;
 	
-	private Sprite sprite;
-	
 	public PlayerComponent(Entity owner, GameState gameState){
 		super(owner);
 		this.gameState = gameState;
 		
-		sprite = new Sprite(Util.HAND);
-		sprite.setSize(1f, 2f);
-		sprite.setOrigin(0.5f, 0f);
+		for(int i = 0; i < NUM_START_LIVES; i++){
+			hands.add(new Hand());
+		}
 	}
 	
 	public void update(){
@@ -61,25 +59,21 @@ public class PlayerComponent extends Component{
 		}
 		
 		actualRotation += (targetRotation - actualRotation) * 0.5f;
-
-		sprite.setRotation(-actualRotation);
 		
-		Vector2.tmp.set(MathUtils.sinDeg(actualRotation), MathUtils.cosDeg(actualRotation));
-		
-		float handDist = (0.7f - handCloseTimer / 50f);
-		sprite.setPosition(Vector2.tmp.x * handDist - 0.5f, Vector2.tmp.y * handDist);
-		
-		owner.setPosition(Vector2.tmp.mul(MOVE_RADIUS));
+		for(int i = 0; i < hands.size; i++){
+			Hand hand = hands.get(i);
+			hand.update(actualRotation + (360f / hands.size) * i);
+			
+			if(hand.died){
+				hands.removeValue(hand, true);
+				if(hands.size == 0){
+					gameState.gameOver();
+					owner.remove();
+				}
+			}
+		}
 		
 		if(invincibilityTimer > 0) invincibilityTimer--;
-
-		SpriteComponent spriteComponent = owner.getComponent(SpriteComponent.class);
-		if(spriteComponent != null){
-			spriteComponent.getSprite().setScale(radius);
-			
-			if(isInvincible()) spriteComponent.getSprite().setColor(Color.GRAY);
-			else spriteComponent.getSprite().setColor(Color.BLACK);
-		}
 		
 		if(DodgeGame.gameTime - lastGrowTime == COMBO_BREAK_TIME){
 			combo = 0;
@@ -87,19 +81,23 @@ public class PlayerComponent extends Component{
 			gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
 		}
 		
-		if(handCloseTimer > 0){
+		/*if(handCloseTimer > 0){
 			handCloseTimer--;
 			
 			if(handCloseTimer == 0){
 				sprite.setRegion(Util.HAND);
 			}
-		}
+		}*/
 	}
 	
 	public void render(SpriteBatch batch){
-		if(!isInvincible() || (DodgeGame.gameTime / 5) % 2 == 0) sprite.draw(batch);
+//		if(!isInvincible() || (DodgeGame.gameTime / 5) % 2 == 0) sprite.draw(batch);
+		
+		for(int i = 0; i < hands.size; i++){
+			hands.get(i).sprite.draw(batch);
+		}
 	}
-
+	
 	public void score(){
 		gameState.setAnnouncement(getRandomText(GROW_STATUS_TEXTS), Color.GREEN);
 		
@@ -121,10 +119,10 @@ public class PlayerComponent extends Component{
 		
 		Stat.NUM_FOOD_EATEN.addInt(1);
 		
-		closeHand();
+//		closeHand();
 	}
-
-	public void die(){
+	
+	/*public void die(){
 		if(isInvincible()) return;
 		
 		lives--;
@@ -143,13 +141,13 @@ public class PlayerComponent extends Component{
 		
 		Stat.NUM_DEATHS.addInt(1);
 		
-		closeHand();
-	}
+	//		closeHand();
+	}*/
 	
-	private void closeHand(){
+	/*private void closeHand(){
 		handCloseTimer = HAND_CLOSE_TIME;
 		sprite.setRegion(Util.HAND_CLOSED);
-	}
+	}*/
 	
 	public int getScoreMultiplier(){
 		return combo / 5 + 1;
@@ -168,16 +166,20 @@ public class PlayerComponent extends Component{
 	}
 	
 	public boolean isGameOver(){
-		return lives == 0;
+		return hands.size == 0;
 	}
 	
 	public float getRadius(){
 		return radius;
 	}
 	
-	public int getLives(){
-		return lives;
+	public Array<Hand> getHands(){
+		return hands;
 	}
+	
+	/*public int getLives(){
+		return lives;
+	}*/
 	
 	public int getCombo(){
 		return combo;

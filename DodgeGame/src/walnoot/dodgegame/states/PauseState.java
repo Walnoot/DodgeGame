@@ -16,9 +16,9 @@ public class PauseState extends State{
 	private ReturnButton returnButton;
 	private int timer = 10;
 	
-	private final State oldState;
+	private final GameState oldState;
 	
-	public PauseState(OrthographicCamera camera, State oldState){
+	public PauseState(OrthographicCamera camera, GameState oldState){
 		super(camera);
 		this.oldState = oldState;
 		

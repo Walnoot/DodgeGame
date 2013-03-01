@@ -7,7 +7,7 @@ import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.math.Vector2;
 
 public class MoveComponent extends Component{
-	private static final float SPEED = 3f;
+	private static final float SPEED = 2.5f;
 	private static final float FADE_OUT_TIME = 0.5f;
 	private static final float FADE_OUT_THRESHOLD = PlayerComponent.MOVE_RADIUS * PlayerComponent.MOVE_RADIUS;
 	private int fadeTimer = 0;

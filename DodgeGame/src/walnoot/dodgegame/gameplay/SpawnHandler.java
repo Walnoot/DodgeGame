@@ -2,9 +2,9 @@ package walnoot.dodgegame.gameplay;
 
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.components.Entity;
+import walnoot.dodgegame.components.MoveComponent;
 import walnoot.dodgegame.components.UnitComponent;
 import walnoot.dodgegame.components.UnitComponent.UnitType;
-import walnoot.dodgegame.components.MoveComponent;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -21,7 +21,7 @@ public abstract class SpawnHandler{
 	public abstract void spawn(Entity entity, int time);
 	
 	public int getPauseTicks(int time){
-		return (int) (10f / ((time / (10000f * (DodgeGame.UPDATES_PER_SECOND / 60f))) + 1f));
+		return (int) (15f / ((time / (10000f * (DodgeGame.UPDATES_PER_SECOND / 60f))) + 1f));
 	}
 	
 	protected void spawnToCenter(Entity entity, Vector2 pos, UnitType type){

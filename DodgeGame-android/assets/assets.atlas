@@ -1,0 +1,166 @@
+
+assets.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+font
+  rotate: false
+  xy: 2, 232
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+background
+  rotate: false
+  xy: 2, 102
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+field
+  rotate: false
+  xy: 260, 360
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+hand
+  rotate: false
+  xy: 132, 102
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+hand_closed
+  rotate: false
+  xy: 390, 360
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+bone
+  rotate: false
+  xy: 2, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+burger
+  rotate: false
+  xy: 260, 294
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+coin
+  rotate: false
+  xy: 68, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+dot
+  rotate: false
+  xy: 326, 294
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+drumstick
+  rotate: false
+  xy: 134, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+health
+  rotate: false
+  xy: 392, 294
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+heart
+  rotate: false
+  xy: 260, 228
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+icon_false
+  rotate: false
+  xy: 326, 228
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+icon_true
+  rotate: false
+  xy: 392, 228
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+slider_knob
+  rotate: false
+  xy: 456, 424
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+pause
+  rotate: false
+  xy: 198, 162
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+pizza
+  rotate: false
+  xy: 264, 162
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+resume
+  rotate: false
+  xy: 330, 162
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+soundoff
+  rotate: false
+  xy: 396, 162
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+soundon
+  rotate: false
+  xy: 200, 96
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+slider
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+slider_big
+  rotate: false
+  xy: 456, 390
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+shine
+  rotate: false
+  xy: 490, 472
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

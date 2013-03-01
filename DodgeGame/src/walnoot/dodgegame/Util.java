@@ -33,6 +33,7 @@ public class Util{
 	public static TextureRegion HEART;
 	public static TextureRegion HAND;
 	public static TextureRegion HAND_CLOSED;
+	public static TextureRegion HAND_SHORT;
 	public static TextureRegion DOT;
 	public static TextureRegion COIN;
 	public static TextureRegion FIELD;
@@ -68,6 +69,7 @@ public class Util{
 		HEART = ATLAS.findRegion("heart");
 		HAND = ATLAS.findRegion("hand");
 		HAND_CLOSED = ATLAS.findRegion("hand_closed");
+		HAND_SHORT = HAND.split(HAND.getRegionWidth(), HAND.getRegionHeight() / 2)[0][0];
 		DOT = ATLAS.findRegion("dot");
 		COIN = ATLAS.findRegion("coin");
 		FIELD = ATLAS.findRegion("field");

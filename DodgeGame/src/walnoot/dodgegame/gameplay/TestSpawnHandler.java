@@ -20,7 +20,8 @@ public class TestSpawnHandler extends SpawnHandler{
 		
 		startAngle = MathUtils.random(0f, 2f * MathUtils.PI);
 		
-		type = MathUtils.randomBoolean() ? UnitType.DIE : UnitType.SCORE;
+//		type = MathUtils.randomBoolean() ? UnitType.DIE : UnitType.SCORE;
+		type = UnitType.SCORE;
 		
 		speed = MathUtils.random(1f, 2f);
 		if(MathUtils.randomBoolean()) speed = -speed;
@@ -36,7 +37,7 @@ public class TestSpawnHandler extends SpawnHandler{
 	public int getPauseTicks(int time){
 		return 6;
 	}
-
+	
 	public int getDuration(){
 		return (int) (3 * DodgeGame.UPDATES_PER_SECOND);
 	}

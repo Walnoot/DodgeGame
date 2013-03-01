@@ -3,11 +3,14 @@ package walnoot.dodgegame.components;
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.SpriteAccessor;
 import walnoot.dodgegame.Util;
+import walnoot.dodgegame.gameplay.Hand;
 import walnoot.dodgegame.states.GameState;
 import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 public class UnitComponent extends Component{
 	public static final float FADE_OUT_DURATION = .25f, FADE_IN_DURATION = .25f;//seconds
@@ -56,16 +59,27 @@ public class UnitComponent extends Component{
 		
 		if(map.getPlayerComponent().isGameOver() || consumed) return;
 		
-		float dx = map.getPlayerComponent().owner.getxPos() - owner.getxPos();
-		float dy = map.getPlayerComponent().owner.getyPos() - owner.getyPos();
+		Array<Hand> hands = map.getPlayerComponent().getHands();
+		
+		float shortestLength2 = Float.MAX_VALUE;
+		Hand closestHand = null;
+		
+		for(int i = 0; i < hands.size; i++){
+			float length2 = Vector2.tmp2.set(hands.get(i).pos).sub(owner.getPos()).len2();
+			
+			if(length2 < shortestLength2){
+				shortestLength2 = length2;
+				closestHand = hands.get(i);
+			}
+		}
 		
 		float minDistance = 0.5f + map.getPlayerComponent().getRadius() / 2f;
-		if(dx * dx + dy * dy < minDistance * minDistance){
+		if(shortestLength2 < minDistance * minDistance){
 			consumed = true;
 			
 			Tween tween =
 					Tween.to(owner.getComponent(SpriteComponent.class).getSprite(), SpriteAccessor.TRANSPARANCY,
-					FADE_OUT_DURATION);
+							FADE_OUT_DURATION);
 			tween.target(0).start(DodgeGame.TWEEN_MANAGER);
 			
 			switch (type){
@@ -76,7 +90,9 @@ public class UnitComponent extends Component{
 					
 					break;
 				case DIE:
-					map.getPlayerComponent().die();
+//					map.getPlayerComponent().die();
+					closestHand.die();
+					
 					break;
 				default:
 					break;
