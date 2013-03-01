@@ -4,8 +4,8 @@ import walnoot.dodgegame.ButtonClickListener;
 import walnoot.dodgegame.DodgeGame;
 import walnoot.dodgegame.Util;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,35 +13,40 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class MainMenuState extends State{
-	private static final float COLOR_VALUE_MAX = 0.5f;
-	private static final float COLOR_VALUE_MIN = 0f;
-	
-	private int colorChangeTimer;//this color stuff is for the now non-existant logo, may be used later
-	private Color oldColor, newColor;
 	private Table table;
+	private Sprite[] sprites = new Sprite[32];
+	private float time;
 	
 	public MainMenuState(final OrthographicCamera camera){
 		super(camera);
 		
-		oldColor = new Color(MathUtils.random(COLOR_VALUE_MIN, COLOR_VALUE_MAX), MathUtils.random(COLOR_VALUE_MIN,
-				COLOR_VALUE_MAX), MathUtils.random(COLOR_VALUE_MIN, COLOR_VALUE_MAX), 1f);
-		newColor = new Color(MathUtils.random(COLOR_VALUE_MIN, COLOR_VALUE_MAX), MathUtils.random(COLOR_VALUE_MIN,
-				COLOR_VALUE_MAX), MathUtils.random(COLOR_VALUE_MIN, COLOR_VALUE_MAX), 1f);
+		for(int i = 0; i < sprites.length; i++){
+			Sprite sprite = new Sprite(Util.HAND);
+			
+			float width = camera.viewportWidth * camera.zoom;
+			
+			sprite.setPosition(width * (i / (float) sprites.length) - width * 0.5f, -camera.viewportHeight
+					* camera.zoom * 0.5f - 0.25f);
+			
+			sprite.setSize(1f, 2f);
+			sprite.setOrigin(0.5f, 0f);
+			sprite.flip(MathUtils.randomBoolean(), false);
+			
+			sprites[i] = sprite;
+		}
 		
 		table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
 		
-		table.defaults();
 		table.defaults().height(96f);
 		
 		TextButton playButton = new TextButton("PLAY", Util.SKIN);
 		playButton.addListener(new ButtonClickListener(){
 			public void click(Actor actor){
-				if(DodgeGame.PREFERENCES.getBoolean(TutorialState.PREF_TUTORIAL_KEY, true))
-					DodgeGame.setState(new TutorialState(camera));
-				else
-					DodgeGame.setState(new GameState(camera));
+				if(DodgeGame.PREFERENCES.getBoolean(TutorialState.PREF_TUTORIAL_KEY, true)) DodgeGame
+						.setState(new TutorialState(camera));
+				else DodgeGame.setState(new GameState(camera));
 			}
 		});
 		table.add(playButton).height(128f).padBottom(32f).width(480f).colspan(3);
@@ -73,36 +78,23 @@ public class MainMenuState extends State{
 	}
 	
 	public void update(){
-		/*for(int i = 0; i < textElements.length; i++){
-			if(textElements[i] instanceof TextButton) ((TextButton) textElements[i]).update();
+		time += DodgeGame.SECONDS_PER_UPDATE;
+		
+		for(int i = 0; i < sprites.length; i++){
+			Sprite sprite = sprites[i];
+			
+			//random rotation based on index and time
+			sprite.setRotation(MathUtils.cos(time * 4f + (i ^ (i * 47))) * 25f);
+			
+			sprite.setPosition(sprite.getX() + MathUtils.cos(time + (i ^ (i * 23))) * DodgeGame.SECONDS_PER_UPDATE
+					* 0.5f, sprite.getY() + MathUtils.cos(time + (i ^ (i * 53))) * DodgeGame.SECONDS_PER_UPDATE * 0.1f);
 		}
-		
-		Color currentColor = textElements[0].getColor();
-		
-		currentColor.r += (newColor.r - oldColor.r) * DodgeGame.SECONDS_PER_UPDATE;
-		currentColor.g += (newColor.g - oldColor.g) * DodgeGame.SECONDS_PER_UPDATE;
-		currentColor.b += (newColor.b - oldColor.b) * DodgeGame.SECONDS_PER_UPDATE;
-		
-		colorChangeTimer++;
-		if(colorChangeTimer >= (int) DodgeGame.UPDATES_PER_SECOND){
-			colorChangeTimer = 0;
-			
-			oldColor = newColor;
-			currentColor.set(oldColor);
-			
-			newColor = new Color(getNewColorValue(oldColor.r), getNewColorValue(oldColor.g),
-					getNewColorValue(oldColor.b), 1f);
-		}*/
-	}
-	
-	private float getNewColorValue(float oldValue){
-		return MathUtils.clamp(oldValue + MathUtils.random(-0.3f, 0.3f), COLOR_VALUE_MIN, COLOR_VALUE_MAX);
 	}
 	
 	public void render(SpriteBatch batch){
-		/*for(int i = 0; i < textElements.length; i++){
-			textElements[i].render(batch);
-		}*/
+		for(int i = 0; i < sprites.length; i++){
+			sprites[i].draw(batch);
+		}
 	}
 	
 	public void dispose(){
