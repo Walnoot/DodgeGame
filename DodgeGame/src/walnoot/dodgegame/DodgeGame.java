@@ -31,7 +31,7 @@ public class DodgeGame implements ApplicationListener{
 	
 	public static State state;
 	public static int gameTime;
-
+	
 	private static InputMultiplexer inputs;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -51,7 +51,7 @@ public class DodgeGame implements ApplicationListener{
 		
 		batch = new SpriteBatch(200);
 		
-		Util.ATLAS = new TextureAtlas("assets.pack");
+		Util.ATLAS = new TextureAtlas("assets.atlas");
 		
 		Util.loadRegions();
 		
@@ -62,7 +62,7 @@ public class DodgeGame implements ApplicationListener{
 	
 	public void dispose(){
 		Stat.saveStats();
-
+		
 		PREFERENCES.flush();
 		
 		state.dispose();
@@ -145,8 +145,8 @@ public class DodgeGame implements ApplicationListener{
 		
 		camera.update();
 		
-		backgroundSprite.setPosition(-camera.viewportWidth * camera.zoom * 0.5f,
-				-camera.viewportHeight * camera.zoom * 0.5f);
+		backgroundSprite.setPosition(-camera.viewportWidth * camera.zoom * 0.5f, -camera.viewportHeight * camera.zoom
+				* 0.5f);
 		backgroundSprite.setSize(camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
 		
 		state.resize();

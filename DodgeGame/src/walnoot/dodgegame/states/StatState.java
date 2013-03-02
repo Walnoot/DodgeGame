@@ -14,7 +14,6 @@ public class StatState extends State{
 		
 		Table table = new Table();
 		table.setFillParent(true);
-		table.debug();
 		stage.addActor(table);
 		
 		addRow(Stat.HIGH_SCORE, table);
@@ -31,7 +30,7 @@ public class StatState extends State{
 		table.add(new Label(stat.getValue(), Util.SKIN)).right();
 		table.row();
 	}
-
+	
 	public void update(){
 	}
 	
