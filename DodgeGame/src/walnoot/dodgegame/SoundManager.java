@@ -1,46 +1,54 @@
 package walnoot.dodgegame;
 
+import walnoot.dodgegame.states.GameState;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 
 public class SoundManager{
-	private static final String[] musicPaths = {"Comparsa.mp3", "CumbiaNoFrillsFaster.mp3", "No Frills Salsa.mp3",
-			"Notanico Merengue.mp3", "Peppy Pepe.mp3"};
-//	private static final String[] eatSoundPaths = {"apple.wav", "apple2.wav", "bite.mp3", "bite2.wav", "burp.wav"};
-	private static final String[] eatSoundPaths = {"register.mp3"};
+//	private static final String[] musicPaths = {"Comparsa.mp3", "CumbiaNoFrillsFaster.mp3", "No Frills Salsa.mp3",
+//			"Notanico Merengue.mp3", "Peppy Pepe.mp3"};
+	private static final String[] grabSoundPaths = {"register.mp3"};
 	public static final String PREF_SOUND_KEY = "SoundVolume", PREF_MUSIC_KEY = "musicVolume";
 	private static final float VOLUME_THRESHOLD = 0.05f;
 	
-	private Music currentSong;
-	private int songIndex;
+	private Music menuSong, gameSong;
+//	private int songIndex;
 	private FileHandle musicFolder, soundFolder;
 //	private boolean soundOn;
-	private Sound[] eatSounds = new Sound[eatSoundPaths.length];
+	private Sound[] grabSounds = new Sound[grabSoundPaths.length];
 	private Sound clickSound;
 	private boolean loaded;
 	private float soundVolume, musicVolume;
-	private boolean disposed;
+	
+	private float transistion = 0f;
+	
+//	private boolean disposed;
 	
 	public void init(){
 		musicFolder = Gdx.files.internal("music/");
 		soundFolder = Gdx.files.internal("sounds/");
 		
-		songIndex = MathUtils.random(musicPaths.length - 1);
-		currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
+//		songIndex = MathUtils.random(musicPaths.length - 1);
+//		currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
+//		menuSong = Gdx.audio.newMusic(musicFolder.child("Slow Ska Game Loop.ogg"));
+//		currentSong = Gdx.audio.newMusic(musicFolder.child("Funk Game Loop.ogg"));
 		
 		soundVolume = DodgeGame.PREFERENCES.getFloat(PREF_SOUND_KEY, 1f);
 		musicVolume = DodgeGame.PREFERENCES.getFloat(PREF_MUSIC_KEY, 1f);
 		
-		if(musicVolume > VOLUME_THRESHOLD){
-			currentSong.play();
-			currentSong.setVolume(soundVolume);
-		}
+//		if(musicVolume > VOLUME_THRESHOLD){
+//			menuSong.play();
+//			menuSong.setLooping(true);
+//			menuSong.setVolume(soundVolume);
+//		}
 		
-		for(int i = 0; i < eatSounds.length; i++){
-			eatSounds[i] = Gdx.audio.newSound(soundFolder.child(eatSoundPaths[i]));
+		for(int i = 0; i < grabSounds.length; i++){
+			grabSounds[i] = Gdx.audio.newSound(soundFolder.child(grabSoundPaths[i]));
 		}
 		
 		clickSound = Gdx.audio.newSound(soundFolder.child("click.wav"));
@@ -50,12 +58,56 @@ public class SoundManager{
 	
 	public void update(){
 		if(musicVolume > VOLUME_THRESHOLD){
-			if(disposed){//returning from disposal
+			if(DodgeGame.state instanceof GameState){
+				if(gameSong == null){
+					gameSong = Gdx.audio.newMusic(musicFolder.child("Funk Game Loop.ogg"));
+					gameSong.setVolume(transistion * musicVolume);
+					gameSong.setLooping(true);
+					gameSong.play();
+				}
+				
+				transistion += DodgeGame.SECONDS_PER_UPDATE;
+				
+				if(transistion > 1f){
+					transistion = 1f;
+					
+					if(menuSong != null){
+						menuSong.dispose();
+						menuSong = null;
+					}
+				}else{
+					menuSong.setVolume(Interpolation.sine.apply(0f, musicVolume, 1f - transistion));
+					gameSong.setVolume(Interpolation.sine.apply(0f, musicVolume, transistion));
+				}
+			}else{
+				if(menuSong == null){
+					menuSong = Gdx.audio.newMusic(musicFolder.child("Slow Ska Game Loop.ogg"));
+					menuSong.setVolume((1f - transistion) * musicVolume);
+					menuSong.setLooping(true);
+					menuSong.play();
+				}
+				
+				transistion -= DodgeGame.SECONDS_PER_UPDATE;
+				
+				if(transistion < 0f){
+					transistion = 0f;
+					
+					if(gameSong != null){
+						gameSong.dispose();
+						gameSong = null;
+					}
+				}else{
+					menuSong.setVolume(Interpolation.sine.apply(0f, musicVolume, 1f - transistion));
+					gameSong.setVolume(Interpolation.sine.apply(0f, musicVolume, transistion));
+				}
+			}
+			
+			/*if(disposed){//returning from disposal
 				currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
 				currentSong.setVolume(musicVolume);
 				
 				currentSong.play();
-
+				
 				disposed = false;
 			}else if(!currentSong.isPlaying()){
 				currentSong.dispose();
@@ -66,12 +118,12 @@ public class SoundManager{
 				currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
 				currentSong.setVolume(musicVolume);
 				currentSong.play();
-			}
+			}*/
 		}
 	}
 	
-	public void playRandomEatSound(){
-		if(soundVolume > VOLUME_THRESHOLD) eatSounds[MathUtils.random(0, eatSounds.length - 1)].play(soundVolume);
+	public void playRandomGrabSound(){
+		if(soundVolume > VOLUME_THRESHOLD) grabSounds[MathUtils.random(0, grabSounds.length - 1)].play(soundVolume);
 	}
 	
 	public void playClickSound(){
@@ -91,10 +143,10 @@ public class SoundManager{
 		
 		if(volume < VOLUME_THRESHOLD){
 			this.musicVolume = 0f;
-			currentSong.pause();
+			menuSong.pause();
 		}else{
-			if(!currentSong.isPlaying()) currentSong.play();
-			currentSong.setVolume(volume);
+			if(!menuSong.isPlaying()) menuSong.play();
+			menuSong.setVolume(volume);
 		}
 		
 		DodgeGame.PREFERENCES.putFloat(PREF_MUSIC_KEY, this.musicVolume);
@@ -113,10 +165,7 @@ public class SoundManager{
 	}
 	
 	public void dispose(){
-		disposed = true;
-		
-		currentSong.stop();
-
-		currentSong.dispose();
+		if(menuSong != null) menuSong.dispose();
+		if(gameSong != null) gameSong.dispose();
 	}
 }

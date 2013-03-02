@@ -99,7 +99,7 @@ public class UnitComponent extends Component{
 			}
 			
 			if(!hasPlayedSound){
-				DodgeGame.SOUND_MANAGER.playRandomEatSound();
+				DodgeGame.SOUND_MANAGER.playRandomGrabSound();
 				hasPlayedSound = true;
 			}
 		}
