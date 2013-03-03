@@ -1,7 +1,5 @@
 package walnoot.dodgegame;
 
-import walnoot.dodgegame.states.GameState;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -60,7 +58,7 @@ public class SoundManager{
 	
 	public void update(){
 		if(musicVolume > VOLUME_THRESHOLD){
-			if(DodgeGame.state instanceof GameState){
+			if(DodgeGame.state.playsGameMusic()){
 				if(gameSong == null){
 					gameSong = Gdx.audio.newMusic(musicFolder.child(GAME_SONG_NAME));
 					gameSong.setVolume(transistion * musicVolume);

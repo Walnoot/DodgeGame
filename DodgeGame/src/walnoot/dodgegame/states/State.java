@@ -44,4 +44,8 @@ public abstract class State{
 	
 	public void pause(){
 	}
+	
+	public boolean playsGameMusic(){
+		return false;
+	}
 }

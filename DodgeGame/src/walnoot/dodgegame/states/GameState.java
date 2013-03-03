@@ -217,4 +217,8 @@ public class GameState extends State{
 	
 	public void dispose(){
 	}
+	
+	public boolean playsGameMusic(){
+		return true;
+	}
 }
