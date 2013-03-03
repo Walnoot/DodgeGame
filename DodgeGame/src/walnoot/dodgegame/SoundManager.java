@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.MathUtils;
 public class SoundManager{
 //	private static final String[] musicPaths = {"Comparsa.mp3", "CumbiaNoFrillsFaster.mp3", "No Frills Salsa.mp3",
 //			"Notanico Merengue.mp3", "Peppy Pepe.mp3"};
+	private static final String MENU_SONG_NAME = "Slow Ska Game Loop.ogg";
+	private static final String GAME_SONG_NAME = "Funk Game Loop.ogg";
 	private static final String[] grabSoundPaths = {"register.mp3"};
 	public static final String PREF_SOUND_KEY = "SoundVolume", PREF_MUSIC_KEY = "musicVolume";
 	private static final float VOLUME_THRESHOLD = 0.05f;
@@ -60,7 +62,7 @@ public class SoundManager{
 		if(musicVolume > VOLUME_THRESHOLD){
 			if(DodgeGame.state instanceof GameState){
 				if(gameSong == null){
-					gameSong = Gdx.audio.newMusic(musicFolder.child("Funk Game Loop.ogg"));
+					gameSong = Gdx.audio.newMusic(musicFolder.child(GAME_SONG_NAME));
 					gameSong.setVolume(transistion * musicVolume);
 					gameSong.setLooping(true);
 					gameSong.play();
@@ -81,7 +83,7 @@ public class SoundManager{
 				}
 			}else{
 				if(menuSong == null){
-					menuSong = Gdx.audio.newMusic(musicFolder.child("Slow Ska Game Loop.ogg"));
+					menuSong = Gdx.audio.newMusic(musicFolder.child(MENU_SONG_NAME));
 					menuSong.setVolume((1f - transistion) * musicVolume);
 					menuSong.setLooping(true);
 					menuSong.play();
@@ -101,24 +103,6 @@ public class SoundManager{
 					gameSong.setVolume(Interpolation.sine.apply(0f, musicVolume, transistion));
 				}
 			}
-			
-			/*if(disposed){//returning from disposal
-				currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
-				currentSong.setVolume(musicVolume);
-				
-				currentSong.play();
-				
-				disposed = false;
-			}else if(!currentSong.isPlaying()){
-				currentSong.dispose();
-				
-				songIndex++;
-				if(songIndex >= musicPaths.length) songIndex = 0;
-				
-				currentSong = Gdx.audio.newMusic(musicFolder.child(musicPaths[songIndex]));
-				currentSong.setVolume(musicVolume);
-				currentSong.play();
-			}*/
 		}
 	}
 	
@@ -143,10 +127,18 @@ public class SoundManager{
 		
 		if(volume < VOLUME_THRESHOLD){
 			this.musicVolume = 0f;
-			menuSong.pause();
+			if(menuSong != null){
+				menuSong.dispose();
+				menuSong = null;
+			}
 		}else{
-			if(!menuSong.isPlaying()) menuSong.play();
-			menuSong.setVolume(volume);
+			if(menuSong == null){
+				menuSong = Gdx.audio.newMusic(musicFolder.child(MENU_SONG_NAME));
+				menuSong.setLooping(true);
+				menuSong.play();
+			}
+			
+			menuSong.setVolume(musicVolume);
 		}
 		
 		DodgeGame.PREFERENCES.putFloat(PREF_MUSIC_KEY, this.musicVolume);
