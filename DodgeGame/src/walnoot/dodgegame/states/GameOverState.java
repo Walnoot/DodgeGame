@@ -27,7 +27,7 @@ public class GameOverState extends State{
 		
 		mainMenuButton = new TextButton("MAIN MENU", 0, -4.5f, 3f){
 			public void doAction(){
-				DodgeGame.setState(new MainMenuState(camera));
+				DodgeGame.setState(new MenuState(camera));
 			}
 		};
 		

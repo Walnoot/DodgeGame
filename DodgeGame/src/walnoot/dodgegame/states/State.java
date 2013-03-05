@@ -2,7 +2,6 @@ package walnoot.dodgegame.states;
 
 import walnoot.dodgegame.Util;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -38,7 +37,7 @@ public abstract class State{
 	public void resize(){
 	}
 	
-	public Camera getCamera(){
+	public OrthographicCamera getCamera(){
 		return camera;
 	}
 	

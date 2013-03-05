@@ -26,7 +26,7 @@ public class PauseState extends State{
 		
 		continueElement = new TextElement("TAP TO CONTINUE", 0, 0f);
 		
-		returnButton = new ReturnButton(camera, new MainMenuState(camera), "MAIN MENU");
+		returnButton = new ReturnButton(camera, new MenuState(camera), "MAIN MENU");
 		
 		update();//so the position of the textelements is right at the beginning
 	}

@@ -1,6 +1,6 @@
 package walnoot.dodgegame;
 
-import walnoot.dodgegame.states.MainMenuState;
+import walnoot.dodgegame.states.MenuState;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -128,7 +128,7 @@ public class Util{
 		TextButton button = new TextButton("BACK", SKIN);
 		button.addListener(new ButtonClickListener(){
 			public void click(Actor actor){
-				DodgeGame.setState(new MainMenuState(camera));
+				DodgeGame.setState(new MenuState(camera));
 			}
 		});
 		
