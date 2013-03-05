@@ -143,16 +143,23 @@ soundon
   orig: 64, 64
   offset: 0, 0
   index: -1
-slider
+dollarsign
   rotate: false
   xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-slider_big
+slider
   rotate: false
   xy: 456, 390
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+slider_big
+  rotate: false
+  xy: 200, 62
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

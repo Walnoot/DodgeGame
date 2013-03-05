@@ -68,7 +68,7 @@ highMin: 1.0
 highMax: 1.0
 relative: false
 scalingCount: 1
-scaling0: 1.0
+scaling0: 0.5686275
 timelineCount: 1
 timeline0: 0.0
 - Velocity - 
@@ -101,9 +101,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 0.9019608
-colors1: 1.0
-colors2: 0.003921569
+colors0: 1.0
+colors1: 0.92941177
+colors2: 0.11764706
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
@@ -129,4 +129,4 @@ aligned: false
 additive: false
 behind: false
 - Image Path -
-C:\Users\Michiel\Desktop\random\dodgegame originals\shine.png
+C:\Users\Michiel\Desktop\random\dodgegame originals\dollarsign.png
