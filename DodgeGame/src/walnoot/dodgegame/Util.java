@@ -51,6 +51,7 @@ public class Util{
 	public static TextureRegion SLIDER;
 	public static TextureRegion SLIDER_BIG;
 	public static TextureRegion SLIDER_KNOB;
+	public static TextureRegion LOGO;
 	
 	public static NinePatch PATCH_SLIDER;
 	public static NinePatch PATCH_SLIDER_BIG;
@@ -87,6 +88,7 @@ public class Util{
 		SLIDER = ATLAS.findRegion("slider");
 		SLIDER_BIG = ATLAS.findRegion("slider_big");
 		SLIDER_KNOB = ATLAS.findRegion("slider_knob");
+		LOGO = ATLAS.findRegion("logo");
 		
 		PATCH_SLIDER = getNinePatch(SLIDER);
 		PATCH_SLIDER_BIG = getNinePatch(SLIDER_BIG);

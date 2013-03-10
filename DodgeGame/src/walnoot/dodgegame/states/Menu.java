@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
@@ -25,6 +26,9 @@ public enum Menu{
 			stage.addActor(table);
 			
 			table.defaults().height(96f);
+			
+			table.add(new Image(Util.LOGO)).colspan(3).width(384f).height(256f);
+			table.row();
 			
 			TextButton playButton = new TextButton("PLAY", Util.SKIN);
 			playButton.addListener(new ButtonClickListener(){
