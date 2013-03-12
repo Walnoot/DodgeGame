@@ -11,14 +11,14 @@ public abstract class Stat{
 	public static final TimeStat TICKS_PLAYED = new TimeStat("TIME PLAYED", "ticksPlayed");
 	
 	public static Stat[] STATS = {HIGH_SCORE, NUM_DEATHS, NUM_FOOD_EATEN, NUM_TIMES_PLAYED, TICKS_PLAYED};
-
+	
 	protected final String name, key;
 	
 	public Stat(String name, String key){
 		this.name = name;
 		this.key = key;
 	}
-
+	
 	public CharSequence getName(){
 		return name;
 	}
@@ -32,10 +32,10 @@ public abstract class Stat{
 			stat.putValue(DodgeGame.PREFERENCES);
 		}
 	}
-
+	
 	public static class IntStat extends Stat{
 		private int value;
-
+		
 		public IntStat(String name, String key){
 			super(name, key);
 			

@@ -8,7 +8,7 @@ public class SpriteAccessor implements TweenAccessor<Sprite>{
 	public static final int POSITION = 0, COLOR = 1, TRANSPARANCY = 2;
 	
 	public int getValues(Sprite target, int tweenType, float[] returnValues){
-		switch(tweenType){
+		switch (tweenType){
 			case POSITION:
 				returnValues[0] = target.getX();
 				returnValues[1] = target.getY();
@@ -28,7 +28,7 @@ public class SpriteAccessor implements TweenAccessor<Sprite>{
 	}
 	
 	public void setValues(Sprite target, int tweenType, float[] newValues){
-		switch(tweenType){
+		switch (tweenType){
 			case POSITION:
 				target.setX(newValues[0]);
 				target.setY(newValues[1]);

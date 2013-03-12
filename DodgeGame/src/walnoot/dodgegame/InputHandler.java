@@ -151,7 +151,7 @@ public class InputHandler implements InputProcessor{
 		private final int[] keyCodes;
 		private boolean pressed, justPressed;
 		
-		public Key(int...keyCodes){
+		public Key(int... keyCodes){
 			this.keyCodes = keyCodes;
 			
 			if(keys == null) keys = new ArrayList<Key>();
@@ -169,7 +169,7 @@ public class InputHandler implements InputProcessor{
 			
 			return false;
 		}
-
+		
 		private void press(){
 			pressed = true;
 			justPressed = true;

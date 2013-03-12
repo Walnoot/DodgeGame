@@ -100,7 +100,7 @@ public class Entity{
 	public void setPosition(Vector2 position){
 		pos.set(position);
 	}
-
+	
 	/*public void setRotation(float rotation){
 		this.rotation = rotation;
 		

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class Component{
 	protected final Entity owner;
 	protected final Map map;
-
+	
 	public Component(Entity owner){
 		this.owner = owner;
 		

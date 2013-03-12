@@ -45,7 +45,7 @@ public class LoadingState extends State{
 				
 				if(!DodgeGame.PREFERENCES.contains(SoundManager.PREF_MUSIC_KEY))
 					DodgeGame.PREFERENCES.putFloat(SoundManager.PREF_MUSIC_KEY, 1f);
-
+				
 				if(!DodgeGame.PREFERENCES.contains(TutorialState.PREF_TUTORIAL_KEY))
 					DodgeGame.PREFERENCES.putBoolean(TutorialState.PREF_TUTORIAL_KEY, true);
 				

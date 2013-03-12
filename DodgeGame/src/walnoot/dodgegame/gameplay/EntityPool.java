@@ -15,7 +15,7 @@ public class EntityPool extends Pool<Entity>{
 		this.map = map;
 		this.gameState = gameState;
 	}
-
+	
 	protected Entity newObject(){
 		Entity e = new Entity(map, 0, 0);
 		

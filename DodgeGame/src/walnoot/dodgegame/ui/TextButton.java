@@ -49,7 +49,8 @@ public abstract class TextButton extends TextElement{
 		float halfWidth = getWidth() * 0.5f;
 		float halfHeight = getHeight() * 0.5f;
 		
-		if(x >= getxPos() - halfWidth && y >= getyPos() - halfHeight && x <= getxPos() + halfWidth && y <= getyPos() + halfHeight){
+		if(x >= getxPos() - halfWidth && y >= getyPos() - halfHeight && x <= getxPos() + halfWidth
+				&& y <= getyPos() + halfHeight){
 			if(Gdx.input.isButtonPressed(Buttons.LEFT)){
 				if(!hasPressed){
 					doAction();
