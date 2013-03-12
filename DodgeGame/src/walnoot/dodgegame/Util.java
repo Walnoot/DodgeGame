@@ -67,28 +67,28 @@ public class Util{
 	}
 	
 	public static void loadRegions(){
-		HEART = ATLAS.findRegion("heart");
-		HAND = ATLAS.findRegion("hand");
-		HAND_CLOSED = ATLAS.findRegion("hand_closed");
+		HEART = ATLAS.findRegion("Gameplay/heart");
+		HAND = ATLAS.findRegion("Gameplay/hand");
+		HAND_CLOSED = ATLAS.findRegion("Gameplay/hand_closed");
 		HAND_SHORT = HAND.split(HAND.getRegionWidth(), HAND.getRegionHeight() / 2)[0][0];
-		DOT = ATLAS.findRegion("dot");
-		COIN = ATLAS.findRegion("coin");
-		FIELD = ATLAS.findRegion("field");
-		FONT = ATLAS.findRegion("font");
-		FOOD_ONE = ATLAS.findRegion("drumstick");
-		FOOD_TWO = ATLAS.findRegion("burger");
-		FOOD_THREE = ATLAS.findRegion("pizza");
-		ICON_FALSE = ATLAS.findRegion("icon_false");
-		ICON_TRUE = ATLAS.findRegion("icon_true");
-		BOMB = ATLAS.findRegion("bone");
-		BACKGROUND = ATLAS.findRegion("background");
-		SHINE = ATLAS.findRegion("shine");
-		PAUSE = ATLAS.findRegion("pause");
-		RESUME = ATLAS.findRegion("resume");
-		SLIDER = ATLAS.findRegion("slider");
-		SLIDER_BIG = ATLAS.findRegion("slider_big");
-		SLIDER_KNOB = ATLAS.findRegion("slider_knob");
-		LOGO = ATLAS.findRegion("logo");
+		DOT = ATLAS.findRegion("Gameplay/dot");
+		COIN = ATLAS.findRegion("Gameplay/coin");
+		FIELD = ATLAS.findRegion("Gameplay/field");
+		FONT = ATLAS.findRegion("UI/font");
+		FOOD_ONE = ATLAS.findRegion("Gameplay/drumstick");
+		FOOD_TWO = ATLAS.findRegion("Gameplay/burger");
+		FOOD_THREE = ATLAS.findRegion("Gameplay/pizza");
+		ICON_FALSE = ATLAS.findRegion("UI/icon_false");
+		ICON_TRUE = ATLAS.findRegion("UI/icon_true");
+		BOMB = ATLAS.findRegion("Gameplay/bone");
+		BACKGROUND = ATLAS.findRegion("Gameplay/background");
+		SHINE = ATLAS.findRegion("Gameplay/shine");
+		PAUSE = ATLAS.findRegion("UI/pause");
+		RESUME = ATLAS.findRegion("UI/resume");
+		SLIDER = ATLAS.findRegion("UI/slider");
+		SLIDER_BIG = ATLAS.findRegion("UI/slider_big");
+		SLIDER_KNOB = ATLAS.findRegion("UI/slider_knob");
+		LOGO = ATLAS.findRegion("UI/logo");
 		
 		PATCH_SLIDER = getNinePatch(SLIDER);
 		PATCH_SLIDER_BIG = getNinePatch(SLIDER_BIG);

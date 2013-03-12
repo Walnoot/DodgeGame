@@ -3,171 +3,176 @@ assets.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-font
-  rotate: false
-  xy: 2, 232
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
-logo
+Gameplay/background
   rotate: false
   xy: 2, 102
-  size: 192, 128
-  orig: 192, 128
-  offset: 0, 0
-  index: -1
-background
-  rotate: false
-  xy: 260, 360
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-field
+Gameplay/field
   rotate: false
-  xy: 260, 230
+  xy: 132, 102
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-hand
+Gameplay/hand
   rotate: false
-  xy: 390, 360
+  xy: 262, 102
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
   index: -1
-hand_closed
+Gameplay/hand_closed
   rotate: false
-  xy: 390, 230
+  xy: 328, 102
   size: 64, 128
   orig: 64, 128
   offset: 0, 0
   index: -1
-bone
+Gameplay/bone
   rotate: false
   xy: 2, 36
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-burger
+Gameplay/burger
+  rotate: false
+  xy: 394, 166
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Gameplay/coin
   rotate: false
   xy: 68, 36
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-coin
+Gameplay/dot
   rotate: false
   xy: 134, 36
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-slider_knob
+Gameplay/drumstick
   rotate: false
-  xy: 456, 424
-  size: 32, 64
-  orig: 32, 64
+  xy: 200, 36
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
-dollarsign
+Gameplay/heart
+  rotate: false
+  xy: 266, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Gameplay/pizza
+  rotate: false
+  xy: 394, 100
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+Gameplay/dollarsign
   rotate: false
   xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-dot
+Gameplay/shine
   rotate: false
-  xy: 196, 164
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-drumstick
-  rotate: false
-  xy: 262, 164
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-heart
-  rotate: false
-  xy: 328, 164
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-icon_false
-  rotate: false
-  xy: 394, 164
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-icon_true
-  rotate: false
-  xy: 200, 98
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-pause
-  rotate: false
-  xy: 266, 98
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-pizza
-  rotate: false
-  xy: 332, 98
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-resume
-  rotate: false
-  xy: 200, 32
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-soundoff
-  rotate: false
-  xy: 266, 32
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-soundon
-  rotate: false
-  xy: 332, 32
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-slider
-  rotate: false
-  xy: 456, 390
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-slider_big
-  rotate: false
-  xy: 398, 130
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-shine
-  rotate: false
-  xy: 490, 472
+  xy: 460, 214
   size: 16, 16
   orig: 16, 16
+  offset: 0, 0
+  index: -1
+
+assets2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+UI/font
+  rotate: false
+  xy: 2, 232
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+UI/logo
+  rotate: false
+  xy: 2, 102
+  size: 192, 128
+  orig: 192, 128
+  offset: 0, 0
+  index: -1
+UI/icon_false
+  rotate: false
+  xy: 260, 424
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+UI/icon_true
+  rotate: false
+  xy: 2, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+UI/pause
+  rotate: false
+  xy: 260, 358
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+UI/resume
+  rotate: false
+  xy: 326, 424
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+UI/soundoff
+  rotate: false
+  xy: 68, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+UI/soundon
+  rotate: false
+  xy: 260, 292
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+UI/slider_knob
+  rotate: false
+  xy: 196, 166
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+UI/slider
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI/slider_big
+  rotate: false
+  xy: 326, 390
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1

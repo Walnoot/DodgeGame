@@ -1,8 +1,6 @@
 package walnoot.dodgegame.components;
 
-import aurelienribon.tweenengine.Tween;
 import walnoot.dodgegame.DodgeGame;
-import walnoot.dodgegame.SpriteAccessor;
 import walnoot.dodgegame.states.GameState;
 
 /**
@@ -23,7 +21,7 @@ public class HeartComponent extends Component{
 	}
 	
 	public void update(){
-		if(map.getPlayerComponent().getLives() <= index){
+		/*if(map.getPlayerComponent().getLives() <= index){
 			if(fallTimer == 0){
 				Tween tween = Tween.to(owner.getComponent(SpriteComponent.class).getSprite(),
 						SpriteAccessor.TRANSPARANCY, FALL_TIME / DodgeGame.UPDATES_PER_SECOND);
@@ -39,6 +37,6 @@ public class HeartComponent extends Component{
 		
 		float targetX = (index + 0.5f - map.getPlayerComponent().getLives() / 2f) * SCALE;
 		
-		owner.translate((targetX - owner.getxPos()) * 0.1f, 0);
+		owner.translate((targetX - owner.getxPos()) * 0.1f, 0);*/
 	}
 }
