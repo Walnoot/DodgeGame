@@ -6,8 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -34,18 +32,13 @@ public class Util{
 	public static TextureRegion HAND;
 	public static TextureRegion HAND_CLOSED;
 	public static TextureRegion HAND_SHORT;
-	public static TextureRegion DOT;
 	public static TextureRegion COIN;
 	public static TextureRegion FIELD;
 	public static TextureRegion FONT;
-	public static TextureRegion FOOD_ONE;
-	public static TextureRegion FOOD_TWO;
-	public static TextureRegion FOOD_THREE;
 	public static TextureRegion ICON_FALSE;
 	public static TextureRegion ICON_TRUE;
 	public static TextureRegion BOMB;
 	public static TextureRegion BACKGROUND;
-	public static TextureRegion SHINE;
 	public static TextureRegion PAUSE;
 	public static TextureRegion RESUME;
 	public static TextureRegion SLIDER;
@@ -56,33 +49,18 @@ public class Util{
 	public static NinePatch PATCH_SLIDER;
 	public static NinePatch PATCH_SLIDER_BIG;
 	
-	public static ParticleEffect SHINE_EFFECT;
-	
-	private static ParticleEffect getShineEffect(){
-		ParticleEffect effect = new ParticleEffect();
-		effect.loadEmitters(Gdx.files.internal("effects/shine.dat"));
-		effect.getEmitters().get(0).setSprite(new Sprite(Util.SHINE));
-		
-		return effect;
-	}
-	
 	public static void loadRegions(){
 		HEART = ATLAS.findRegion("Gameplay/heart");
 		HAND = ATLAS.findRegion("Gameplay/hand");
 		HAND_CLOSED = ATLAS.findRegion("Gameplay/hand_closed");
 		HAND_SHORT = HAND.split(HAND.getRegionWidth(), HAND.getRegionHeight() / 2)[0][0];
-		DOT = ATLAS.findRegion("Gameplay/dot");
 		COIN = ATLAS.findRegion("Gameplay/coin");
 		FIELD = ATLAS.findRegion("Gameplay/field");
 		FONT = ATLAS.findRegion("UI/font");
-		FOOD_ONE = ATLAS.findRegion("Gameplay/drumstick");
-		FOOD_TWO = ATLAS.findRegion("Gameplay/burger");
-		FOOD_THREE = ATLAS.findRegion("Gameplay/pizza");
 		ICON_FALSE = ATLAS.findRegion("UI/icon_false");
 		ICON_TRUE = ATLAS.findRegion("UI/icon_true");
 		BOMB = ATLAS.findRegion("Gameplay/bone");
 		BACKGROUND = ATLAS.findRegion("Gameplay/background");
-		SHINE = ATLAS.findRegion("Gameplay/shine");
 		PAUSE = ATLAS.findRegion("UI/pause");
 		RESUME = ATLAS.findRegion("UI/resume");
 		SLIDER = ATLAS.findRegion("UI/slider");
@@ -92,8 +70,6 @@ public class Util{
 		
 		PATCH_SLIDER = getNinePatch(SLIDER);
 		PATCH_SLIDER_BIG = getNinePatch(SLIDER_BIG);
-		
-		SHINE_EFFECT = getShineEffect();
 	}
 	
 	public static void setSkin(){

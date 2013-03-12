@@ -38,44 +38,16 @@ Gameplay/bone
   orig: 64, 64
   offset: 0, 0
   index: -1
-Gameplay/burger
+Gameplay/coin
   rotate: false
   xy: 394, 166
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-Gameplay/coin
-  rotate: false
-  xy: 68, 36
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-Gameplay/dot
-  rotate: false
-  xy: 134, 36
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-Gameplay/drumstick
-  rotate: false
-  xy: 200, 36
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
 Gameplay/heart
   rotate: false
-  xy: 266, 36
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-Gameplay/pizza
-  rotate: false
-  xy: 394, 100
+  xy: 68, 36
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -85,13 +57,6 @@ Gameplay/dollarsign
   xy: 2, 2
   size: 32, 32
   orig: 32, 32
-  offset: 0, 0
-  index: -1
-Gameplay/shine
-  rotate: false
-  xy: 460, 214
-  size: 16, 16
-  orig: 16, 16
   offset: 0, 0
   index: -1
 
