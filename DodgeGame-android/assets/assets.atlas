@@ -64,79 +64,79 @@ assets2.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-UI/font
-  rotate: false
-  xy: 2, 232
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
 UI/logo
   rotate: false
-  xy: 2, 102
-  size: 192, 128
-  orig: 192, 128
+  xy: 2, 228
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+UI/font
+  rotate: false
+  xy: 2, 2
+  size: 256, 224
+  orig: 256, 224
   offset: 0, 0
   index: -1
 UI/icon_false
   rotate: false
-  xy: 260, 424
+  xy: 388, 420
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 UI/icon_true
   rotate: false
-  xy: 2, 36
+  xy: 260, 162
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 UI/pause
   rotate: false
-  xy: 260, 358
+  xy: 388, 354
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 UI/resume
   rotate: false
-  xy: 326, 424
+  xy: 260, 96
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 UI/soundoff
   rotate: false
-  xy: 68, 36
+  xy: 388, 288
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 UI/soundon
   rotate: false
-  xy: 260, 292
+  xy: 260, 30
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 UI/slider_knob
   rotate: false
-  xy: 196, 166
+  xy: 454, 420
   size: 32, 64
   orig: 32, 64
   offset: 0, 0
   index: -1
 UI/slider
   rotate: false
-  xy: 2, 2
+  xy: 326, 194
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI/slider_big
   rotate: false
-  xy: 326, 390
+  xy: 388, 254
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

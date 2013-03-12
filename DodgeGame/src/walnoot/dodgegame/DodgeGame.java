@@ -19,7 +19,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 30, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
-	public static final float FONT_SCALE = 1f / 64f;
+	public static final float FONT_SCALE = 1f / 72f;
 	
 	public static BitmapFont SCALE_FONT;//temporary, hopefully
 	public static BitmapFont UI_FONT;
