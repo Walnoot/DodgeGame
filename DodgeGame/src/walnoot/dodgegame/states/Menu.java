@@ -27,7 +27,7 @@ public enum Menu{
 			
 			table.defaults().height(96f);
 			
-			table.add(new Image(Util.LOGO)).colspan(3).width(384f).height(256f);
+			table.add(new Image(Util.LOGO)).colspan(3).width(384f).height(256f).padBottom(32f);
 			table.row();
 			
 			TextButton playButton = new TextButton("PLAY", Util.SKIN);
