@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
@@ -35,6 +36,7 @@ public class Util{
 	public static TextureRegion COIN;
 	public static TextureRegion FIELD;
 	public static TextureRegion FONT;
+	public static TextureRegion FONT_NUMBERS;
 	public static TextureRegion ICON_FALSE;
 	public static TextureRegion ICON_TRUE;
 	public static TextureRegion BOMB;
@@ -44,10 +46,12 @@ public class Util{
 	public static TextureRegion SLIDER;
 	public static TextureRegion SLIDER_BIG;
 	public static TextureRegion SLIDER_KNOB;
+	public static TextureRegion BORDER;
 	public static TextureRegion LOGO;
 	
 	public static NinePatch PATCH_SLIDER;
 	public static NinePatch PATCH_SLIDER_BIG;
+	public static NinePatch PATCH_BORDER;
 	
 	public static void loadRegions(){
 		HEART = ATLAS.findRegion("Gameplay/heart");
@@ -57,6 +61,7 @@ public class Util{
 		COIN = ATLAS.findRegion("Gameplay/coin");
 		FIELD = ATLAS.findRegion("Gameplay/field");
 		FONT = ATLAS.findRegion("UI/font");
+		FONT_NUMBERS = ATLAS.findRegion("UI/numbers");
 		ICON_FALSE = ATLAS.findRegion("UI/icon_false");
 		ICON_TRUE = ATLAS.findRegion("UI/icon_true");
 		BOMB = ATLAS.findRegion("Gameplay/bone");
@@ -66,15 +71,18 @@ public class Util{
 		SLIDER = ATLAS.findRegion("UI/slider");
 		SLIDER_BIG = ATLAS.findRegion("UI/slider_big");
 		SLIDER_KNOB = ATLAS.findRegion("UI/slider_knob");
+		BORDER = ATLAS.findRegion("UI/border");
 		LOGO = ATLAS.findRegion("UI/logo");
 		
 		PATCH_SLIDER = getNinePatch(SLIDER);
 		PATCH_SLIDER_BIG = getNinePatch(SLIDER_BIG);
+		PATCH_BORDER = getNinePatch(BORDER);
 	}
 	
 	public static void setSkin(){
 		NinePatchDrawable patchSmall = new NinePatchDrawable(PATCH_SLIDER);
 		NinePatchDrawable patchBig = new NinePatchDrawable(PATCH_SLIDER_BIG);
+		NinePatchDrawable patchBorder = new NinePatchDrawable(PATCH_BORDER);
 		
 		SKIN.add("default-horizontal", new SliderStyle(patchSmall, new TextureRegionDrawable(SLIDER_KNOB)));
 		
@@ -83,10 +91,14 @@ public class Util{
 		textButtonStyle.fontColor = Color.BLACK;
 		SKIN.add("default", textButtonStyle);
 		
+		SKIN.add("default", new ButtonStyle(patchBig, null, null));
+		SKIN.add("border", new ButtonStyle(patchBorder, null, null));
+		
 		SKIN.add("default", new CheckBoxStyle(new TextureRegionDrawable(ICON_FALSE), new TextureRegionDrawable(
 				ICON_TRUE), DodgeGame.UI_FONT, Color.BLACK));
 		
 		SKIN.add("default", new LabelStyle(DodgeGame.UI_FONT, Color.BLACK));
+		SKIN.add("numbers", new LabelStyle(DodgeGame.NUMBERS_FONT, Color.WHITE));
 		
 		SKIN.add("default", new ScrollPaneStyle(null, null, patchSmall, null, patchSmall));
 	}

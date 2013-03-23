@@ -35,6 +35,8 @@ public abstract class State{
 	 * Called when the window is resized or the state is instantiated.
 	 */
 	public void resize(){
+		Vector2 dims = Util.getStageDimensions();
+		stage.setViewport(dims.x, dims.y, false);
 	}
 	
 	public OrthographicCamera getCamera(){

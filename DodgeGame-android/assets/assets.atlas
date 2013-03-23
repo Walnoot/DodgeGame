@@ -78,6 +78,13 @@ UI/font
   orig: 256, 224
   offset: 0, 0
   index: -1
+UI/numbers
+  rotate: false
+  xy: 260, 36
+  size: 170, 190
+  orig: 170, 190
+  offset: 0, 0
+  index: -1
 UI/icon_false
   rotate: false
   xy: 388, 420
@@ -87,35 +94,14 @@ UI/icon_false
   index: -1
 UI/icon_true
   rotate: false
-  xy: 260, 162
+  xy: 388, 354
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 UI/pause
   rotate: false
-  xy: 388, 354
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-UI/resume
-  rotate: false
-  xy: 260, 96
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-UI/soundoff
-  rotate: false
   xy: 388, 288
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-UI/soundon
-  rotate: false
-  xy: 260, 30
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -129,7 +115,7 @@ UI/slider_knob
   index: -1
 UI/slider
   rotate: false
-  xy: 326, 194
+  xy: 260, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -139,5 +125,33 @@ UI/slider_big
   xy: 388, 254
   size: 32, 32
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI/resume
+  rotate: false
+  xy: 432, 222
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+UI/soundoff
+  rotate: false
+  xy: 432, 156
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+UI/soundon
+  rotate: false
+  xy: 432, 90
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+UI/border
+  rotate: false
+  xy: 422, 278
+  size: 8, 8
+  orig: 8, 8
   offset: 0, 0
   index: -1

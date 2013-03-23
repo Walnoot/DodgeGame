@@ -35,6 +35,9 @@ public class LoadingState extends State{
 				DodgeGame.UI_FONT = new BitmapFont(Gdx.files.internal("komika_axis.fnt"), Util.FONT, false);
 				DodgeGame.UI_FONT.setUseIntegerPositions(false);
 				
+				DodgeGame.NUMBERS_FONT = new BitmapFont(Gdx.files.internal("numbers.fnt"), Util.FONT_NUMBERS, false);
+				DodgeGame.NUMBERS_FONT.setUseIntegerPositions(false);
+				
 				loadText = new TextElement("LOADED FONT", 0, 0);
 				break;
 			case 1:

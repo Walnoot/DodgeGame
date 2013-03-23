@@ -55,6 +55,8 @@ public class GameOverState extends State{
 	}
 	
 	public void resize(){
+		super.resize();
+		
 		gameState.resize();
 	}
 	

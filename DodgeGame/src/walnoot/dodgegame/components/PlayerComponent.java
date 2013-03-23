@@ -32,7 +32,7 @@ public class PlayerComponent extends Component{
 	private int score;
 	private int combo;
 	
-	private int lastGrowTime;
+	private int lastScoreTime;
 	
 	private final GameState gameState;
 	
@@ -70,10 +70,13 @@ public class PlayerComponent extends Component{
 		
 		if(invincibilityTimer > 0) invincibilityTimer--;
 		
-		if(DodgeGame.gameTime - lastGrowTime == COMBO_BREAK_TIME){
+		if(DodgeGame.gameTime - lastScoreTime == COMBO_BREAK_TIME){
+			score += combo;
+			
 			combo = 0;
 			
-			gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
+			gameState.getMultiplierElement().setText(Integer.toString(combo));
+			gameState.getScoreElement().setText(Integer.toString(score));
 		}
 	}
 	
@@ -86,7 +89,12 @@ public class PlayerComponent extends Component{
 	public void score(){
 		gameState.setAnnouncement(getRandomText(GROW_STATUS_TEXTS), Color.GREEN);
 		
-		score += getScoreMultiplier();
+		combo++;
+		
+		lastScoreTime = DodgeGame.gameTime;
+		
+		gameState.getMultiplierElement().setText(Integer.toString(combo));
+		/*score += getScoreMultiplier();
 		
 		if(getScore() > Stat.HIGH_SCORE.getInt()){
 			if(!newHighscore){
@@ -96,19 +104,14 @@ public class PlayerComponent extends Component{
 			}
 			
 			Stat.HIGH_SCORE.setInt(getScore());
-		}
+		}*/
 		
-		combo++;
-		gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
-		gameState.getScoreElement().setText(Integer.toString(score));
+//		gameState.getMultiplierElement().setText(Integer.toString(getScoreMultiplier()));
+//		gameState.getScoreElement().setText(Integer.toString(score));
 		
-		lastGrowTime = DodgeGame.gameTime;
+//		lastGrowTime = DodgeGame.gameTime;
 		
-		Stat.NUM_FOOD_EATEN.addInt(1);
-	}
-	
-	public int getScoreMultiplier(){
-		return combo / 5 + 1;
+		Stat.NUM_COINS_TAKEN.addInt(1);
 	}
 	
 	private String getRandomText(String[] texts){

@@ -55,6 +55,9 @@ public class PauseState extends State{
 	}
 	
 	public void resize(){
+		super.resize();
+		
+		oldState.resize();
 	}
 	
 	public void dispose(){

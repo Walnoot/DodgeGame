@@ -15,12 +15,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Pool;
 
 public class GameState extends State{
@@ -72,7 +73,7 @@ public class GameState extends State{
 			map.addEntity(heart);
 		}*/
 		
-		multiplierElement = new TextElement(Integer.toString(playerComponent.getScoreMultiplier()), -MAP_SIZE, 0f, 3f);
+		multiplierElement = new TextElement(Integer.toString(0), -MAP_SIZE, 0f, 3f);
 		scoreElement = new TextElement(Integer.toString(playerComponent.getScore()), -MAP_SIZE, 3f, 3f);
 		
 		Image image = new Image(Util.PAUSE);
@@ -88,6 +89,21 @@ public class GameState extends State{
 		stage.addActor(image);
 		
 		Stat.NUM_TIMES_PLAYED.addInt(1);
+		
+		setupScoreTable();
+	}
+	
+	private void setupScoreTable(){
+		Table fullTable = new Table();
+		fullTable.left().top().pad(16f);
+		fullTable.setFillParent(true);
+		
+		fullTable.add(new Label("SCORE:", Util.SKIN)).colspan(2);
+		fullTable.row();
+		
+		fullTable.add(new Label("544", Util.SKIN, "numbers"));
+		
+		stage.addActor(fullTable);
 	}
 	
 	public void update(){
@@ -108,9 +124,6 @@ public class GameState extends State{
 		map.update();
 		
 		if(DodgeGame.INPUT.pause.isJustPressed() && !gameOver) pause();
-		
-		multiplierElement.setScale(3f + MathUtils.cosDeg(DodgeGame.gameTime * 3
-				* map.getPlayerComponent().getScoreMultiplier()));
 	}
 	
 	private void checkFoodSpawn(){

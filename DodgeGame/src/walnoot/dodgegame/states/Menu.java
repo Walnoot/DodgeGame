@@ -74,7 +74,7 @@ public enum Menu{
 			
 			addRow(Stat.HIGH_SCORE, table);
 			addRow(Stat.NUM_DEATHS, table);
-			addRow(Stat.NUM_FOOD_EATEN, table);
+			addRow(Stat.NUM_COINS_TAKEN, table);
 			addRow(Stat.TICKS_PLAYED, table);
 			addRow(Stat.NUM_TIMES_PLAYED, table);
 			

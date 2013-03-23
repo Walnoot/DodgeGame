@@ -6,11 +6,11 @@ import com.badlogic.gdx.utils.StringBuilder;
 public abstract class Stat{
 	public static final IntStat HIGH_SCORE = new IntStat("HIGHSCORE", "highScore");
 	public static final IntStat NUM_DEATHS = new IntStat("NUMBER OF DEATHS", "numDeaths");
-	public static final IntStat NUM_FOOD_EATEN = new IntStat("COINS GRABBED", "coinsTaken");
+	public static final IntStat NUM_COINS_TAKEN = new IntStat("COINS GRABBED", "coinsTaken");
 	public static final IntStat NUM_TIMES_PLAYED = new IntStat("TIMES PLAYED", "timesPlayed");
 	public static final TimeStat TICKS_PLAYED = new TimeStat("TIME PLAYED", "ticksPlayed");
 	
-	public static Stat[] STATS = {HIGH_SCORE, NUM_DEATHS, NUM_FOOD_EATEN, NUM_TIMES_PLAYED, TICKS_PLAYED};
+	public static Stat[] STATS = {HIGH_SCORE, NUM_DEATHS, NUM_COINS_TAKEN, NUM_TIMES_PLAYED, TICKS_PLAYED};
 	
 	protected final String name, key;
 	

@@ -15,7 +15,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
 
 public class DodgeGame implements ApplicationListener{
 	public static final float UPDATES_PER_SECOND = 30, SECONDS_PER_UPDATE = 1 / UPDATES_PER_SECOND;
@@ -23,6 +22,7 @@ public class DodgeGame implements ApplicationListener{
 	
 	public static BitmapFont SCALE_FONT;//temporary, hopefully
 	public static BitmapFont UI_FONT;
+	public static BitmapFont NUMBERS_FONT;
 	public static Preferences PREFERENCES;
 	public static SoundManager SOUND_MANAGER = new SoundManager();
 	public static final InputHandler INPUT = new InputHandler();
@@ -150,9 +150,6 @@ public class DodgeGame implements ApplicationListener{
 		backgroundSprite.setSize(camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom);
 		
 		state.resize();
-		
-		Vector2 dims = Util.getStageDimensions();
-		state.stage.setViewport(dims.x, dims.y, false);
 	}
 	
 	public void pause(){
